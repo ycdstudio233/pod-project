@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { PodPreview } from "@/components/3d/pod-preview";
 import { GlowButton } from "@/components/ui/glow-button";
+import { ProofChips } from "@/components/ui/proof-chips";
 import { heroContent } from "@/lib/site-content";
 import type { ConfiguratorState } from "@/types/configurator";
 
@@ -52,11 +53,12 @@ export function HeroSection({ onExplore, setRef, state }: HeroSectionProps) {
 
           <motion.div
             animate={{ opacity: 1, y: 0 }}
-            className="mt-10"
+            className="mt-10 space-y-5"
             initial={{ opacity: 0, y: 22 }}
             transition={{ delay: 0.2, duration: 0.7 }}
           >
             <GlowButton onClick={onExplore}>{heroContent.primaryCta}</GlowButton>
+            <ProofChips />
           </motion.div>
         </div>
 

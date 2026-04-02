@@ -3,6 +3,7 @@ import type {
   ConfiguratorState,
   EnvironmentId,
   FinishId,
+  InteriorPackId,
   LightingMode,
   PodSize,
   StoryMoment,
@@ -20,6 +21,14 @@ export const defaultConfiguratorState: ConfiguratorState = {
   timeline: "year",
   contactName: "",
   contactEmail: "",
+  siteFit: {
+    zipOrAddress: "",
+    slope: null,
+    accessWidth: null,
+    intendedUse: null,
+    verdict: null,
+  },
+  interiorPack: "retreat",
 };
 
 export const sizeOptions: Array<ChoiceOption<PodSize>> = [
@@ -165,6 +174,50 @@ export const lightingModes: Array<ChoiceOption<LightingMode>> = [
   },
 ];
 
+export const interiorPackOptions: Array<ChoiceOption<InteriorPackId>> = [
+  {
+    id: "retreat",
+    label: "Retreat",
+    title: "Retreat",
+    description: "A calm daily space with bedroom, compact kitchen, and room to unwind.",
+    meta: "Most popular",
+    accent: "#8de4d4",
+    recommended: true,
+  },
+  {
+    id: "work",
+    label: "Work",
+    title: "Work",
+    description: "Standing desk, quiet acoustics, and a layout tuned for deep focus.",
+    meta: "Your commute is 12 steps",
+    accent: "#b8f0e6",
+  },
+  {
+    id: "guest",
+    label: "Guest",
+    title: "Guest",
+    description: "A welcoming stay for friends and family with sleeping area and wet room.",
+    meta: "Ready for overnight",
+    accent: "#d7fff7",
+  },
+  {
+    id: "wellness",
+    label: "Wellness",
+    title: "Wellness",
+    description: "Sauna-ready, open floor, natural light. A space that heals.",
+    meta: "Premium fit-out",
+    accent: "#f0c58c",
+  },
+  {
+    id: "storage",
+    label: "Storage",
+    title: "Storage",
+    description: "Clean utility shell with shelving, climate control, and workshop potential.",
+    meta: "Lightest fit-out",
+    accent: "#c0f4eb",
+  },
+];
+
 export const timelineOptions: Array<ChoiceOption<TimelineId>> = [
   {
     id: "soon",
@@ -201,7 +254,7 @@ export const storyMoments: StoryMoment[] = [
     copy:
       "The pod is pre-composed to feel calm immediately. No noise, no layout anxiety, no pile of choices asking for permission.",
     image: "/story-sanctuary-closeup.webp",
-    cta: "Shape the footprint",
+    cta: "Continue",
   },
   {
     id: "anywhere",
@@ -210,7 +263,7 @@ export const storyMoments: StoryMoment[] = [
     copy:
       "Every finish is chosen to work with light, weather, and distance. You are not assembling parts. You are choosing the version that belongs on your site.",
     image: "/story-backyard-2.webp",
-    cta: "Choose the shell",
+    cta: "Continue",
   },
   {
     id: "landscape",
@@ -219,7 +272,7 @@ export const storyMoments: StoryMoment[] = [
     copy:
       "Panoramic glass, softened corners, and restrained detailing let the setting stay in charge while the pod does what it needs to do beautifully.",
     image: "/story-landscape.webp",
-    cta: "See your pod together",
+    cta: "Continue",
   },
 ];
 
@@ -228,6 +281,8 @@ export const progressLabels = [
   "Size",
   "Finish",
   "Setting",
+  "Interior",
+  "Site fit",
   "Price",
   "Project",
 ] as const;
@@ -238,3 +293,19 @@ export const sitePresets = [
   "Forest site in the Pacific Northwest",
   "Coastal retreat",
 ];
+
+export const proofChips = [
+  "Install-ready foundation",
+  "Climate controlled",
+  "Permit-friendly footprint",
+  "Delivered with guided site review",
+];
+
+export const processPhases = [
+  "Configure",
+  "Site fit",
+  "Permit path",
+  "Fabrication",
+  "Install",
+  "Move in",
+] as const;

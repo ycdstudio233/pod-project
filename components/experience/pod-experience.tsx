@@ -9,13 +9,15 @@ import {
   sizeOptions,
   storyMoments,
 } from "@/lib/configurator-data";
-import { calculateEstimatedPrice } from "@/lib/pricing";
-import type { ConfiguratorState } from "@/types/configurator";
+import { calculateEstimatedPrice, calculatePriceBreakdown } from "@/lib/pricing";
+import type { ConfiguratorState, InteriorPackId, SiteFitData } from "@/types/configurator";
 import { ContactStage } from "./contact-stage";
 import { GuidedDecisionStage } from "./guided-decision-stage";
 import { HeroSection } from "./hero-section";
 import { ImmersiveTransition } from "./immersive-transition";
+import { InteriorPackStage } from "./interior-pack-stage";
 import { ProgressDock } from "./progress-dock";
+import { SiteFitStage } from "./site-fit-stage";
 import { StoryPanel } from "./story-panel";
 import { SummaryStage } from "./summary-stage";
 
@@ -28,23 +30,22 @@ type SectionId =
   | "story-anywhere"
   | "environment"
   | "story-landscape"
+  | "interior-pack"
+  | "site-fit"
   | "summary"
   | "contact";
 
-type Action<K extends keyof ConfiguratorState = keyof ConfiguratorState> = {
-  type: "update";
-  key: K;
-  value: ConfiguratorState[K];
-};
+type Action =
+  | { type: "update"; key: keyof ConfiguratorState; value: ConfiguratorState[keyof ConfiguratorState] }
+  | { type: "update-site-fit"; data: Partial<SiteFitData> };
 
 function configuratorReducer(state: ConfiguratorState, action: Action): ConfiguratorState {
   if (action.type === "update") {
-    return {
-      ...state,
-      [action.key]: action.value,
-    };
+    return { ...state, [action.key]: action.value };
   }
-
+  if (action.type === "update-site-fit") {
+    return { ...state, siteFit: { ...state.siteFit, ...action.data } };
+  }
   return state;
 }
 
@@ -57,6 +58,8 @@ const sectionOrder: SectionId[] = [
   "story-anywhere",
   "environment",
   "story-landscape",
+  "interior-pack",
+  "site-fit",
   "summary",
   "contact",
 ];
@@ -70,8 +73,10 @@ const sectionProgressIndex: Record<SectionId, number> = {
   "story-anywhere": 2,
   environment: 3,
   "story-landscape": 3,
-  summary: 4,
-  contact: 5,
+  "interior-pack": 4,
+  "site-fit": 5,
+  summary: 6,
+  contact: 7,
 };
 
 export function PodExperience() {
@@ -87,17 +92,19 @@ export function PodExperience() {
     "story-anywhere": null,
     environment: null,
     "story-landscape": null,
+    "interior-pack": null,
+    "site-fit": null,
     summary: null,
     contact: null,
   });
   const timers = useRef<number[]>([]);
 
   const updateState = useCallback(<K extends keyof ConfiguratorState>(key: K, value: ConfiguratorState[K]) => {
-    dispatch({
-      type: "update",
-      key,
-      value,
-    });
+    dispatch({ type: "update", key, value });
+  }, []);
+
+  const updateSiteFit = useCallback((data: Partial<SiteFitData>) => {
+    dispatch({ type: "update-site-fit", data });
   }, []);
 
   const setSectionRef = useCallback(
@@ -152,10 +159,7 @@ export function PodExperience() {
 
     sectionOrder.forEach((section) => {
       const node = sectionRefs.current[section];
-
-      if (node) {
-        observer.observe(node);
-      }
+      if (node) observer.observe(node);
     });
 
     return () => observer.disconnect();
@@ -163,13 +167,13 @@ export function PodExperience() {
 
   useEffect(() => {
     const activeTimers = timers.current;
-
     return () => {
       activeTimers.forEach((timer) => window.clearTimeout(timer));
     };
   }, []);
 
   const estimatedPrice = useMemo(() => calculateEstimatedPrice(state), [state]);
+  const priceBreakdown = useMemo(() => calculatePriceBreakdown(state), [state]);
 
   const beginExperience = useCallback(() => {
     setImmersiveOpen(true);
@@ -303,16 +307,31 @@ export function PodExperience() {
         eyebrow={storyMoments[2].eyebrow}
         id="story-landscape"
         image={storyMoments[2].image}
-        onContinue={() => navigateToSection("summary")}
+        onContinue={() => navigateToSection("interior-pack")}
         setRef={setSectionRef("story-landscape")}
         title={storyMoments[2].title}
+      />
+
+      <InteriorPackStage
+        onNext={() => navigateToSection("site-fit")}
+        onSelect={(id) => updateState("interiorPack", id as InteriorPackId)}
+        selectedId={state.interiorPack}
+        setRef={setSectionRef("interior-pack")}
+      />
+
+      <SiteFitStage
+        onNext={() => navigateToSection("summary")}
+        onUpdate={updateSiteFit}
+        setRef={setSectionRef("site-fit")}
+        state={state}
       />
 
       <SummaryStage
         estimatedPrice={estimatedPrice}
         onLightingChange={(value) => updateState("lighting", value)}
-        onStartProject={() => scrollToSection("contact")}
+        onStartProject={() => navigateToSection("contact")}
         onWindowChange={(value) => updateState("windowStyle", value)}
+        priceBreakdown={priceBreakdown}
         setRef={setSectionRef("summary")}
         state={state}
       />
