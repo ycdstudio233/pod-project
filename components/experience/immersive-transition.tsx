@@ -38,16 +38,16 @@ export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionP
         whileInView={{ opacity: 1, y: 0 }}
       >
         <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/44">
-          Exterior first, then interior
+          Here&apos;s how this works
         </p>
         <h2 className="mt-6 max-w-xl text-[clamp(2.4rem,5vw,4.2rem)] font-medium leading-[0.96] tracking-[-0.04em] text-white">
-          You are not building from scratch.
+          We&apos;ll do this together, step by step.
         </h2>
         <p className="mt-5 max-w-md text-lg leading-8 text-white/58">
-          One calm decision at a time. The pod updates live as you go.
+          First the outside, then the inside, then a quick site check. That&apos;s it. Nothing complicated.
         </p>
         <div className="mt-10">
-          <GlowButton onClick={onContinue}>Begin with exterior</GlowButton>
+          <GlowButton onClick={onContinue}>Sounds good, let&apos;s go</GlowButton>
         </div>
       </motion.div>
     </section>

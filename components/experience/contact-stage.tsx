@@ -46,17 +46,17 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
             <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-white/58">
               Project
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">Friendly handoff</span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">last step</span>
           </div>
           <h2 className="max-w-3xl text-[clamp(2.6rem,5vw,4.4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-balance text-white">
-            We&apos;ll take it from here.
+            You&apos;re almost done. We&apos;ll handle the rest.
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-white/66">
-            Just the basics. We&apos;ll come back with the clearest next step, not a pile of homework.
+            Just tell us where and when — we&apos;ll come back with a clear plan, not a pile of homework.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-2">
-            {["Where will this go?", "Timeline", "Contact info"].map((label, index) => (
+            {["Where is it going?", "When are you thinking?", "How do we reach you?"].map((label, index) => (
               <span
                 className={`rounded-full border px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.24em] ${
                   index === stepIndex
@@ -90,11 +90,11 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
               </div>
 
               <label className="surface-panel mt-2 rounded-[1.6rem] p-5">
-                <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/44">Specific site</span>
+                <span className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/44">Or type your location</span>
                 <input
                   className="mt-4 w-full bg-transparent text-lg text-white placeholder:text-white/28 focus:outline-none"
                   onChange={(event) => onFieldChange("siteLocation", event.target.value)}
-                  placeholder="City, region, or site name"
+                  placeholder="City, neighborhood, or address"
                   value={state.siteLocation}
                 />
               </label>
@@ -127,7 +127,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                 <input
                   className="mt-4 w-full bg-transparent text-lg text-white placeholder:text-white/28 focus:outline-none"
                   onChange={(event) => onFieldChange("contactName", event.target.value)}
-                  placeholder="How should we address you?"
+                  placeholder="First name is fine"
                   value={state.contactName}
                 />
               </label>
@@ -146,10 +146,10 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
 
           {submitted ? (
             <div className="surface-panel mt-8 max-w-2xl rounded-[1.8rem] p-6">
-              <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/44">Next up</p>
-              <h3 className="mt-4 text-3xl font-medium tracking-[-0.04em] text-white">Your pod brief is ready.</h3>
+              <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-[#8de4d4]">You&apos;re all set</p>
+              <h3 className="mt-4 text-3xl font-medium tracking-[-0.04em] text-white">We&apos;ve got everything we need.</h3>
               <p className="mt-4 max-w-xl text-base leading-7 text-white/64">
-                Next comes site review, permit path, fabrication timing, and install planning. You will know what happens next.
+                We&apos;ll review your site, map out the permit path, and come back with a clear timeline. You&apos;ll hear from us soon — no guesswork.
               </p>
             </div>
           ) : (
@@ -161,7 +161,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
               ) : null}
               {stepIndex < 2 ? (
                 <GlowButton disabled={!canContinue} onClick={() => setStepIndex((value) => value + 1)}>
-                  Keep going
+                  Next
                 </GlowButton>
               ) : (
                 <GlowButton
@@ -170,7 +170,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                     setSubmitted(true);
                   }}
                 >
-                  Send my brief
+                  That&apos;s it — send it over
                 </GlowButton>
               )}
             </div>
@@ -185,7 +185,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
           whileInView={{ opacity: 1, x: 0 }}
         >
           <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/44">Your current pod</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/44">Your pod so far</p>
             <h3 className="mt-4 text-3xl font-medium tracking-[-0.04em] text-white">{formatCurrency(estimatedPrice)}</h3>
             <p className="mt-4 text-sm leading-7 text-white/56">
               {environmentOptions.find((option) => option.id === state.environment)?.title} / {state.siteLocation}
@@ -193,9 +193,9 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
           </div>
 
           <div className="mt-8 rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
-            <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">What happens next</p>
+            <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">What happens after this</p>
             <p className="mt-3 text-sm leading-7 text-white/62">
-              Site check, permit path, fabrication, install. We walk you through each step and keep the sequence clear.
+              We check your site, sort out permits, build your pod, and deliver it. You&apos;ll know what&apos;s happening at every step.
             </p>
           </div>
         </motion.aside>

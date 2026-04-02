@@ -13,18 +13,18 @@ export function evaluateSiteFit(data: SiteFitData): SiteFitVerdict {
 
 export const verdictCopy: Record<SiteFitVerdict, { label: string; message: string; color: string }> = {
   promising: {
-    label: "Looks promising",
-    message: "Your site sounds ready. We can move quickly once we confirm a few details together.",
+    label: "This looks great",
+    message: "Your site sounds ready to go. We'll confirm a few things together, but this is exactly the kind of site that works well.",
     color: "#8de4d4",
   },
   "tight-but-possible": {
-    label: "Tight but possible",
-    message: "A few things to work through, but nothing unusual. We see sites like this regularly.",
+    label: "Totally doable — with a little extra care",
+    message: "There are a couple of things to sort out, but nothing we haven't seen before. We'll figure it out together.",
     color: "#f7c66b",
   },
   "needs-review": {
-    label: "Needs review",
-    message: "Your site has some constraints. A quick conversation will help us map the best path forward.",
+    label: "Let's take a closer look together",
+    message: "Your site has some tricky bits, but that's okay. A quick call with our team will give you a clear answer.",
     color: "#f09070",
   },
 };

@@ -20,14 +20,14 @@ interface SiteFitStageProps {
 }
 
 const slopeOptions: { id: SlopeCondition; label: string }[] = [
-  { id: "flat", label: "Flat or nearly flat" },
-  { id: "slight", label: "Gentle slope" },
-  { id: "steep", label: "Steep grade" },
+  { id: "flat", label: "Flat or pretty flat" },
+  { id: "slight", label: "A gentle slope" },
+  { id: "steep", label: "Steep — it's hilly" },
 ];
 
 const accessOptions: { id: AccessWidth; label: string }[] = [
-  { id: "easy", label: "Standard driveway access" },
-  { id: "tight", label: "Narrow or restricted" },
+  { id: "easy", label: "Normal driveway, easy access" },
+  { id: "tight", label: "Narrow or tricky to reach" },
 ];
 
 const useOptions: { id: IntendedUse; label: string }[] = [
@@ -103,16 +103,16 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
         >
           <div className="mb-5 flex flex-wrap items-center gap-3">
             <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-white/58">
-              Site fit
+              Quick site check
             </span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">20-second check</span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">takes 20 seconds</span>
           </div>
           <h2 className="text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
-            {step < 3 ? "Let's check if the site looks easy." : "This looks like a real project."}
+            {step < 3 ? "Let\u2019s make sure your site works." : "Looking good \u2014 this is a real project."}
           </h2>
           {step < 3 ? (
             <p className="mt-4 max-w-lg text-lg leading-8 text-white/60">
-              Three quick questions. We use this to shape the right next step, not to make you do homework.
+              Three quick questions. Nothing scary — we just need a rough picture so we can give you a real answer.
             </p>
           ) : null}
         </motion.div>
@@ -124,11 +124,13 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
                 className={`rounded-full border px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] ${
                   index === step
                     ? "border-white/18 bg-white/10 text-white"
-                    : "border-white/10 bg-white/[0.03] text-white/34"
+                    : index < step
+                      ? "border-white/10 bg-white/[0.03] text-white/44"
+                      : "border-white/10 bg-white/[0.03] text-white/24"
                 }`}
                 key={label}
               >
-                {label}
+                {index < step ? "\u2713 " : ""}{label}
               </span>
             ))}
           </div>
@@ -138,7 +140,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
           <AnimatePresence mode="wait">
             {step === 0 ? (
               <motion.div key="slope" {...fadeVariants} transition={{ duration: 0.3 }}>
-                <p className="mb-5 text-sm font-medium text-white/70">What&apos;s the ground like?</p>
+                <p className="mb-5 text-sm font-medium text-white/70">What&apos;s the ground like where the pod would go?</p>
                 <div className="flex flex-wrap gap-3">
                   {slopeOptions.map((opt) => (
                     <Pill active={siteFit.slope === opt.id} key={opt.id} onClick={() => onUpdate({ slope: opt.id })}>
@@ -151,7 +153,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
 
             {step === 1 ? (
               <motion.div key="access" {...fadeVariants} transition={{ duration: 0.3 }}>
-                <p className="mb-5 text-sm font-medium text-white/70">How&apos;s access for delivery?</p>
+                <p className="mb-5 text-sm font-medium text-white/70">Can a truck get to the spot easily?</p>
                 <div className="flex flex-wrap gap-3">
                   {accessOptions.map((opt) => (
                     <Pill active={siteFit.accessWidth === opt.id} key={opt.id} onClick={() => onUpdate({ accessWidth: opt.id })}>
@@ -164,7 +166,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
 
             {step === 2 ? (
               <motion.div key="use" {...fadeVariants} transition={{ duration: 0.3 }}>
-                <p className="mb-5 text-sm font-medium text-white/70">What will the pod mostly be for?</p>
+                <p className="mb-5 text-sm font-medium text-white/70">What will you mostly use it for?</p>
                 <div className="flex flex-wrap gap-3">
                   {useOptions.map((opt) => (
                     <Pill active={siteFit.intendedUse === opt.id} key={opt.id} onClick={() => onUpdate({ intendedUse: opt.id })}>
@@ -195,14 +197,14 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
         <div className="mt-10">
           {step < 2 ? (
             <GlowButton disabled={!canAdvance} onClick={() => setStep((value) => value + 1)}>
-              Keep going
+              Next question
             </GlowButton>
           ) : step === 2 ? (
             <GlowButton disabled={!canAdvance} onClick={showVerdict}>
               Check my site
             </GlowButton>
           ) : (
-            <GlowButton onClick={onNext}>Show me the price</GlowButton>
+            <GlowButton onClick={onNext}>Almost done — show me the price</GlowButton>
           )}
         </div>
       </div>

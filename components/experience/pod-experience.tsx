@@ -219,7 +219,7 @@ export function PodExperience() {
               initial={{ opacity: 0, scale: 0.82 }}
               transition={{ duration: 0.55 }}
             >
-              Loading your pod
+              Getting your pod ready
             </motion.div>
           </motion.div>
         ) : null}
@@ -254,10 +254,10 @@ export function PodExperience() {
       <ImmersiveTransition onContinue={() => scrollToSection("size")} setRef={setSectionRef("transition")} />
 
       <GuidedDecisionStage
-        copy="Start with footprint. This is the choice that changes the whole feel."
-        guidance="Most buyers begin with Residence 02 because it feels balanced immediately."
+        copy="We already picked the one most people love. Just confirm or change it."
+        guidance="Residence 02 is the sweet spot — not too small, not too big. Most people keep it."
         id="size"
-        nextLabel="Keep this size"
+        nextLabel="Looks good"
         onNext={() => navigateToSection("finish")}
         onSelect={(value) => updateState("size", value as ConfiguratorState["size"])}
         options={sizeOptions}
@@ -265,15 +265,15 @@ export function PodExperience() {
         selectedId={state.size}
         setRef={setSectionRef("size")}
         state={state}
-        stepLabel="Step 1"
-        title="Choose the footprint."
+        stepLabel="1 of 3"
+        title="How much space feels right?"
       />
 
       <GuidedDecisionStage
-        copy="Now decide how the pod should sit in the landscape."
-        guidance="Every finish is already tuned. You are choosing tone, not inventing taste."
+        copy="This is the fun part. Pick a color that feels like you — they all look great."
+        guidance="Glacier is our most popular because it works with every setting. But trust your gut."
         id="finish"
-        nextLabel="Keep this finish"
+        nextLabel="Love it"
         onNext={() => navigateToSection("environment")}
         onSelect={(value) => updateState("finish", value as ConfiguratorState["finish"])}
         options={finishOptions}
@@ -281,15 +281,15 @@ export function PodExperience() {
         selectedId={state.finish}
         setRef={setSectionRef("finish")}
         state={state}
-        stepLabel="Step 2"
-        title="Choose the shell tone."
+        stepLabel="2 of 3"
+        title="Pick your color."
       />
 
       <GuidedDecisionStage
-        copy="Choose the setting closest to real life so the pod stops feeling abstract."
-        guidance="Pick the environment nearest to your site. We fine-tune the rest together."
+        copy="Where will your pod actually live? Pick the closest match — we'll fine-tune together later."
+        guidance="Don't worry about getting it perfect. This just helps us show you the right picture."
         id="environment"
-        nextLabel="Lock the exterior"
+        nextLabel="That's the exterior done"
         onNext={() => navigateToSection("interior-pack")}
         onSelect={(value) => {
           updateState("environment", value as ConfiguratorState["environment"]);
@@ -306,8 +306,8 @@ export function PodExperience() {
         selectedId={state.environment}
         setRef={setSectionRef("environment")}
         state={state}
-        stepLabel="Step 3"
-        title="Place it somewhere real."
+        stepLabel="3 of 3"
+        title="Where does it go?"
       />
 
       <InteriorPackStage

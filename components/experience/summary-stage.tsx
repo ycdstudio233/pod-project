@@ -62,13 +62,13 @@ export function SummaryStage({
             {/* Price hero */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/40">Your pod, configured</p>
+                <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/40">Here&apos;s your pod</p>
                 <p className="mt-3 text-[clamp(3rem,6vw,5.4rem)] font-medium tracking-[-0.04em] text-white">
                   {formatCurrency(estimatedPrice)}
                 </p>
               </div>
               <p className="max-w-xs text-sm leading-6 text-white/40">
-                Everything below is already included. Site costs are estimated separately.
+                No surprises. Everything below is included. Site costs are shown separately so you know exactly what to expect.
               </p>
             </div>
 
@@ -117,8 +117,8 @@ export function SummaryStage({
             <div className="mt-10 space-y-6 pb-16">
               <ProcessRail />
               <div className="flex items-center gap-6">
-                <GlowButton onClick={onStartProject}>Start your project</GlowButton>
-                <span className="text-sm text-white/36">We come back with a clear next step.</span>
+                <GlowButton onClick={onStartProject}>This looks right — let&apos;s go</GlowButton>
+                <span className="text-sm text-white/36">One more step and we&apos;ll take it from here.</span>
               </div>
             </div>
           </motion.div>

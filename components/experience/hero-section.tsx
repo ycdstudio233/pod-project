@@ -37,7 +37,7 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
           initial={{ opacity: 0, y: 16 }}
           transition={{ duration: 0.6 }}
         >
-          Modular living, designed as a product
+          Your pod is already waiting
         </motion.p>
 
         <motion.h1
@@ -46,7 +46,7 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
           initial={{ opacity: 0, y: 24 }}
           transition={{ delay: 0.08, duration: 0.7 }}
         >
-          A place already composed for you.
+          We put together a pod for you.
         </motion.h1>
 
         <motion.p
@@ -55,7 +55,7 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
           initial={{ opacity: 0, y: 18 }}
           transition={{ delay: 0.16, duration: 0.7 }}
         >
-          Choose footprint, shell, and setting. We handle the rest.
+          Just a few quick choices and it&apos;s yours. We&apos;ll walk you through it.
         </motion.p>
 
         <motion.div
@@ -64,8 +64,8 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
           initial={{ opacity: 0, y: 18 }}
           transition={{ delay: 0.24, duration: 0.7 }}
         >
-          <GlowButton onClick={onExplore}>Configure your pod</GlowButton>
-          <span className="text-sm text-white/36">Starting from $155,500</span>
+          <GlowButton onClick={onExplore}>Let&apos;s get started</GlowButton>
+          <span className="text-sm text-white/36">Takes about 2 minutes</span>
         </motion.div>
       </div>
 

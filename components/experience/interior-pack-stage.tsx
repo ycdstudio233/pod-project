@@ -68,7 +68,7 @@ export function InteriorPackStage({ selectedId, onSelect, onNext, setRef }: Inte
           >
             <div className="flex items-center justify-between">
               <h2 className="text-[clamp(1.8rem,4vw,3.2rem)] font-medium leading-[1] tracking-[-0.03em] text-white">
-                Interior
+                Now let&apos;s peek inside.
               </h2>
               <span className="text-sm text-white/50">
                 {interiorPackOptions.find((p) => p.id === selectedId)?.label}
@@ -111,8 +111,8 @@ export function InteriorPackStage({ selectedId, onSelect, onNext, setRef }: Inte
           </div>
 
           <div className="mt-8 flex items-center gap-6 pb-12">
-            <GlowButton onClick={onNext}>Keep this interior</GlowButton>
-            <span className="text-sm text-white/36">Each pack is pre-resolved and install-ready.</span>
+            <GlowButton onClick={onNext}>This feels right</GlowButton>
+            <span className="text-sm text-white/36">Everything is already laid out and ready to go.</span>
           </div>
         </div>
       </div>
