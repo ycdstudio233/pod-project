@@ -54,15 +54,14 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
         mesh.receiveShadow = true;
       }
 
-      // Apply finish color only to light-colored shell materials.
-      // Skip dark parts (trim, roof, frames, steps) and transparent parts (glass).
-      // A material is considered "shell" if its original color lightness > 0.35
-      // (i.e. it's not a dark accent piece).
+      // Apply finish color to shell materials, skip very dark trim/accents.
+      // Only opaque MeshStandardMaterial with lightness > 0.08 gets tinted
+      // (keeps near-black trim pieces like frames and dark accents untouched).
       if (mesh.isMesh && mesh.material instanceof MeshStandardMaterial) {
         if (!mesh.material.transparent && mesh.material.opacity > 0.9) {
           const hsl = { h: 0, s: 0, l: 0 };
           mesh.material.color.getHSL(hsl);
-          if (hsl.l > 0.35) {
+          if (hsl.l > 0.08) {
             mesh.material = mesh.material.clone();
             mesh.material.color.copy(finishColor);
             mesh.material.metalness = 0.18;

@@ -1,5 +1,5 @@
 import { ContactShadows, Environment } from "@react-three/drei";
-import { useEffect, useState } from "react";
+import { Component, type ReactNode, Suspense } from "react";
 import type { EnvironmentId, LightingMode } from "@/types/configurator";
 
 interface SceneEnvironmentProps {
@@ -32,34 +32,27 @@ const environmentTheme = {
   },
 } as const;
 
-// Check if an HDRI file is available (cached per path)
-const hdriCache = new Map<string, boolean>();
+// Error boundary that silently falls back when an HDRI fails to load
+class HdriFallback extends Component<
+  { children: ReactNode; fallback: ReactNode; resetKey: string },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
 
-function useHdriAvailable(path: string) {
-  const [available, setAvailable] = useState(() => hdriCache.get(path) ?? false);
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
 
-  useEffect(() => {
-    if (hdriCache.has(path)) {
-      setAvailable(hdriCache.get(path)!);
-      return;
+  componentDidUpdate(prevProps: { resetKey: string }) {
+    if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
+      this.setState({ hasError: false });
     }
+  }
 
-    let active = true;
-    fetch(path, { method: "HEAD" })
-      .then((res) => {
-        const ok = res.ok && (res.headers.get("content-length") ?? "0") !== "0";
-        hdriCache.set(path, ok);
-        if (active) setAvailable(ok);
-      })
-      .catch(() => {
-        hdriCache.set(path, false);
-        if (active) setAvailable(false);
-      });
-
-    return () => { active = false; };
-  }, [path]);
-
-  return available;
+  render() {
+    if (this.state.hasError) return this.props.fallback;
+    return this.props.children;
+  }
 }
 
 function DesertSet() {
@@ -131,38 +124,56 @@ function UrbanSet() {
   );
 }
 
-export function SceneEnvironment({ environment, interactive = false, lighting }: SceneEnvironmentProps) {
+function FallbackScene({ environment, lighting }: { environment: EnvironmentId; lighting: LightingMode }) {
   const theme = environmentTheme[environment];
   const background = lighting === "day" ? theme.day : theme.night;
-  const shadowMapSize = interactive ? 2048 : 1024;
-  const hdriAvailable = useHdriAvailable(theme.hdri);
-  const useHdri = hdriAvailable && lighting === "day";
 
   return (
     <>
-      {useHdri ? (
-        <Environment background files={theme.hdri} backgroundBlurriness={0.05} backgroundIntensity={0.7} environmentIntensity={1.2} />
+      <color args={[background]} attach="background" />
+      <fog args={[background, 10, 18]} attach="fog" />
+      <ambientLight color={lighting === "day" ? "#ffffff" : "#93b6ff"} intensity={lighting === "day" ? 0.82 : 0.35} />
+
+      <mesh position={[0, 3.8, -6]}>
+        <sphereGeometry args={[2.8, 32, 32]} />
+        <meshBasicMaterial color={theme.accent} transparent opacity={lighting === "day" ? 0.12 : 0.2} />
+      </mesh>
+
+      {environment === "desert" ? <DesertSet /> : null}
+      {environment === "forest" ? <ForestSet /> : null}
+      {environment === "urban" ? <UrbanSet /> : null}
+    </>
+  );
+}
+
+export function SceneEnvironment({ environment, interactive = false, lighting }: SceneEnvironmentProps) {
+  const theme = environmentTheme[environment];
+  const shadowMapSize = interactive ? 2048 : 1024;
+  const showHdri = lighting === "day";
+  const fallback = <FallbackScene environment={environment} lighting={lighting} />;
+
+  return (
+    <>
+      {showHdri ? (
+        <HdriFallback fallback={fallback} resetKey={environment}>
+          <Suspense fallback={fallback}>
+            <Environment
+              background
+              backgroundBlurriness={0.05}
+              backgroundIntensity={0.7}
+              environmentIntensity={1.2}
+              files={theme.hdri}
+            />
+          </Suspense>
+        </HdriFallback>
       ) : (
-        <>
-          <color args={[background]} attach="background" />
-          <fog args={[background, 10, 18]} attach="fog" />
-          <ambientLight color={lighting === "day" ? "#ffffff" : "#93b6ff"} intensity={lighting === "day" ? 0.82 : 0.35} />
-
-          <mesh position={[0, 3.8, -6]}>
-            <sphereGeometry args={[2.8, 32, 32]} />
-            <meshBasicMaterial color={theme.accent} transparent opacity={lighting === "day" ? 0.12 : 0.2} />
-          </mesh>
-
-          {environment === "desert" ? <DesertSet /> : null}
-          {environment === "forest" ? <ForestSet /> : null}
-          {environment === "urban" ? <UrbanSet /> : null}
-        </>
+        fallback
       )}
 
       <directionalLight
         castShadow
         color={lighting === "day" ? "#fff2d6" : "#7fa0ff"}
-        intensity={lighting === "day" ? (useHdri ? 1.4 : 2.1) : 0.54}
+        intensity={lighting === "day" ? 1.6 : 0.54}
         position={[5, 7, 3.6]}
         shadow-mapSize-height={shadowMapSize}
         shadow-mapSize-width={shadowMapSize}
