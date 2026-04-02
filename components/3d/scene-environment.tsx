@@ -1,4 +1,5 @@
-import { ContactShadows } from "@react-three/drei";
+import { ContactShadows, Environment } from "@react-three/drei";
+import { useEffect, useState } from "react";
 import type { EnvironmentId, LightingMode } from "@/types/configurator";
 
 interface SceneEnvironmentProps {
@@ -13,20 +14,53 @@ const environmentTheme = {
     night: "#0b0b0f",
     ground: "#4b3428",
     accent: "#d98f55",
+    hdri: "/hdri/desert.hdr",
   },
   forest: {
     day: "#7fa891",
     night: "#07100e",
     ground: "#1b2f29",
     accent: "#67a47f",
+    hdri: "/hdri/forest.hdr",
   },
   urban: {
     day: "#89a4d7",
     night: "#070a10",
     ground: "#141b29",
     accent: "#6f98da",
+    hdri: "/hdri/urban.hdr",
   },
 } as const;
+
+// Check if an HDRI file is available (cached per path)
+const hdriCache = new Map<string, boolean>();
+
+function useHdriAvailable(path: string) {
+  const [available, setAvailable] = useState(() => hdriCache.get(path) ?? false);
+
+  useEffect(() => {
+    if (hdriCache.has(path)) {
+      setAvailable(hdriCache.get(path)!);
+      return;
+    }
+
+    let active = true;
+    fetch(path, { method: "HEAD" })
+      .then((res) => {
+        const ok = res.ok && (res.headers.get("content-length") ?? "0") !== "0";
+        hdriCache.set(path, ok);
+        if (active) setAvailable(ok);
+      })
+      .catch(() => {
+        hdriCache.set(path, false);
+        if (active) setAvailable(false);
+      });
+
+    return () => { active = false; };
+  }, [path]);
+
+  return available;
+}
 
 function DesertSet() {
   return (
@@ -101,17 +135,34 @@ export function SceneEnvironment({ environment, interactive = false, lighting }:
   const theme = environmentTheme[environment];
   const background = lighting === "day" ? theme.day : theme.night;
   const shadowMapSize = interactive ? 2048 : 1024;
+  const hdriAvailable = useHdriAvailable(theme.hdri);
+  const useHdri = hdriAvailable && lighting === "day";
 
   return (
     <>
-      <color args={[background]} attach="background" />
-      <fog args={[background, 10, 18]} attach="fog" />
+      {useHdri ? (
+        <Environment background files={theme.hdri} backgroundBlurriness={0.05} backgroundIntensity={0.7} environmentIntensity={1.2} />
+      ) : (
+        <>
+          <color args={[background]} attach="background" />
+          <fog args={[background, 10, 18]} attach="fog" />
+          <ambientLight color={lighting === "day" ? "#ffffff" : "#93b6ff"} intensity={lighting === "day" ? 0.82 : 0.35} />
 
-      <ambientLight color={lighting === "day" ? "#ffffff" : "#93b6ff"} intensity={lighting === "day" ? 0.82 : 0.35} />
+          <mesh position={[0, 3.8, -6]}>
+            <sphereGeometry args={[2.8, 32, 32]} />
+            <meshBasicMaterial color={theme.accent} transparent opacity={lighting === "day" ? 0.12 : 0.2} />
+          </mesh>
+
+          {environment === "desert" ? <DesertSet /> : null}
+          {environment === "forest" ? <ForestSet /> : null}
+          {environment === "urban" ? <UrbanSet /> : null}
+        </>
+      )}
+
       <directionalLight
         castShadow
         color={lighting === "day" ? "#fff2d6" : "#7fa0ff"}
-        intensity={lighting === "day" ? 2.1 : 0.54}
+        intensity={lighting === "day" ? (useHdri ? 1.4 : 2.1) : 0.54}
         position={[5, 7, 3.6]}
         shadow-mapSize-height={shadowMapSize}
         shadow-mapSize-width={shadowMapSize}
@@ -123,18 +174,10 @@ export function SceneEnvironment({ environment, interactive = false, lighting }:
         position={[-4.6, 3.8, 4.5]}
       />
 
-      <mesh position={[0, 3.8, -6]}>
-        <sphereGeometry args={[2.8, 32, 32]} />
-        <meshBasicMaterial color={theme.accent} transparent opacity={lighting === "day" ? 0.12 : 0.2} />
-      </mesh>
       <mesh position={[0, -1.04, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[26, 26]} />
         <meshStandardMaterial color={theme.ground} roughness={1} />
       </mesh>
-
-      {environment === "desert" ? <DesertSet /> : null}
-      {environment === "forest" ? <ForestSet /> : null}
-      {environment === "urban" ? <UrbanSet /> : null}
 
       <ContactShadows
         blur={2}
@@ -147,4 +190,3 @@ export function SceneEnvironment({ environment, interactive = false, lighting }:
     </>
   );
 }
-

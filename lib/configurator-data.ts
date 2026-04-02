@@ -94,7 +94,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "High contrast light, long shadows, and quiet distance.",
     meta: "Best for solar-forward sites",
     accent: "#f0c58c",
-    image: "/scene-desert.svg",
+    image: "/images/environments/desert.jpg",
     recommended: true,
   },
   {
@@ -104,7 +104,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Layered greens, diffuse daylight, and a softer arrival.",
     meta: "Feels private fast",
     accent: "#88c39d",
-    image: "/scene-forest.svg",
+    image: "/images/environments/forest.jpg",
   },
   {
     id: "urban",
@@ -113,7 +113,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Precise, calm, and confident inside a sharper city rhythm.",
     meta: "Ideal for backyard placement",
     accent: "#8bb8ff",
-    image: "/scene-urban.svg",
+    image: "/images/environments/urban.jpg",
   },
 ];
 
@@ -200,7 +200,7 @@ export const storyMoments: StoryMoment[] = [
     title: "Space that feels resolved before you step inside.",
     copy:
       "The pod is pre-composed to feel calm immediately. No noise, no layout anxiety, no pile of choices asking for permission.",
-    image: "/scene-sanctuary.svg",
+    image: "/images/stories/sanctuary.jpg",
     cta: "Shape the footprint",
   },
   {
@@ -209,7 +209,7 @@ export const storyMoments: StoryMoment[] = [
     title: "Designed to arrive cleanly, even in landscapes that usually push back.",
     copy:
       "Every finish is chosen to work with light, weather, and distance. You are not assembling parts. You are choosing the version that belongs on your site.",
-    image: "/scene-forest.svg",
+    image: "/images/stories/built-for-anywhere.jpg",
     cta: "Choose the shell",
   },
   {
@@ -218,7 +218,7 @@ export const storyMoments: StoryMoment[] = [
     title: "A quiet object with just enough presence to feel inevitable.",
     copy:
       "Panoramic glass, softened corners, and restrained detailing let the setting stay in charge while the pod does what it needs to do beautifully.",
-    image: "/scene-desert.svg",
+    image: "/images/stories/disappear-into-landscape.jpg",
     cta: "See your pod together",
   },
 ];
