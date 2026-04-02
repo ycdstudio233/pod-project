@@ -77,36 +77,77 @@ export function GuidedDecisionStage({
           <p className="mt-2 max-w-xl text-xs leading-5 text-white/54 md:mt-4 md:text-sm md:leading-7">{copy}</p>
           <p className="mt-1 hidden max-w-xl text-sm leading-6 text-white/36 md:block">{guidance}</p>
 
-          {/* Sleek mini-cards for mobile/tablet (< md) */}
-          <div className="mt-3 grid grid-cols-2 gap-2 md:hidden">
-            {options.map((option) => (
+          {/* Mobile/tablet option cards + integrated CTA (< md) */}
+          <div className="mt-4 md:hidden">
+            <div className="grid grid-cols-2 gap-2.5">
+              {options.map((option, idx) => {
+                const isSelected = selectedId === option.id;
+                const isLastOdd = options.length % 2 === 1 && idx === options.length - 1;
+                return (
+                  <button
+                    className={`relative flex flex-col overflow-hidden rounded-2xl border p-4 text-left transition-all duration-250 ${
+                      isSelected
+                        ? "border-[#8de4d4]/30 bg-white/[0.09] shadow-[0_0_24px_rgba(141,228,212,0.08)]"
+                        : "border-white/8 bg-white/[0.025] active:bg-white/[0.06]"
+                    } ${isLastOdd ? "col-span-2" : ""}`}
+                    key={option.id}
+                    onClick={() => onSelect(option.id)}
+                    type="button"
+                  >
+                    {/* Accent top bar */}
+                    <div
+                      className="absolute inset-x-0 top-0 h-[2px]"
+                      style={{
+                        background: `linear-gradient(90deg, ${option.accent}, transparent)`,
+                        opacity: isSelected ? 1 : 0.25,
+                      }}
+                    />
+
+                    {/* Label row */}
+                    <div className="flex items-center gap-1.5">
+                      <span className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${isSelected ? "text-white/60" : "text-white/30"}`}>
+                        {option.label}
+                      </span>
+                      {option.recommended && (
+                        <span className="rounded-full bg-emerald-300/12 px-1.5 py-px text-[7px] font-bold uppercase tracking-wider text-emerald-200/80">
+                          ★
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Title — dominant */}
+                    <h4 className={`mt-1.5 text-[1.1rem] font-semibold leading-tight ${isSelected ? "text-white" : "text-white/70"}`}>
+                      {option.title}
+                    </h4>
+
+                    {/* Description — softer weight */}
+                    <p className={`mt-1.5 flex-1 line-clamp-2 text-[11px] leading-[1.45] ${isSelected ? "text-white/50" : "text-white/30"}`}>
+                      {option.description}
+                    </p>
+
+                    {/* Meta — smallest */}
+                    <p className={`mt-2.5 text-[10px] tracking-wide ${isSelected ? "text-white/40" : "text-white/20"}`}>
+                      {option.meta}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* CTA bar — anchored to cards, shows selected + action */}
+            <div className="mt-4 flex items-center gap-3 rounded-2xl border border-white/8 bg-white/[0.03] px-4 py-3">
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-[#8de4d4]/70">Selected</p>
+                <p className="mt-0.5 truncate text-sm font-medium text-white">{selectedOption?.title}</p>
+              </div>
               <button
-                className={`relative overflow-hidden rounded-2xl border p-4 text-left transition-all duration-200 ${
-                  selectedId === option.id
-                    ? "border-white/24 bg-white/11"
-                    : "border-white/8 bg-white/[0.03] active:bg-white/[0.07]"
-                } ${options.length === 3 && options.indexOf(option) === 2 ? "col-span-2" : ""}`}
-                key={option.id}
-                onClick={() => onSelect(option.id)}
+                className="shrink-0 rounded-full bg-[linear-gradient(135deg,#baf7eb_0%,#82e2d0_35%,#4bbca9_100%)] px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-slate-950 shadow-[0_12px_28px_rgba(76,189,169,0.25)] transition hover:translate-y-[-1px]"
+                onClick={onNext}
                 type="button"
               >
-                <div
-                  className={`absolute inset-x-0 top-0 h-[2px] transition-opacity ${selectedId === option.id ? "opacity-100" : "opacity-0"}`}
-                  style={{ background: `linear-gradient(90deg, ${option.accent}, transparent)` }}
-                />
-                <div className="mb-2 flex items-center gap-2">
-                  <span className="text-[10px] font-medium uppercase tracking-[0.25em] text-white/40">{option.label}</span>
-                  {option.recommended && (
-                    <span className="rounded-full border border-emerald-200/18 bg-emerald-200/10 px-2 py-0.5 text-[8px] font-medium uppercase tracking-wider text-emerald-100">
-                      Recommended
-                    </span>
-                  )}
-                </div>
-                <h4 className="text-base font-medium text-white">{option.title}</h4>
-                <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-white/50">{option.description}</p>
-                <p className="mt-2 text-[11px] text-white/30">{option.meta}</p>
+                {nextLabel}
               </button>
-            ))}
+            </div>
           </div>
 
           {/* Desktop: full option cards (≥ md) */}
@@ -132,9 +173,9 @@ export function GuidedDecisionStage({
             ))}
           </div>
 
-          <div className="mt-4 flex items-center gap-4 md:mt-6 md:gap-6">
+          <div className="mt-4 hidden items-center gap-6 md:flex">
             <GlowButton onClick={onNext}>{nextLabel}</GlowButton>
-            <span className="hidden text-sm text-white/34 md:inline">Choose a card to update the view right away.</span>
+            <span className="text-sm text-white/34">Choose a card to update the view right away.</span>
           </div>
         </motion.div>
       </div>
