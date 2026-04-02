@@ -32,7 +32,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
   }, [state.contactEmail, state.contactName, state.siteLocation, stepIndex]);
 
   return (
-    <section className="relative min-h-screen overflow-hidden px-5 py-10 scroll-mt-24 lg:px-10 lg:py-12" id="contact" ref={setRef}>
+    <section className="relative min-h-screen overflow-hidden px-5 pt-24 pb-10 scroll-mt-20 lg:px-10 lg:pb-12" id="contact" ref={setRef}>
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_24%,rgba(141,228,212,0.08)_72%,rgba(0,0,0,0.26)_100%)]" />
       <div className="relative z-10 mx-auto grid min-h-[calc(100vh-5rem)] max-w-[1480px] gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(340px,0.82fr)]">
         <motion.div

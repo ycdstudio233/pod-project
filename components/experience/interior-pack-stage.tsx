@@ -32,7 +32,7 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
 
   return (
     <section
-      className="relative min-h-screen overflow-hidden pt-16"
+      className="relative min-h-screen overflow-hidden pt-24 scroll-mt-20"
       id="interior-pack"
       ref={setRef}
     >

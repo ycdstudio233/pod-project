@@ -88,7 +88,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
 
   return (
     <section
-      className="relative min-h-screen overflow-hidden px-5 py-10 lg:px-10 lg:py-12"
+      className="relative min-h-screen overflow-hidden px-5 pt-24 pb-10 scroll-mt-20 lg:px-10 lg:pb-12"
       id="site-fit"
       ref={setRef}
     >
