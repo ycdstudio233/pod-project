@@ -66,8 +66,8 @@ export function GuidedDecisionStage({
         >
           <div className="flex flex-col items-start gap-2 border-b border-white/8 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-5">
             <h2 className="text-[clamp(1.4rem,3.5vw,2.8rem)] font-medium tracking-[-0.03em] text-white">{title}</h2>
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-              <span className="text-xs text-white/50 sm:text-sm">{selectedOption?.label ?? selectedId}</span>
+            <div className="flex min-w-0 flex-wrap items-center gap-2 sm:gap-3">
+              <span className="truncate text-xs text-white/50 sm:text-sm">{selectedOption?.label ?? selectedId}</span>
               <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">{phase} / {stepLabel}</span>
             </div>
           </div>
@@ -99,7 +99,7 @@ export function GuidedDecisionStage({
 
           <div className="mt-6 flex flex-wrap items-center gap-4 sm:gap-6">
             <GlowButton onClick={onNext}>{nextLabel}</GlowButton>
-            <span className="text-sm text-white/34">Tap any card to update the view right away.</span>
+            <span className="text-sm text-white/34">Choose a card to update the view right away.</span>
           </div>
         </motion.div>
       </div>

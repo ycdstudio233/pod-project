@@ -260,7 +260,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
               <p className="mb-2 text-[11px] uppercase tracking-[0.2em] text-white/40">Your pod</p>
               <h3 className="text-3xl font-medium text-white">{formatCurrency(estimatedPrice)}</h3>
               <p className="mt-1 text-xs text-white/40">~{formatCurrency(monthlyEstimate)}/mo with financing</p>
-              <p className="mt-3 text-sm text-white/50">
+              <p className="mt-3 break-words text-sm text-white/50">
                 {environmentOptions.find((o) => o.id === state.environment)?.title}
                 {state.siteLocation ? ` / ${state.siteLocation}` : ""}
               </p>

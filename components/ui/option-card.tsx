@@ -44,7 +44,7 @@ export function OptionCard({
   return (
     <button
       className={cn(
-        "group relative overflow-hidden rounded-2xl border p-4 text-left transition duration-300 sm:rounded-[1.75rem] sm:p-5",
+        "group relative min-w-0 overflow-hidden rounded-2xl border p-4 text-left transition duration-300 sm:rounded-[1.75rem] sm:p-5",
         selected
           ? "border-white/24 bg-white/11 shadow-[0_24px_54px_rgba(0,0,0,0.28)]"
           : "border-white/10 bg-white/[0.045] hover:border-white/20 hover:bg-white/[0.07]",
@@ -83,7 +83,7 @@ export function OptionCard({
           </span>
         ) : null}
       </div>
-      <h3 className="text-base font-medium text-white sm:text-xl">{title}</h3>
+      <h3 className="break-words text-base font-medium text-white sm:text-xl">{title}</h3>
       <p className="mt-2 max-w-md text-xs leading-5 text-white/70 sm:mt-3 sm:text-sm sm:leading-6">{description}</p>
       <p className="mt-2 text-xs text-white/48 sm:mt-4 sm:text-sm">{meta}</p>
       {footer ? <div className="mt-5">{footer}</div> : null}
