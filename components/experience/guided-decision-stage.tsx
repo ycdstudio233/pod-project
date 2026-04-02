@@ -39,7 +39,7 @@ export function GuidedDecisionStage({
   const selectedOption = options.find((o) => o.id === selectedId);
 
   return (
-    <section className="relative min-h-screen overflow-hidden" id={id} ref={setRef}>
+    <section className="relative min-h-screen overflow-hidden pt-16" id={id} ref={setRef}>
       {/* 3D Viewer — full width, Lucid-style */}
       <div className="relative">
         <motion.div
