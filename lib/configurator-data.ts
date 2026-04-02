@@ -30,6 +30,7 @@ export const sizeOptions: Array<ChoiceOption<PodSize>> = [
     description: "A compact retreat for focused work, guest stays, and one-person resets.",
     meta: "240 sq ft - fastest deployment",
     accent: "#8de4d4",
+    image: "/story-anywhere-interior.png",
   },
   {
     id: "M",
@@ -39,6 +40,7 @@ export const sizeOptions: Array<ChoiceOption<PodSize>> = [
     meta: "340 sq ft - best seller",
     accent: "#b8f0e6",
     recommended: true,
+    image: "/story-landscape-interior-1.png",
   },
   {
     id: "L",
@@ -47,6 +49,7 @@ export const sizeOptions: Array<ChoiceOption<PodSize>> = [
     description: "A wider footprint with long views, generous circulation, and slower mornings.",
     meta: "460 sq ft - maximum presence",
     accent: "#d7fff7",
+    image: "/story-landscape-interior-2.png",
   },
 ];
 
@@ -200,7 +203,7 @@ export const storyMoments: StoryMoment[] = [
     title: "Space that feels resolved before you step inside.",
     copy:
       "The pod is pre-composed to feel calm immediately. No noise, no layout anxiety, no pile of choices asking for permission.",
-    image: "/story-sanctuary.png",
+    image: "/story-sanctuary-closeup.png",
     cta: "Shape the footprint",
   },
   {
