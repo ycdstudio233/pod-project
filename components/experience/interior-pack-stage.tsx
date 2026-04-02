@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { GlowButton } from "@/components/ui/glow-button";
 import { interiorPackOptions } from "@/lib/configurator-data";
 import type { InteriorPackId } from "@/types/configurator";
@@ -34,25 +34,15 @@ export function InteriorPackStage({ selectedId, onSelect, onNext, setRef }: Inte
     >
       {/* Full-bleed interior image */}
       <div className="relative h-[56vh] w-full overflow-hidden lg:h-[62vh]">
-        <AnimatePresence mode="popLayout">
-          <motion.div
-            animate={{ opacity: 1, scale: 1 }}
-            className="absolute inset-0"
-            exit={{ opacity: 0 }}
-            initial={{ opacity: 0, scale: 1.02 }}
-            key={activeImage}
-            transition={{ duration: 0.6 }}
-          >
-            <Image
-              alt="Interior view"
-              className="object-cover"
-              draggable={false}
-              fill
-              sizes="100vw"
-              src={activeImage}
-            />
-          </motion.div>
-        </AnimatePresence>
+        <Image
+          alt="Interior view"
+          className="object-cover transition-none"
+          draggable={false}
+          fill
+          key={activeImage}
+          sizes="100vw"
+          src={activeImage}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-transparent to-[#07090d]/20" />
         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#07090d] to-transparent" />
       </div>
