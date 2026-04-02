@@ -29,12 +29,12 @@ export function StoryPanel({ copy, cta, eyebrow, id, image, onContinue, setRef, 
         unoptimized={image.endsWith(".svg")}
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,5,7,0.18),rgba(4,5,7,0.58)_48%,rgba(4,5,7,0.94)_100%)]" />
-      <div className="relative z-10 mx-auto flex min-h-screen max-w-[1600px] items-end pb-14 md:pb-20">
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-[1600px] items-end pb-24 md:pb-32">
         <motion.div
-          className="max-w-3xl"
-          initial={{ opacity: 0, y: 28 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true, amount: 0.35 }}
+          className="max-w-3xl will-change-[transform,opacity]"
+          initial={{ opacity: 0, y: 24 }}
+          transition={{ duration: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
+          viewport={{ once: true, amount: 0.3 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
           <span className="text-[11px] font-medium uppercase tracking-[0.32em] text-white/50">{eyebrow}</span>
