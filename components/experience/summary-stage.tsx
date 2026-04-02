@@ -37,7 +37,7 @@ export function SummaryStage({
   const siteDependentItems = priceBreakdown.filter((item) => !item.included);
 
   return (
-    <section className="relative overflow-hidden" id="summary" ref={setRef}>
+    <section className="relative min-h-screen overflow-hidden" id="summary" ref={setRef}>
       {/* Hero image for the selected environment */}
       <div className="relative h-[40vh] w-full overflow-hidden lg:h-[50vh]">
         <Image

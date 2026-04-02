@@ -62,21 +62,23 @@ const sectionProgressIndex: Record<SectionId, number> = {
   hero: 0,
   transition: 0,
   size: 1,
-  finish: 1,
-  environment: 1,
-  "interior-pack": 2,
-  "site-fit": 3,
-  summary: 4,
-  contact: 5,
+  finish: 2,
+  environment: 3,
+  "interior-pack": 4,
+  "site-fit": 5,
+  summary: 6,
+  contact: 7,
 };
 
 const progressToSection: Record<number, SectionId> = {
   0: "hero",
   1: "size",
-  2: "interior-pack",
-  3: "site-fit",
-  4: "summary",
-  5: "contact",
+  2: "finish",
+  3: "environment",
+  4: "interior-pack",
+  5: "site-fit",
+  6: "summary",
+  7: "contact",
 };
 
 const stepLabels: Record<SectionId, string> = {
@@ -186,6 +188,12 @@ export function PodExperience() {
   const estimatedPrice = useMemo(() => calculateEstimatedPrice(state), [state]);
   const priceBreakdown = useMemo(() => calculatePriceBreakdown(state), [state]);
 
+  const configLabel = useMemo(() => {
+    const finishLabel = finishOptions.find((o) => o.id === state.finish)?.title ?? state.finish;
+    const envLabel = environmentOptions.find((o) => o.id === state.environment)?.title ?? state.environment;
+    return `${state.size} · ${finishLabel} · ${envLabel}`;
+  }, [state.size, state.finish, state.environment]);
+
   const beginExperience = useCallback(() => {
     setImmersiveOpen(true);
 
@@ -240,6 +248,7 @@ export function PodExperience() {
       <ProgressDock
         activeIndex={sectionProgressIndex[activeSection]}
         activeStepLabel={stepLabels[activeSection]}
+        configLabel={configLabel}
         estimatedPrice={estimatedPrice}
         onNavigate={(index) => {
           const target = progressToSection[index];

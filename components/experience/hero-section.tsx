@@ -38,7 +38,7 @@ export function HeroSection({ onExplore, setRef, state }: HeroSectionProps) {
             initial={{ opacity: 0, y: 26 }}
             transition={{ delay: 0.08, duration: 0.7 }}
           >
-            A place already composed for you.
+            A private place in the world, already composed for you.
           </motion.h1>
 
           <motion.p
@@ -47,7 +47,7 @@ export function HeroSection({ onExplore, setRef, state }: HeroSectionProps) {
             initial={{ opacity: 0, y: 22 }}
             transition={{ delay: 0.14, duration: 0.7 }}
           >
-            Choose footprint, shell, and setting. We handle the rest.
+            Choose the footprint, shell, and setting. We handle the complexity behind the scenes so the pod already feels like yours.
           </motion.p>
 
           <motion.div
@@ -58,7 +58,7 @@ export function HeroSection({ onExplore, setRef, state }: HeroSectionProps) {
           >
             <div className="flex items-center gap-5">
               <GlowButton onClick={onExplore}>Explore your pod</GlowButton>
-              <span className="text-sm text-white/36">Takes about 2 minutes</span>
+              <span className="text-sm text-white/36">Pre-configured paths. No dead ends.</span>
             </div>
             <ProofChips />
           </motion.div>
