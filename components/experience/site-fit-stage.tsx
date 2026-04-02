@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { GlowButton } from "@/components/ui/glow-button";
 import { evaluateSiteFit, verdictCopy } from "@/lib/site-fit";
 import type {
@@ -43,7 +43,7 @@ function Pill({
   onClick,
 }: {
   active: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
   onClick: () => void;
 }) {
   return (
@@ -67,7 +67,7 @@ const fadeVariants = {
   exit: { opacity: 0, y: -8 },
 };
 
-export function SiteFitStage({ state, onUpdate, onNext, setRef }: SiteFitStageProps) {
+export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStageProps) {
   const { siteFit } = state;
   const [step, setStep] = useState(0);
 
@@ -82,7 +82,7 @@ export function SiteFitStage({ state, onUpdate, onNext, setRef }: SiteFitStagePr
     if (!verdict) return;
     onUpdate({ verdict });
     setStep(3);
-  }, [verdict, onUpdate]);
+  }, [onUpdate, verdict]);
 
   const canAdvance = step === 0 ? siteFit.slope !== null : step === 1 ? siteFit.accessWidth !== null : step === 2 ? siteFit.intendedUse !== null : true;
 
@@ -101,15 +101,38 @@ export function SiteFitStage({ state, onUpdate, onNext, setRef }: SiteFitStagePr
           viewport={{ once: true, amount: 0.3 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
+          <div className="mb-5 flex flex-wrap items-center gap-3">
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-white/58">
+              Site fit
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">20-second check</span>
+          </div>
           <h2 className="text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
-            {step < 3 ? "Quick site check." : ""}
+            {step < 3 ? "Let's check if the site looks easy." : "This looks like a real project."}
           </h2>
           {step < 3 ? (
             <p className="mt-4 max-w-lg text-lg leading-8 text-white/60">
-              Three quick questions so we can tell you if your site is ready.
+              Three quick questions. We use this to shape the right next step, not to make you do homework.
             </p>
           ) : null}
         </motion.div>
+
+        {step < 3 ? (
+          <div className="mt-8 flex flex-wrap gap-2">
+            {["Ground", "Access", "Use"].map((label, index) => (
+              <span
+                className={`rounded-full border px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] ${
+                  index === step
+                    ? "border-white/18 bg-white/10 text-white"
+                    : "border-white/10 bg-white/[0.03] text-white/34"
+                }`}
+                key={label}
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        ) : null}
 
         <div className="mt-10">
           <AnimatePresence mode="wait">
@@ -118,11 +141,7 @@ export function SiteFitStage({ state, onUpdate, onNext, setRef }: SiteFitStagePr
                 <p className="mb-5 text-sm font-medium text-white/70">What&apos;s the ground like?</p>
                 <div className="flex flex-wrap gap-3">
                   {slopeOptions.map((opt) => (
-                    <Pill
-                      active={siteFit.slope === opt.id}
-                      key={opt.id}
-                      onClick={() => onUpdate({ slope: opt.id })}
-                    >
+                    <Pill active={siteFit.slope === opt.id} key={opt.id} onClick={() => onUpdate({ slope: opt.id })}>
                       {opt.label}
                     </Pill>
                   ))}
@@ -132,14 +151,10 @@ export function SiteFitStage({ state, onUpdate, onNext, setRef }: SiteFitStagePr
 
             {step === 1 ? (
               <motion.div key="access" {...fadeVariants} transition={{ duration: 0.3 }}>
-                <p className="mb-5 text-sm font-medium text-white/70">How&apos;s the access for delivery?</p>
+                <p className="mb-5 text-sm font-medium text-white/70">How&apos;s access for delivery?</p>
                 <div className="flex flex-wrap gap-3">
                   {accessOptions.map((opt) => (
-                    <Pill
-                      active={siteFit.accessWidth === opt.id}
-                      key={opt.id}
-                      onClick={() => onUpdate({ accessWidth: opt.id })}
-                    >
+                    <Pill active={siteFit.accessWidth === opt.id} key={opt.id} onClick={() => onUpdate({ accessWidth: opt.id })}>
                       {opt.label}
                     </Pill>
                   ))}
@@ -149,14 +164,10 @@ export function SiteFitStage({ state, onUpdate, onNext, setRef }: SiteFitStagePr
 
             {step === 2 ? (
               <motion.div key="use" {...fadeVariants} transition={{ duration: 0.3 }}>
-                <p className="mb-5 text-sm font-medium text-white/70">What will the pod be used for?</p>
+                <p className="mb-5 text-sm font-medium text-white/70">What will the pod mostly be for?</p>
                 <div className="flex flex-wrap gap-3">
                   {useOptions.map((opt) => (
-                    <Pill
-                      active={siteFit.intendedUse === opt.id}
-                      key={opt.id}
-                      onClick={() => onUpdate({ intendedUse: opt.id })}
-                    >
+                    <Pill active={siteFit.intendedUse === opt.id} key={opt.id} onClick={() => onUpdate({ intendedUse: opt.id })}>
                       {opt.label}
                     </Pill>
                   ))}
@@ -168,19 +179,14 @@ export function SiteFitStage({ state, onUpdate, onNext, setRef }: SiteFitStagePr
               <motion.div
                 key="verdict"
                 {...fadeVariants}
-                transition={{ duration: 0.45 }}
                 className="surface-panel rounded-[2rem] p-8"
+                transition={{ duration: 0.45 }}
               >
                 <div className="flex items-center gap-3">
-                  <div
-                    className="h-3 w-3 rounded-full"
-                    style={{ backgroundColor: verdictCopy[verdict].color }}
-                  />
+                  <div className="h-3 w-3 rounded-full" style={{ backgroundColor: verdictCopy[verdict].color }} />
                   <span className="text-lg font-medium text-white">{verdictCopy[verdict].label}</span>
                 </div>
-                <p className="mt-4 max-w-lg text-base leading-7 text-white/60">
-                  {verdictCopy[verdict].message}
-                </p>
+                <p className="mt-4 max-w-lg text-base leading-7 text-white/60">{verdictCopy[verdict].message}</p>
               </motion.div>
             ) : null}
           </AnimatePresence>
@@ -188,15 +194,15 @@ export function SiteFitStage({ state, onUpdate, onNext, setRef }: SiteFitStagePr
 
         <div className="mt-10">
           {step < 2 ? (
-            <GlowButton disabled={!canAdvance} onClick={() => setStep((s) => s + 1)}>
-              Continue
+            <GlowButton disabled={!canAdvance} onClick={() => setStep((value) => value + 1)}>
+              Keep going
             </GlowButton>
           ) : step === 2 ? (
             <GlowButton disabled={!canAdvance} onClick={showVerdict}>
-              Check site fit
+              Check my site
             </GlowButton>
           ) : (
-            <GlowButton onClick={onNext}>Next</GlowButton>
+            <GlowButton onClick={onNext}>Show me the price</GlowButton>
           )}
         </div>
       </div>

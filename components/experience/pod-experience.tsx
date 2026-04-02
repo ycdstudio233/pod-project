@@ -7,7 +7,6 @@ import {
   environmentOptions,
   finishOptions,
   sizeOptions,
-  storyMoments,
 } from "@/lib/configurator-data";
 import { calculateEstimatedPrice, calculatePriceBreakdown } from "@/lib/pricing";
 import type { ConfiguratorState, InteriorPackId, SiteFitData } from "@/types/configurator";
@@ -18,18 +17,14 @@ import { ImmersiveTransition } from "./immersive-transition";
 import { InteriorPackStage } from "./interior-pack-stage";
 import { ProgressDock } from "./progress-dock";
 import { SiteFitStage } from "./site-fit-stage";
-import { StoryPanel } from "./story-panel";
 import { SummaryStage } from "./summary-stage";
 
 type SectionId =
   | "hero"
   | "transition"
   | "size"
-  | "story-own"
   | "finish"
-  | "story-anywhere"
   | "environment"
-  | "story-landscape"
   | "interior-pack"
   | "site-fit"
   | "summary"
@@ -43,9 +38,11 @@ function configuratorReducer(state: ConfiguratorState, action: Action): Configur
   if (action.type === "update") {
     return { ...state, [action.key]: action.value };
   }
+
   if (action.type === "update-site-fit") {
     return { ...state, siteFit: { ...state.siteFit, ...action.data } };
   }
+
   return state;
 }
 
@@ -53,11 +50,8 @@ const sectionOrder: SectionId[] = [
   "hero",
   "transition",
   "size",
-  "story-own",
   "finish",
-  "story-anywhere",
   "environment",
-  "story-landscape",
   "interior-pack",
   "site-fit",
   "summary",
@@ -68,41 +62,46 @@ const sectionProgressIndex: Record<SectionId, number> = {
   hero: 0,
   transition: 0,
   size: 1,
-  "story-own": 1,
-  finish: 2,
-  "story-anywhere": 2,
-  environment: 3,
-  "story-landscape": 3,
-  "interior-pack": 4,
-  "site-fit": 5,
-  summary: 6,
-  contact: 7,
+  finish: 1,
+  environment: 1,
+  "interior-pack": 2,
+  "site-fit": 3,
+  summary: 4,
+  contact: 5,
 };
 
 const progressToSection: Record<number, SectionId> = {
   0: "hero",
   1: "size",
-  2: "finish",
-  3: "environment",
-  4: "interior-pack",
-  5: "site-fit",
-  6: "summary",
-  7: "contact",
+  2: "interior-pack",
+  3: "site-fit",
+  4: "summary",
+  5: "contact",
+};
+
+const stepLabels: Record<SectionId, string> = {
+  hero: "Recommended pod",
+  transition: "Guided path",
+  size: "Exterior / size",
+  finish: "Exterior / finish",
+  environment: "Exterior / setting",
+  "interior-pack": "Interior / pack",
+  "site-fit": "Site fit / check",
+  summary: "Review / price",
+  contact: "Project / handoff",
 };
 
 export function PodExperience() {
   const [state, dispatch] = useReducer(configuratorReducer, defaultConfiguratorState);
   const [activeSection, setActiveSection] = useState<SectionId>("hero");
   const [immersiveOpen, setImmersiveOpen] = useState(false);
+  const [transitioning, setTransitioning] = useState(false);
   const sectionRefs = useRef<Record<SectionId, HTMLElement | null>>({
     hero: null,
     transition: null,
     size: null,
-    "story-own": null,
     finish: null,
-    "story-anywhere": null,
     environment: null,
-    "story-landscape": null,
     "interior-pack": null,
     "site-fit": null,
     summary: null,
@@ -125,8 +124,6 @@ export function PodExperience() {
     [],
   );
 
-  const [transitioning, setTransitioning] = useState(false);
-
   const scrollToSection = useCallback((id: SectionId) => {
     sectionRefs.current[id]?.scrollIntoView({
       behavior: "smooth",
@@ -140,12 +137,12 @@ export function PodExperience() {
       timers.current.push(
         window.setTimeout(() => {
           scrollToSection(id);
-        }, 280),
+        }, 240),
       );
       timers.current.push(
         window.setTimeout(() => {
           setTransitioning(false);
-        }, 900),
+        }, 760),
       );
     },
     [scrollToSection],
@@ -170,7 +167,9 @@ export function PodExperience() {
 
     sectionOrder.forEach((section) => {
       const node = sectionRefs.current[section];
-      if (node) observer.observe(node);
+      if (node) {
+        observer.observe(node);
+      }
     });
 
     return () => observer.disconnect();
@@ -178,6 +177,7 @@ export function PodExperience() {
 
   useEffect(() => {
     const activeTimers = timers.current;
+
     return () => {
       activeTimers.forEach((timer) => window.clearTimeout(timer));
     };
@@ -192,13 +192,13 @@ export function PodExperience() {
     timers.current.push(
       window.setTimeout(() => {
         scrollToSection("transition");
-      }, 380),
+      }, 340),
     );
 
     timers.current.push(
       window.setTimeout(() => {
         setImmersiveOpen(false);
-      }, 1100),
+      }, 960),
     );
   }, [scrollToSection]);
 
@@ -211,15 +211,15 @@ export function PodExperience() {
             className="pointer-events-none fixed inset-0 z-50 bg-[radial-gradient(circle_at_center,rgba(141,228,212,0.32),rgba(8,10,13,0.88)_42%,rgba(4,5,7,1)_100%)]"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.45 }}
           >
             <motion.div
               animate={{ opacity: 1, scale: 1 }}
               className="absolute inset-0 m-auto flex h-52 w-52 items-center justify-center rounded-full border border-white/16 bg-white/6 text-center text-[11px] font-medium uppercase tracking-[0.32em] text-white/72 backdrop-blur-2xl"
-              initial={{ opacity: 0, scale: 0.78 }}
-              transition={{ duration: 0.6 }}
+              initial={{ opacity: 0, scale: 0.82 }}
+              transition={{ duration: 0.55 }}
             >
-              Entering your pod
+              Loading your pod
             </motion.div>
           </motion.div>
         ) : null}
@@ -232,16 +232,20 @@ export function PodExperience() {
             className="pointer-events-none fixed inset-0 z-40 bg-black/40"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
-            transition={{ duration: 0.32, ease: "easeInOut" }}
+            transition={{ duration: 0.24, ease: "easeInOut" }}
           />
         ) : null}
       </AnimatePresence>
 
       <ProgressDock
         activeIndex={sectionProgressIndex[activeSection]}
+        activeStepLabel={stepLabels[activeSection]}
+        estimatedPrice={estimatedPrice}
         onNavigate={(index) => {
           const target = progressToSection[index];
-          if (target) navigateToSection(target);
+          if (target) {
+            navigateToSection(target);
+          }
         }}
         state={state}
       />
@@ -250,58 +254,43 @@ export function PodExperience() {
       <ImmersiveTransition onContinue={() => scrollToSection("size")} setRef={setSectionRef("transition")} />
 
       <GuidedDecisionStage
-        copy="The right footprint changes how the pod feels before anything else does."
+        copy="Start with footprint. This is the choice that changes the whole feel."
+        guidance="Most buyers begin with Residence 02 because it feels balanced immediately."
         id="size"
-        nextLabel="Next"
-        onNext={() => navigateToSection("story-own")}
+        nextLabel="Keep this size"
+        onNext={() => navigateToSection("finish")}
         onSelect={(value) => updateState("size", value as ConfiguratorState["size"])}
         options={sizeOptions}
+        phase="Exterior"
         selectedId={state.size}
         setRef={setSectionRef("size")}
         state={state}
-        title="Pick your size."
-      />
-
-      <StoryPanel
-        copy={storyMoments[0].copy}
-        cta={storyMoments[0].cta}
-        eyebrow={storyMoments[0].eyebrow}
-        id="story-own"
-        image={storyMoments[0].image}
-        onContinue={() => navigateToSection("finish")}
-        setRef={setSectionRef("story-own")}
-        title={storyMoments[0].title}
+        stepLabel="Step 1"
+        title="Choose the footprint."
       />
 
       <GuidedDecisionStage
-        copy="Every finish works with light, weather, and distance. Pick the tone."
+        copy="Now decide how the pod should sit in the landscape."
+        guidance="Every finish is already tuned. You are choosing tone, not inventing taste."
         id="finish"
-        nextLabel="Next"
-        onNext={() => navigateToSection("story-anywhere")}
+        nextLabel="Keep this finish"
+        onNext={() => navigateToSection("environment")}
         onSelect={(value) => updateState("finish", value as ConfiguratorState["finish"])}
         options={finishOptions}
+        phase="Exterior"
         selectedId={state.finish}
         setRef={setSectionRef("finish")}
         state={state}
-        title="Choose the shell."
-      />
-
-      <StoryPanel
-        copy={storyMoments[1].copy}
-        cta={storyMoments[1].cta}
-        eyebrow={storyMoments[1].eyebrow}
-        id="story-anywhere"
-        image={storyMoments[1].image}
-        onContinue={() => navigateToSection("environment")}
-        setRef={setSectionRef("story-anywhere")}
-        title={storyMoments[1].title}
+        stepLabel="Step 2"
+        title="Choose the shell tone."
       />
 
       <GuidedDecisionStage
-        copy="Where does your pod live? The setting shapes everything around it."
+        copy="Choose the setting closest to real life so the pod stops feeling abstract."
+        guidance="Pick the environment nearest to your site. We fine-tune the rest together."
         id="environment"
-        nextLabel="Next"
-        onNext={() => navigateToSection("story-landscape")}
+        nextLabel="Lock the exterior"
+        onNext={() => navigateToSection("interior-pack")}
         onSelect={(value) => {
           updateState("environment", value as ConfiguratorState["environment"]);
 
@@ -313,21 +302,12 @@ export function PodExperience() {
           updateState("siteLocation", nextSite);
         }}
         options={environmentOptions}
+        phase="Exterior"
         selectedId={state.environment}
         setRef={setSectionRef("environment")}
         state={state}
+        stepLabel="Step 3"
         title="Place it somewhere real."
-      />
-
-      <StoryPanel
-        copy={storyMoments[2].copy}
-        cta={storyMoments[2].cta}
-        eyebrow={storyMoments[2].eyebrow}
-        id="story-landscape"
-        image={storyMoments[2].image}
-        onContinue={() => navigateToSection("interior-pack")}
-        setRef={setSectionRef("story-landscape")}
-        title={storyMoments[2].title}
       />
 
       <InteriorPackStage
@@ -346,9 +326,7 @@ export function PodExperience() {
 
       <SummaryStage
         estimatedPrice={estimatedPrice}
-        onLightingChange={(value) => updateState("lighting", value)}
         onStartProject={() => navigateToSection("contact")}
-        onWindowChange={(value) => updateState("windowStyle", value)}
         priceBreakdown={priceBreakdown}
         setRef={setSectionRef("summary")}
         state={state}

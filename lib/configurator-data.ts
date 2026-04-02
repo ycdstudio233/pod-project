@@ -278,12 +278,10 @@ export const storyMoments: StoryMoment[] = [
 
 export const progressLabels = [
   "Preview",
-  "Size",
-  "Finish",
-  "Setting",
+  "Exterior",
   "Interior",
   "Site fit",
-  "Price",
+  "Review",
   "Project",
 ] as const;
 

@@ -42,11 +42,17 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
           viewport={{ once: true, amount: 0.24 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
+          <div className="mb-5 flex flex-wrap items-center gap-3">
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-white/58">
+              Project
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">Friendly handoff</span>
+          </div>
           <h2 className="max-w-3xl text-[clamp(2.6rem,5vw,4.4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-balance text-white">
-            Let&apos;s make it real.
+            We&apos;ll take it from here.
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-white/66">
-            Just the basics — we&apos;ll figure out the rest together.
+            Just the basics. We&apos;ll come back with the clearest next step, not a pile of homework.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-2">
@@ -141,11 +147,9 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
           {submitted ? (
             <div className="surface-panel mt-8 max-w-2xl rounded-[1.8rem] p-6">
               <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/44">Next up</p>
-              <h3 className="mt-4 text-3xl font-medium tracking-[-0.04em] text-white">
-                We’ll guide this from site check to delivery sequencing.
-              </h3>
+              <h3 className="mt-4 text-3xl font-medium tracking-[-0.04em] text-white">Your pod brief is ready.</h3>
               <p className="mt-4 max-w-xl text-base leading-7 text-white/64">
-                This prototype now has everything needed to move into a real CRM handoff or scheduling flow.
+                Next comes site review, permit path, fabrication timing, and install planning. You will know what happens next.
               </p>
             </div>
           ) : (
@@ -157,7 +161,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
               ) : null}
               {stepIndex < 2 ? (
                 <GlowButton disabled={!canContinue} onClick={() => setStepIndex((value) => value + 1)}>
-                  Continue
+                  Keep going
                 </GlowButton>
               ) : (
                 <GlowButton
@@ -166,7 +170,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                     setSubmitted(true);
                   }}
                 >
-                  See your pod come to life
+                  Send my brief
                 </GlowButton>
               )}
             </div>
@@ -184,14 +188,14 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
             <p className="text-[11px] font-medium uppercase tracking-[0.24em] text-white/44">Your current pod</p>
             <h3 className="mt-4 text-3xl font-medium tracking-[-0.04em] text-white">{formatCurrency(estimatedPrice)}</h3>
             <p className="mt-4 text-sm leading-7 text-white/56">
-              {environmentOptions.find((option) => option.id === state.environment)?.title} · {state.siteLocation}
+              {environmentOptions.find((option) => option.id === state.environment)?.title} / {state.siteLocation}
             </p>
           </div>
 
           <div className="mt-8 rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
             <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">What happens next</p>
             <p className="mt-3 text-sm leading-7 text-white/62">
-              Site check, permit path, fabrication, install. We walk you through each step.
+              Site check, permit path, fabrication, install. We walk you through each step and keep the sequence clear.
             </p>
           </div>
         </motion.aside>
@@ -199,4 +203,3 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
     </section>
   );
 }
-

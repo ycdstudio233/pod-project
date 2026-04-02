@@ -3,20 +3,16 @@
 import { motion } from "framer-motion";
 import { PodPreview } from "@/components/3d/pod-preview";
 import { GlowButton } from "@/components/ui/glow-button";
-import { OptionCard } from "@/components/ui/option-card";
 import { ProcessRail } from "@/components/ui/process-rail";
 import { ProofChips } from "@/components/ui/proof-chips";
-import { UPLOADED_MODEL_ACTIVE } from "@/components/3d/pod-model";
-import { finishOptions, lightingModes, sizeOptions, windowOptions } from "@/lib/configurator-data";
+import { environmentOptions, finishOptions, interiorPackOptions, sizeOptions } from "@/lib/configurator-data";
 import { formatCurrency } from "@/lib/pricing";
-import type { ConfiguratorState, LightingMode, PriceLineItem, WindowStyle } from "@/types/configurator";
+import type { ConfiguratorState, PriceLineItem } from "@/types/configurator";
 
 interface SummaryStageProps {
   state: ConfiguratorState;
   estimatedPrice: number;
   priceBreakdown: PriceLineItem[];
-  onWindowChange: (value: WindowStyle) => void;
-  onLightingChange: (value: LightingMode) => void;
   onStartProject: () => void;
   setRef?: (node: HTMLElement | null) => void;
 }
@@ -27,10 +23,8 @@ function getTitle<T extends string>(value: T, collection: Array<{ id: T; title: 
 
 export function SummaryStage({
   estimatedPrice,
-  priceBreakdown,
-  onLightingChange,
   onStartProject,
-  onWindowChange,
+  priceBreakdown,
   setRef,
   state,
 }: SummaryStageProps) {
@@ -62,9 +56,19 @@ export function SummaryStage({
           viewport={{ once: true, amount: 0.25 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
+          <div className="mb-5 flex flex-wrap items-center gap-3">
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-white/58">
+              Review
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">Your pod, anchored</span>
+          </div>
+
           <h2 className="text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
-            Your pod, priced.
+            This is the pod we would show you first.
           </h2>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-white/64">
+            Price up front. What is included up front. What depends on the site up front. No mystery layer.
+          </p>
 
           <div className="mt-5">
             <ProofChips />
@@ -76,25 +80,22 @@ export function SummaryStage({
                 <p className="text-sm uppercase tracking-[0.24em] text-white/42">Starting from</p>
                 <p className="mt-2 text-5xl font-medium tracking-[-0.04em] text-white">{formatCurrency(estimatedPrice)}</p>
               </div>
+              <p className="max-w-sm text-sm leading-7 text-white/46">
+                The version shown here is already a credible starting spec, not a blank build.
+              </p>
             </div>
 
-            {/* Included items */}
             <div className="mt-5 space-y-2">
               {includedItems.map((item) => (
                 <div className="flex justify-between text-sm" key={item.label}>
                   <span className="text-white/50">{item.label}</span>
-                  <span className="text-white/70">
-                    {item.amount > 0 ? formatCurrency(item.amount) : "Included"}
-                  </span>
+                  <span className="text-white/70">{item.amount > 0 ? formatCurrency(item.amount) : "Included"}</span>
                 </div>
               ))}
             </div>
 
-            {/* Site-dependent items */}
             <div className="mt-5 border-t border-white/8 pt-4">
-              <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-white/35">
-                Depends on your site
-              </p>
+              <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.24em] text-white/35">Depends on your site</p>
               {siteDependentItems.map((item) => (
                 <div className="flex justify-between text-sm" key={item.label}>
                   <span className="text-white/40">{item.label}</span>
@@ -103,7 +104,7 @@ export function SummaryStage({
               ))}
             </div>
 
-            <div className="mt-5 grid gap-4 sm:grid-cols-3">
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
                 <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">Size</p>
                 <p className="mt-2 text-lg text-white">{getTitle(state.size, sizeOptions)}</p>
@@ -113,63 +114,32 @@ export function SummaryStage({
                 <p className="mt-2 text-lg text-white">{getTitle(state.finish, finishOptions)}</p>
               </div>
               <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
-                <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">Interior</p>
-                <p className="mt-2 text-lg capitalize text-white">{state.interiorPack}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8 grid gap-4">
-            <div>
-              <p className="mb-4 text-sm uppercase tracking-[0.24em] text-white/40">Refine the view</p>
-              <div className="grid gap-4 xl:grid-cols-3">
-                {windowOptions.map((option) => (
-                  <OptionCard
-                    accent={option.accent}
-                    className="min-h-[204px]"
-                    description={option.description}
-                    key={option.id}
-                    label={option.label}
-                    meta={option.meta}
-                    onClick={() => onWindowChange(option.id)}
-                    recommended={option.recommended}
-                    selected={state.windowStyle === option.id}
-                    title={option.title}
-                  />
-                ))}
-              </div>
-              {UPLOADED_MODEL_ACTIVE ? (
-                <p className="mt-3 text-xs leading-5 text-white/35">
-                  Window style is saved to your project brief. The 3D preview shows the base model and does not
-                  reflect glazing changes live.
+                <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">Setting</p>
+                <p className="mt-2 text-lg text-white">
+                  {environmentOptions.find((option) => option.id === state.environment)?.title}
                 </p>
-              ) : null}
+              </div>
+              <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
+                <p className="text-[11px] uppercase tracking-[0.24em] text-white/40">Interior</p>
+                <p className="mt-2 text-lg text-white">{getTitle(state.interiorPack, interiorPackOptions)}</p>
+              </div>
             </div>
 
-            <div>
-              <p className="mb-4 text-sm uppercase tracking-[0.24em] text-white/40">Lighting mood</p>
-              <div className="grid gap-4 md:grid-cols-2">
-                {lightingModes.map((option) => (
-                  <OptionCard
-                    accent={option.accent}
-                    className="min-h-[188px]"
-                    description={option.description}
-                    key={option.id}
-                    label={option.label}
-                    meta={option.meta}
-                    onClick={() => onLightingChange(option.id)}
-                    recommended={option.recommended}
-                    selected={state.lighting === option.id}
-                    title={option.title}
-                  />
-                ))}
-              </div>
+            <div className="mt-4 rounded-[1.4rem] border border-white/8 bg-white/[0.025] p-4">
+              <p className="text-[11px] uppercase tracking-[0.24em] text-white/38">Handled with you later</p>
+              <p className="mt-2 text-sm leading-6 text-white/48">
+                Glazing details, lighting scenes, utility tie-in, and permit path get tuned after site fit. You do not need
+                to solve every detail today.
+              </p>
             </div>
           </div>
 
           <div className="mt-8 space-y-5">
             <ProcessRail />
-            <GlowButton onClick={onStartProject}>Start your project</GlowButton>
+            <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+              <GlowButton onClick={onStartProject}>Start your project</GlowButton>
+              <p className="text-sm text-white/42">This is enough to move forward with confidence.</p>
+            </div>
           </div>
         </motion.div>
       </div>

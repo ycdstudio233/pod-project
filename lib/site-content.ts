@@ -1,17 +1,16 @@
 export const heroContent = {
-  eyebrow: "Modular living, designed as a product",
-  title: "A place already composed for you.",
+  eyebrow: "Backyard living, productized",
+  title: "This is your pod. Let's refine it.",
   copy:
-    "Choose footprint, shell, and setting. We handle the rest.",
-  primaryCta: "Explore your pod",
+    "Start from the version we would put in front of you first. You confirm the few choices that matter. We handle the rest.",
+  primaryCta: "Start with the recommended pod",
   secondaryNote: "",
 };
 
 export const transitionContent = {
-  eyebrow: "Your pod, your way",
-  title: "Three choices. One calm result.",
+  eyebrow: "A guided path",
+  title: "You are not building from scratch.",
   copy:
-    "Pick size, finish, and setting. Every option is already resolved — no wrong turns.",
-  cta: "Start",
+    "Exterior first. Then interior. Then a quick site check. One calm decision at a time, with no dead ends.",
+  cta: "Show me the exterior",
 };
-

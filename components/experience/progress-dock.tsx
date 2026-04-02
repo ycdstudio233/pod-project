@@ -1,20 +1,25 @@
 "use client";
 
-import { finishOptions, progressLabels } from "@/lib/configurator-data";
+import { environmentOptions, finishOptions, interiorPackOptions, progressLabels } from "@/lib/configurator-data";
+import { formatCurrency } from "@/lib/pricing";
 import type { ConfiguratorState } from "@/types/configurator";
 
 interface ProgressDockProps {
   activeIndex: number;
+  activeStepLabel: string;
+  estimatedPrice: number;
   state: ConfiguratorState;
   onNavigate?: (index: number) => void;
 }
 
-export function ProgressDock({ activeIndex, onNavigate, state }: ProgressDockProps) {
+export function ProgressDock({ activeIndex, activeStepLabel, estimatedPrice, onNavigate, state }: ProgressDockProps) {
   const finishLabel = finishOptions.find((option) => option.id === state.finish)?.label ?? state.finish;
+  const environmentLabel = environmentOptions.find((option) => option.id === state.environment)?.label ?? state.environment;
+  const interiorLabel = interiorPackOptions.find((option) => option.id === state.interiorPack)?.label ?? state.interiorPack;
 
   return (
     <div className="fixed inset-x-0 top-4 z-40 px-4">
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 rounded-full border border-white/12 bg-black/28 px-4 py-3 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-[1380px] flex-col gap-3 rounded-[1.6rem] border border-white/12 bg-black/36 px-4 py-3 backdrop-blur-xl md:flex-row md:items-center md:justify-between">
         <div className="hidden min-w-0 md:flex md:flex-1 md:items-center md:gap-2">
           {progressLabels.map((label, index) => (
             <button
@@ -33,17 +38,34 @@ export function ProgressDock({ activeIndex, onNavigate, state }: ProgressDockPro
           ))}
         </div>
 
-        <div className="md:hidden">
-          <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-white/72">
-            {progressLabels[activeIndex]} · {activeIndex + 1}/{progressLabels.length}
-          </span>
+        <div className="flex items-center justify-between gap-4 md:hidden">
+          <div>
+            <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-white/38">Editing now</p>
+            <p className="mt-1 text-xs uppercase tracking-[0.22em] text-white/72">
+              {progressLabels[activeIndex]} / {activeStepLabel}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-white/38">Starting at</p>
+            <p className="mt-1 text-sm font-medium text-white">{formatCurrency(estimatedPrice)}</p>
+          </div>
         </div>
 
-        <div className="hidden text-right md:block">
-          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/40">Current pod</p>
-          <p className="mt-1 text-sm text-white/66">
-            {state.size} · {finishLabel} · {state.environment}
-          </p>
+        <div className="hidden items-center gap-6 md:flex">
+          <div className="text-right">
+            <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/36">Editing now</p>
+            <p className="mt-1 text-sm text-white/72">{activeStepLabel}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/36">Your pod</p>
+            <p className="mt-1 text-sm text-white/72">
+              {state.size} / {finishLabel} / {environmentLabel} / {interiorLabel}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/36">Starting at</p>
+            <p className="mt-1 text-base font-medium text-white">{formatCurrency(estimatedPrice)}</p>
+          </div>
         </div>
       </div>
     </div>

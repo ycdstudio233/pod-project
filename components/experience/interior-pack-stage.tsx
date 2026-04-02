@@ -28,11 +28,17 @@ export function InteriorPackStage({ selectedId, onSelect, onNext, setRef }: Inte
           viewport={{ once: true, amount: 0.3 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
+          <div className="mb-5 flex flex-wrap items-center gap-3">
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-white/58">
+              Interior
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">Preconfigured packs</span>
+          </div>
           <h2 className="max-w-2xl text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
-            Choose how you&apos;ll live in it.
+            Choose the life it supports.
           </h2>
           <p className="mt-4 max-w-lg text-lg leading-8 text-white/60">
-            Each pack is a complete interior, pre-designed and ready to install.
+            Each pack is already laid out, resolved, and ready to install. You are choosing direction, not drawing a plan.
           </p>
         </motion.div>
 
@@ -58,7 +64,7 @@ export function InteriorPackStage({ selectedId, onSelect, onNext, setRef }: Inte
                 <span className="text-xs font-medium uppercase tracking-[0.3em] text-white/40">{pack.label}</span>
                 {pack.recommended ? (
                   <span className="rounded-full border border-emerald-200/18 bg-emerald-200/10 px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-emerald-100">
-                    Popular
+                    Recommended
                   </span>
                 ) : null}
               </div>
@@ -68,8 +74,9 @@ export function InteriorPackStage({ selectedId, onSelect, onNext, setRef }: Inte
           ))}
         </div>
 
-        <div className="mt-10">
-          <GlowButton onClick={onNext}>Next</GlowButton>
+        <div className="mt-10 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <GlowButton onClick={onNext}>Keep this interior</GlowButton>
+          <p className="text-sm text-white/40">Most buyers start with Retreat and refine from there only if needed.</p>
         </div>
       </div>
     </section>
