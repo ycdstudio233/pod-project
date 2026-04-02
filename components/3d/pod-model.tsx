@@ -39,9 +39,9 @@ const uploadedModelScale: Record<PodSize, number> = {
 
 const UPLOADED_MODEL_PATH = "/models/pod-model.glb";
 
-const SHELL_HINTS = ["shell", "body", "exterior", "outer", "panel", "cladding"];
+const SHELL_HINTS = ["shell", "body", "exterior", "outer", "panel", "cladding", "color"];
 const GLASS_HINTS = ["glass", "window", "glazing", "pane"];
-const TRIM_HINTS = ["trim", "frame", "edge", "base", "roof", "rail"];
+const TRIM_HINTS = ["trim", "frame", "edge", "base", "roof", "rail", "black", "chrome"];
 const LIGHT_HINTS = ["light", "lamp", "emissive", "interior-glow"];
 
 // Exported so future UI logic can adapt when a baked GLB is active.
@@ -104,10 +104,8 @@ function tuneMaterial(material: Material, label: string, finishColor: Color, lig
     return tuned;
   }
 
-  const hsl = { h: 0, s: 0, l: 0 };
-  tuned.color.getHSL(hsl);
   const looksLikeBodyFallback =
-    !tuned.map && !tuned.transparent && tuned.opacity > 0.92 && hsl.l > 0.2 && !isTrim && !isGlass && !isLight;
+    !tuned.map && !tuned.transparent && tuned.opacity > 0.92 && !isTrim && !isGlass && !isLight;
 
   if (isNamedShell || looksLikeBodyFallback) {
     tuned.color.copy(finishColor);
