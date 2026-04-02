@@ -147,7 +147,7 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
   }, [centeredScene, finish, lighting]);
 
   return (
-    <group position={[0, -0.2, 0]} scale={normalizedScale * uploadedModelScale[size]}>
+    <group position={[0, -0.85, 0]} scale={normalizedScale * uploadedModelScale[size]}>
       <primitive object={centeredScene} />
       {lighting === "night" ? <pointLight color="#f8ca74" intensity={4.6} position={[0.78, 0.52, 0.26]} /> : null}
     </group>
