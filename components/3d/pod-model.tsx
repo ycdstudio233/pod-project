@@ -1,9 +1,9 @@
 import { RoundedBox, useGLTF } from "@react-three/drei";
-import { Component, Suspense, useMemo, type ReactNode } from "react";
+import { Component, Suspense, useEffect, useMemo, type ReactNode } from "react";
 import {
   Box3,
   Color,
-  Material,
+  type Mesh,
   MeshPhysicalMaterial,
   MeshStandardMaterial,
   type Object3D,
@@ -51,109 +51,82 @@ function matchesHint(label: string, hints: string[]) {
   return hints.some((hint) => label.includes(hint));
 }
 
-function getMaterialLabel(nodeName: string, material: Material) {
+function getMaterialLabel(nodeName: string, material: { name: string }) {
   return `${nodeName} ${material.name}`.toLowerCase();
 }
 
-function tuneMaterial(material: Material, label: string, finishColor: Color, lighting: LightingMode) {
-  if (!(material instanceof MeshStandardMaterial || material instanceof MeshPhysicalMaterial)) {
-    return material;
-  }
 
-  const tuned = material.clone();
-  const isGlass = matchesHint(label, GLASS_HINTS);
-  const isTrim = matchesHint(label, TRIM_HINTS);
-  const isLight = matchesHint(label, LIGHT_HINTS);
-  const isNamedShell = matchesHint(label, SHELL_HINTS);
+function applyMaterials(root: Object3D, finishColor: Color, lighting: LightingMode) {
+  root.traverse((node) => {
+    const mesh = node as Mesh;
+    if (!mesh.isMesh || !mesh.material) return;
 
-  if (isGlass) {
-    tuned.color.set("#b7cad3");
-    tuned.transparent = true;
-    tuned.opacity = lighting === "day" ? 0.42 : 0.28;
-    tuned.depthWrite = false;
-    tuned.envMapIntensity = lighting === "day" ? 1.12 : 0.46;
-    tuned.roughness = 0.06;
-    tuned.metalness = 0;
-    if (tuned instanceof MeshPhysicalMaterial) {
-      tuned.attenuationDistance = 1.8;
-      tuned.attenuationColor = new Color("#c8d8de");
-      tuned.transmission = 0.84;
-      tuned.thickness = 0.08;
-      tuned.ior = 1.42;
-      tuned.clearcoat = 0.18;
-      tuned.clearcoatRoughness = 0.18;
+    const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+    for (const mat of materials) {
+      if (!(mat instanceof MeshStandardMaterial || mat instanceof MeshPhysicalMaterial)) continue;
+
+      const label = getMaterialLabel(mesh.name ?? "", mat);
+      const isGlass = matchesHint(label, GLASS_HINTS);
+      const isTrim = matchesHint(label, TRIM_HINTS);
+      const isLight = matchesHint(label, LIGHT_HINTS);
+      const isNamedShell = matchesHint(label, SHELL_HINTS);
+
+      if (isGlass) {
+        mat.color.set("#b7cad3");
+        mat.transparent = true;
+        mat.opacity = lighting === "day" ? 0.42 : 0.28;
+        mat.depthWrite = false;
+        mat.envMapIntensity = lighting === "day" ? 1.12 : 0.46;
+        mat.roughness = 0.06;
+        mat.metalness = 0;
+        if (mat instanceof MeshPhysicalMaterial) {
+          mat.attenuationDistance = 1.8;
+          mat.attenuationColor = new Color("#c8d8de");
+          mat.transmission = 0.84;
+          mat.thickness = 0.08;
+          mat.ior = 1.42;
+          mat.clearcoat = 0.18;
+          mat.clearcoatRoughness = 0.18;
+        }
+      } else if (isTrim) {
+        mat.color.set("#10151c");
+        mat.envMapIntensity = lighting === "day" ? 0.9 : 0.34;
+        mat.roughness = 0.48;
+        mat.metalness = Math.max(mat.metalness, 0.2);
+        if (mat instanceof MeshPhysicalMaterial) {
+          mat.clearcoat = Math.max(mat.clearcoat, 0.12);
+          mat.clearcoatRoughness = 0.44;
+        }
+      } else if (isLight) {
+        mat.emissive.set(lighting === "night" ? "#f1ca78" : "#16120f");
+        mat.emissiveIntensity = lighting === "night" ? 1.25 : 0.05;
+      } else if (isNamedShell || (!mat.map && !mat.transparent && mat.opacity > 0.92)) {
+        mat.color.copy(finishColor);
+        mat.envMapIntensity = lighting === "day" ? 1.08 : 0.42;
+        mat.metalness = Math.max(mat.metalness, 0.14);
+        if (!mat.roughnessMap) mat.roughness = Math.max(mat.roughness, 0.52);
+        if (mat instanceof MeshPhysicalMaterial) {
+          mat.clearcoat = Math.max(mat.clearcoat, 0.24);
+          mat.clearcoatRoughness = 0.58;
+        }
+      }
+
+      mat.needsUpdate = true;
     }
-    return tuned;
-  }
-
-  if (isTrim) {
-    tuned.color.set("#10151c");
-    tuned.envMapIntensity = lighting === "day" ? 0.9 : 0.34;
-    tuned.roughness = 0.48;
-    tuned.metalness = Math.max(tuned.metalness, 0.2);
-    if (tuned instanceof MeshPhysicalMaterial) {
-      tuned.clearcoat = Math.max(tuned.clearcoat, 0.12);
-      tuned.clearcoatRoughness = 0.44;
-    }
-    return tuned;
-  }
-
-  if (isLight) {
-    tuned.emissive.set(lighting === "night" ? "#f1ca78" : "#16120f");
-    tuned.emissiveIntensity = lighting === "night" ? 1.25 : 0.05;
-    return tuned;
-  }
-
-  const looksLikeBodyFallback =
-    !tuned.map && !tuned.transparent && tuned.opacity > 0.92 && !isTrim && !isGlass && !isLight;
-
-  if (isNamedShell || looksLikeBodyFallback) {
-    tuned.color.copy(finishColor);
-    tuned.envMapIntensity = lighting === "day" ? 1.08 : 0.42;
-    tuned.metalness = Math.max(tuned.metalness, 0.14);
-    if (!tuned.roughnessMap) {
-      tuned.roughness = Math.max(tuned.roughness, 0.52);
-    }
-    if (tuned instanceof MeshPhysicalMaterial) {
-      tuned.clearcoat = Math.max(tuned.clearcoat, 0.24);
-      tuned.clearcoatRoughness = 0.58;
-    }
-  }
-
-  return tuned;
+  });
 }
 
 function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finish" | "lighting" | "size">) {
   const { scene } = useGLTF(UPLOADED_MODEL_PATH);
-  const finishColor = useMemo(() => new Color(finishPalette[finish]), [finish]);
 
+  // Clone once — centering and shadow setup only
   const { centeredScene, normalizedScale } = useMemo(() => {
     const clone = scene.clone(true);
 
     clone.traverse((node) => {
-      const mesh = node as Object3D & {
-        castShadow?: boolean;
-        receiveShadow?: boolean;
-        isMesh?: boolean;
-        material?: Material | Material[];
-        name?: string;
-      };
-
-      if ("castShadow" in mesh) {
-        mesh.castShadow = true;
-      }
-
-      if ("receiveShadow" in mesh) {
-        mesh.receiveShadow = true;
-      }
-
-      if (mesh.isMesh && mesh.material) {
-        if (Array.isArray(mesh.material)) {
-          mesh.material = mesh.material.map((material) => tuneMaterial(material, getMaterialLabel(mesh.name ?? "", material), finishColor, lighting));
-        } else {
-          mesh.material = tuneMaterial(mesh.material, getMaterialLabel(mesh.name ?? "", mesh.material), finishColor, lighting);
-        }
-      }
+      const mesh = node as Mesh & { castShadow?: boolean; receiveShadow?: boolean };
+      if ("castShadow" in mesh) mesh.castShadow = true;
+      if ("receiveShadow" in mesh) mesh.receiveShadow = true;
     });
 
     const box = new Box3().setFromObject(clone);
@@ -164,11 +137,14 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
     const maxDimension = Math.max(dimensions.x, dimensions.y, dimensions.z) || 1;
     clone.position.set(-center.x, -box.min.y, -center.z);
 
-    return {
-      centeredScene: clone,
-      normalizedScale: 3.25 / maxDimension,
-    };
-  }, [finishColor, lighting, scene]);
+    return { centeredScene: clone, normalizedScale: 3.25 / maxDimension };
+  }, [scene]);
+
+  // Mutate materials in-place — no cloning on finish/lighting changes
+  useEffect(() => {
+    const finishColor = new Color(finishPalette[finish]);
+    applyMaterials(centeredScene, finishColor, lighting);
+  }, [centeredScene, finish, lighting]);
 
   return (
     <group position={[0, -0.92, 0]} scale={normalizedScale * uploadedModelScale[size]}>
