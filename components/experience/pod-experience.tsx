@@ -107,12 +107,31 @@ export function PodExperience() {
     [],
   );
 
+  const [transitioning, setTransitioning] = useState(false);
+
   const scrollToSection = useCallback((id: SectionId) => {
     sectionRefs.current[id]?.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
   }, []);
+
+  const navigateToSection = useCallback(
+    (id: SectionId) => {
+      setTransitioning(true);
+      timers.current.push(
+        window.setTimeout(() => {
+          scrollToSection(id);
+        }, 280),
+      );
+      timers.current.push(
+        window.setTimeout(() => {
+          setTransitioning(false);
+        }, 900),
+      );
+    },
+    [scrollToSection],
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -191,6 +210,18 @@ export function PodExperience() {
         ) : null}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {transitioning ? (
+          <motion.div
+            animate={{ opacity: 1 }}
+            className="pointer-events-none fixed inset-0 z-40 bg-black/40"
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            transition={{ duration: 0.32, ease: "easeInOut" }}
+          />
+        ) : null}
+      </AnimatePresence>
+
       <ProgressDock activeIndex={sectionProgressIndex[activeSection]} state={state} />
 
       <HeroSection onExplore={beginExperience} setRef={setSectionRef("hero")} state={state} />
@@ -201,7 +232,7 @@ export function PodExperience() {
         id="size"
         microcopy="Most projects begin with Residence 02 because it balances calm, usability, and speed."
         nextLabel="Next"
-        onNext={() => scrollToSection("story-own")}
+        onNext={() => navigateToSection("story-own")}
         onSelect={(value) => updateState("size", value as ConfiguratorState["size"])}
         options={sizeOptions}
         previewLabel="Choose your size"
@@ -218,7 +249,7 @@ export function PodExperience() {
         eyebrow={storyMoments[0].eyebrow}
         id="story-own"
         image={storyMoments[0].image}
-        onContinue={() => scrollToSection("finish")}
+        onContinue={() => navigateToSection("finish")}
         setRef={setSectionRef("story-own")}
         title={storyMoments[0].title}
       />
@@ -228,7 +259,7 @@ export function PodExperience() {
         id="finish"
         microcopy="You cannot make this look overworked. Each finish is intentionally limited so the object stays clean."
         nextLabel="Next"
-        onNext={() => scrollToSection("story-anywhere")}
+        onNext={() => navigateToSection("story-anywhere")}
         onSelect={(value) => updateState("finish", value as ConfiguratorState["finish"])}
         options={finishOptions}
         previewLabel="Choose your finish"
@@ -245,7 +276,7 @@ export function PodExperience() {
         eyebrow={storyMoments[1].eyebrow}
         id="story-anywhere"
         image={storyMoments[1].image}
-        onContinue={() => scrollToSection("environment")}
+        onContinue={() => navigateToSection("environment")}
         setRef={setSectionRef("story-anywhere")}
         title={storyMoments[1].title}
       />
@@ -255,7 +286,7 @@ export function PodExperience() {
         id="environment"
         microcopy="This changes the lighting, landscape, and tone of the preview so it feels closer to the real place."
         nextLabel="Next"
-        onNext={() => scrollToSection("story-landscape")}
+        onNext={() => navigateToSection("story-landscape")}
         onSelect={(value) => {
           updateState("environment", value as ConfiguratorState["environment"]);
 
@@ -281,7 +312,7 @@ export function PodExperience() {
         eyebrow={storyMoments[2].eyebrow}
         id="story-landscape"
         image={storyMoments[2].image}
-        onContinue={() => scrollToSection("summary")}
+        onContinue={() => navigateToSection("summary")}
         setRef={setSectionRef("story-landscape")}
         title={storyMoments[2].title}
       />

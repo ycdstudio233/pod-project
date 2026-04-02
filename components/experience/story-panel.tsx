@@ -17,7 +17,7 @@ interface StoryPanelProps {
 
 export function StoryPanel({ copy, cta, eyebrow, id, image, onContinue, setRef, title }: StoryPanelProps) {
   return (
-    <section className="relative min-h-screen overflow-hidden px-5 py-16 scroll-mt-24 lg:px-10" id={id} ref={setRef}>
+    <section className="relative min-h-screen overflow-hidden px-5 py-16 lg:px-10" id={id} ref={setRef}>
       <Image
         alt={title}
         className="story-mask object-cover"
