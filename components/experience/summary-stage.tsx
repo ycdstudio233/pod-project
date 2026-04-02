@@ -49,7 +49,7 @@ export function SummaryStage({
           whileInView={{ opacity: 1, x: 0 }}
         >
           <PodPreview
-            className="h-[380px] w-full rounded-[2rem] sm:h-[460px] lg:h-[min(68vh,620px)]"
+            className="aspect-[4/3] w-full rounded-[1.8rem]"
             interactive
             state={state}
           />

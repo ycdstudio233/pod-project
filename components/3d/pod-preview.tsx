@@ -76,7 +76,7 @@ export function PodPreview({ className, interactive = false, label, state }: Pod
           {label}
         </div>
       ) : null}
-      <div className="h-full min-h-[360px]">
+      <div className="h-full min-h-[280px]">
         {mounted ? (
           <DynamicPodCanvas interactive={interactive} state={deferredState} visible={visible} />
         ) : null}
