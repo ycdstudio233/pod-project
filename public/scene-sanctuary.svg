@@ -1,27 +1,29 @@
 <svg width="1600" height="1100" viewBox="0 0 1600 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1600" height="1100" fill="#0C1118"/>
-  <rect width="1600" height="1100" fill="url(#paint0_radial)"/>
-  <rect x="278" y="98" width="1044" height="904" rx="88" fill="#111823"/>
-  <rect x="354" y="172" width="892" height="756" rx="56" fill="url(#paint1_linear)"/>
-  <rect x="428" y="248" width="744" height="610" rx="38" fill="#141D2A"/>
-  <rect x="428" y="248" width="744" height="610" rx="38" stroke="#2A3B4E" stroke-width="6"/>
-  <rect x="492" y="314" width="616" height="480" rx="24" fill="url(#paint2_linear)"/>
-  <rect x="492" y="314" width="616" height="480" rx="24" stroke="#324961" stroke-width="4"/>
-  <path d="M494 756H1106" stroke="#EBC26D" stroke-width="8" stroke-linecap="round"/>
-  <path d="M584 848H1016" stroke="#F5F7FB" stroke-opacity="0.08" stroke-width="10" stroke-linecap="round"/>
+  <rect width="1600" height="1100" fill="#070B10"/>
+  <rect width="1600" height="1100" fill="url(#ambient)"/>
+  <rect x="194" y="132" width="1212" height="836" rx="76" fill="#0F1620"/>
+  <rect x="254" y="190" width="1092" height="720" rx="52" fill="#121B27"/>
+  <rect x="344" y="282" width="580" height="536" rx="38" fill="#151E2B"/>
+  <rect x="974" y="250" width="280" height="568" rx="42" fill="#101722"/>
+  <rect x="398" y="342" width="470" height="420" rx="26" fill="url(#glass)"/>
+  <rect x="398" y="342" width="470" height="420" rx="26" stroke="#32475F" stroke-width="4"/>
+  <rect x="1026" y="310" width="176" height="408" rx="24" fill="#EAE4DA"/>
+  <path d="M1026 486H1202" stroke="#D2A44E" stroke-width="10" stroke-linecap="round"/>
+  <path d="M398 700H868" stroke="#D5AB59" stroke-width="10" stroke-linecap="round"/>
+  <path d="M260 920H1340" stroke="url(#floor)" stroke-width="44" stroke-linecap="round"/>
   <defs>
-    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(786 274) rotate(90) scale(746 1128)">
-      <stop stop-color="#2B455E"/>
-      <stop offset="1" stop-color="#0A0F15"/>
+    <radialGradient id="ambient" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(810 204) rotate(90) scale(766 1180)">
+      <stop stop-color="#2E5066"/>
+      <stop offset="1" stop-color="#06090D"/>
     </radialGradient>
-    <linearGradient id="paint1_linear" x1="800" y1="172" x2="800" y2="928" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#1A2533"/>
-      <stop offset="1" stop-color="#0F161F"/>
+    <linearGradient id="glass" x1="633" y1="342" x2="633" y2="762" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EDF3F8" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#7B95A8" stop-opacity="0.14"/>
     </linearGradient>
-    <linearGradient id="paint2_linear" x1="800" y1="314" x2="800" y2="794" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#F3F7FB" stop-opacity="0.9"/>
-      <stop offset="1" stop-color="#BFCEDB" stop-opacity="0.16"/>
+    <linearGradient id="floor" x1="260" y1="920" x2="1340" y2="920" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0E141B"/>
+      <stop offset="0.5" stop-color="#1A232E"/>
+      <stop offset="1" stop-color="#0E141B"/>
     </linearGradient>
   </defs>
 </svg>
-

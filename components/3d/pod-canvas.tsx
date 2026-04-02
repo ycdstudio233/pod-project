@@ -14,15 +14,15 @@ interface PodCanvasProps {
 }
 
 export function PodCanvas({ interactive = false, state, visible = true }: PodCanvasProps) {
-  const [dpr, setDpr] = useState(1.5);
-  const onIncline = useCallback(() => setDpr(Math.min(1.75, dpr + 0.25)), [dpr]);
-  const onDecline = useCallback(() => setDpr(Math.max(0.75, dpr - 0.25)), [dpr]);
+  const [dpr, setDpr] = useState(interactive ? 1.55 : 1.2);
+  const onIncline = useCallback(() => setDpr((value) => Math.min(interactive ? 1.8 : 1.35, value + 0.2)), [interactive]);
+  const onDecline = useCallback(() => setDpr((value) => Math.max(0.85, value - 0.2)), []);
 
   return (
     <Canvas
       dpr={dpr}
       frameloop={visible ? "always" : "demand"}
-      gl={{ antialias: true, powerPreference: "high-performance" }}
+      gl={{ antialias: true, powerPreference: interactive ? "high-performance" : "default" }}
       shadows={interactive ? true : "soft"}
     >
       <PerformanceMonitor onDecline={onDecline} onIncline={onIncline} />
@@ -37,7 +37,7 @@ export function PodCanvas({ interactive = false, state, visible = true }: PodCan
         />
       </group>
       <OrbitControls
-        autoRotate={!interactive}
+        autoRotate={!interactive && visible}
         autoRotateSpeed={0.38}
         enablePan={false}
         maxDistance={8.2}
@@ -48,4 +48,3 @@ export function PodCanvas({ interactive = false, state, visible = true }: PodCan
     </Canvas>
   );
 }
-

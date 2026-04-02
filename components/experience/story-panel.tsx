@@ -18,7 +18,16 @@ interface StoryPanelProps {
 export function StoryPanel({ copy, cta, eyebrow, id, image, onContinue, setRef, title }: StoryPanelProps) {
   return (
     <section className="relative min-h-screen overflow-hidden px-5 py-16 scroll-mt-24 lg:px-10" id={id} ref={setRef}>
-      <Image alt={title} className="story-mask object-cover" fill priority={false} sizes="100vw" src={image} />
+      <Image
+        alt={title}
+        className="story-mask object-cover"
+        draggable={false}
+        fill
+        priority={false}
+        sizes="100vw"
+        src={image}
+        unoptimized={image.endsWith(".svg")}
+      />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,5,7,0.18),rgba(4,5,7,0.58)_48%,rgba(4,5,7,0.94)_100%)]" />
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1600px] items-end pb-14 md:pb-20">
         <motion.div
@@ -43,4 +52,3 @@ export function StoryPanel({ copy, cta, eyebrow, id, image, onContinue, setRef, 
     </section>
   );
 }
-

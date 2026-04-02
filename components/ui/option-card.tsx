@@ -53,9 +53,11 @@ export function OptionCard({
           <Image
             alt={title}
             className="object-cover transition duration-500 group-hover:scale-[1.03]"
+            draggable={false}
             fill
             sizes="(max-width: 768px) 100vw, 320px"
             src={image}
+            unoptimized={image.endsWith(".svg")}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-white/6" />
         </div>
@@ -75,4 +77,3 @@ export function OptionCard({
     </button>
   );
 }
-

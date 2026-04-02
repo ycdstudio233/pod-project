@@ -28,7 +28,7 @@ export const sizeOptions: Array<ChoiceOption<PodSize>> = [
     label: "S",
     title: "Studio 01",
     description: "A compact retreat for focused work, guest stays, and one-person resets.",
-    meta: "240 sq ft · fastest deployment",
+    meta: "240 sq ft - fastest deployment",
     accent: "#8de4d4",
   },
   {
@@ -36,7 +36,7 @@ export const sizeOptions: Array<ChoiceOption<PodSize>> = [
     label: "M",
     title: "Residence 02",
     description: "The balanced everyday pod with room to live, host, and breathe.",
-    meta: "340 sq ft · best seller",
+    meta: "340 sq ft - best seller",
     accent: "#b8f0e6",
     recommended: true,
   },
@@ -45,7 +45,7 @@ export const sizeOptions: Array<ChoiceOption<PodSize>> = [
     label: "L",
     title: "Suite 03",
     description: "A wider footprint with long views, generous circulation, and slower mornings.",
-    meta: "460 sq ft · maximum presence",
+    meta: "460 sq ft - maximum presence",
     accent: "#d7fff7",
   },
 ];
@@ -94,7 +94,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "High contrast light, long shadows, and quiet distance.",
     meta: "Best for solar-forward sites",
     accent: "#f0c58c",
-    image: "/scene-desert.svg",
+    image: "/story-landscape.png",
     recommended: true,
   },
   {
@@ -104,16 +104,16 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Layered greens, diffuse daylight, and a softer arrival.",
     meta: "Feels private fast",
     accent: "#88c39d",
-    image: "/scene-forest.svg",
+    image: "/story-anywhere.png",
   },
   {
     id: "urban",
-    label: "Urban",
-    title: "Urban infill",
-    description: "Precise, calm, and confident inside a sharper city rhythm.",
-    meta: "Ideal for backyard placement",
+    label: "Backyard",
+    title: "Suburban backyard",
+    description: "A real American backyard setting with fence lines, lawn, and enough breathing room for the pod to belong.",
+    meta: "Best for ADU-style placement",
     accent: "#8bb8ff",
-    image: "/scene-urban.svg",
+    image: "/story-backyard.png",
   },
 ];
 
@@ -200,7 +200,7 @@ export const storyMoments: StoryMoment[] = [
     title: "Space that feels resolved before you step inside.",
     copy:
       "The pod is pre-composed to feel calm immediately. No noise, no layout anxiety, no pile of choices asking for permission.",
-    image: "/scene-sanctuary.svg",
+    image: "/story-sanctuary.png",
     cta: "Shape the footprint",
   },
   {
@@ -209,7 +209,7 @@ export const storyMoments: StoryMoment[] = [
     title: "Designed to arrive cleanly, even in landscapes that usually push back.",
     copy:
       "Every finish is chosen to work with light, weather, and distance. You are not assembling parts. You are choosing the version that belongs on your site.",
-    image: "/scene-forest.svg",
+    image: "/story-backyard-2.png",
     cta: "Choose the shell",
   },
   {
@@ -218,7 +218,7 @@ export const storyMoments: StoryMoment[] = [
     title: "A quiet object with just enough presence to feel inevitable.",
     copy:
       "Panoramic glass, softened corners, and restrained detailing let the setting stay in charge while the pod does what it needs to do beautifully.",
-    image: "/scene-desert.svg",
+    image: "/story-landscape.png",
     cta: "See your pod together",
   },
 ];
@@ -238,4 +238,3 @@ export const sitePresets = [
   "Forest site in the Pacific Northwest",
   "Coastal retreat",
 ];
-

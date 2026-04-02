@@ -1,6 +1,14 @@
-import { Clone, Float, RoundedBox, useGLTF } from "@react-three/drei";
+import { RoundedBox, useGLTF } from "@react-three/drei";
 import { Component, Suspense, useMemo, type ReactNode } from "react";
-import { Box3, Color, MeshStandardMaterial, type Object3D, Vector3 } from "three";
+import {
+  Box3,
+  Color,
+  Material,
+  MeshPhysicalMaterial,
+  MeshStandardMaterial,
+  type Object3D,
+  Vector3,
+} from "three";
 import type { FinishId, LightingMode, PodSize, WindowStyle } from "@/types/configurator";
 
 interface PodModelProps {
@@ -31,9 +39,91 @@ const uploadedModelScale: Record<PodSize, number> = {
 
 const UPLOADED_MODEL_PATH = "/models/pod-model.glb";
 
-// Exported so UI components can adapt when the real GLB is loaded
-// (e.g. window style can't be previewed on a baked model)
+const SHELL_HINTS = ["shell", "body", "exterior", "outer", "panel", "cladding"];
+const GLASS_HINTS = ["glass", "window", "glazing", "pane"];
+const TRIM_HINTS = ["trim", "frame", "edge", "base", "roof", "rail"];
+const LIGHT_HINTS = ["light", "lamp", "emissive", "interior-glow"];
+
+// Exported so future UI logic can adapt when a baked GLB is active.
 export const UPLOADED_MODEL_ACTIVE = true;
+
+function matchesHint(label: string, hints: string[]) {
+  return hints.some((hint) => label.includes(hint));
+}
+
+function getMaterialLabel(nodeName: string, material: Material) {
+  return `${nodeName} ${material.name}`.toLowerCase();
+}
+
+function tuneMaterial(material: Material, label: string, finishColor: Color, lighting: LightingMode) {
+  if (!(material instanceof MeshStandardMaterial || material instanceof MeshPhysicalMaterial)) {
+    return material;
+  }
+
+  const tuned = material.clone();
+  const isGlass = matchesHint(label, GLASS_HINTS);
+  const isTrim = matchesHint(label, TRIM_HINTS);
+  const isLight = matchesHint(label, LIGHT_HINTS);
+  const isNamedShell = matchesHint(label, SHELL_HINTS);
+
+  if (isGlass) {
+    tuned.color.set("#b7cad3");
+    tuned.transparent = true;
+    tuned.opacity = lighting === "day" ? 0.42 : 0.28;
+    tuned.depthWrite = false;
+    tuned.envMapIntensity = lighting === "day" ? 1.12 : 0.46;
+    tuned.roughness = 0.06;
+    tuned.metalness = 0;
+    if (tuned instanceof MeshPhysicalMaterial) {
+      tuned.attenuationDistance = 1.8;
+      tuned.attenuationColor = new Color("#c8d8de");
+      tuned.transmission = 0.84;
+      tuned.thickness = 0.08;
+      tuned.ior = 1.42;
+      tuned.clearcoat = 0.18;
+      tuned.clearcoatRoughness = 0.18;
+    }
+    return tuned;
+  }
+
+  if (isTrim) {
+    tuned.color.set("#10151c");
+    tuned.envMapIntensity = lighting === "day" ? 0.9 : 0.34;
+    tuned.roughness = 0.48;
+    tuned.metalness = Math.max(tuned.metalness, 0.2);
+    if (tuned instanceof MeshPhysicalMaterial) {
+      tuned.clearcoat = Math.max(tuned.clearcoat, 0.12);
+      tuned.clearcoatRoughness = 0.44;
+    }
+    return tuned;
+  }
+
+  if (isLight) {
+    tuned.emissive.set(lighting === "night" ? "#f1ca78" : "#16120f");
+    tuned.emissiveIntensity = lighting === "night" ? 1.25 : 0.05;
+    return tuned;
+  }
+
+  const hsl = { h: 0, s: 0, l: 0 };
+  tuned.color.getHSL(hsl);
+  const looksLikeBodyFallback =
+    !tuned.map && !tuned.transparent && tuned.opacity > 0.92 && hsl.l > 0.2 && !isTrim && !isGlass && !isLight;
+
+  if (isNamedShell || looksLikeBodyFallback) {
+    tuned.color.copy(finishColor);
+    tuned.envMapIntensity = lighting === "day" ? 1.08 : 0.42;
+    tuned.metalness = Math.max(tuned.metalness, 0.14);
+    if (!tuned.roughnessMap) {
+      tuned.roughness = Math.max(tuned.roughness, 0.52);
+    }
+    if (tuned instanceof MeshPhysicalMaterial) {
+      tuned.clearcoat = Math.max(tuned.clearcoat, 0.24);
+      tuned.clearcoatRoughness = 0.58;
+    }
+  }
+
+  return tuned;
+}
 
 function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finish" | "lighting" | "size">) {
   const { scene } = useGLTF(UPLOADED_MODEL_PATH);
@@ -47,7 +137,8 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
         castShadow?: boolean;
         receiveShadow?: boolean;
         isMesh?: boolean;
-        material?: MeshStandardMaterial;
+        material?: Material | Material[];
+        name?: string;
       };
 
       if ("castShadow" in mesh) {
@@ -58,19 +149,11 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
         mesh.receiveShadow = true;
       }
 
-      // Apply finish color to shell materials, skip very dark trim/accents.
-      // Only opaque MeshStandardMaterial with lightness > 0.08 gets tinted
-      // (keeps near-black trim pieces like frames and dark accents untouched).
-      if (mesh.isMesh && mesh.material instanceof MeshStandardMaterial) {
-        if (!mesh.material.transparent && mesh.material.opacity > 0.9) {
-          const hsl = { h: 0, s: 0, l: 0 };
-          mesh.material.color.getHSL(hsl);
-          if (hsl.l > 0.08) {
-            mesh.material = mesh.material.clone();
-            mesh.material.color.copy(finishColor);
-            mesh.material.metalness = 0.18;
-            mesh.material.roughness = 0.62;
-          }
+      if (mesh.isMesh && mesh.material) {
+        if (Array.isArray(mesh.material)) {
+          mesh.material = mesh.material.map((material) => tuneMaterial(material, getMaterialLabel(mesh.name ?? "", material), finishColor, lighting));
+        } else {
+          mesh.material = tuneMaterial(mesh.material, getMaterialLabel(mesh.name ?? "", mesh.material), finishColor, lighting);
         }
       }
     });
@@ -87,15 +170,13 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
       centeredScene: clone,
       normalizedScale: 3.25 / maxDimension,
     };
-  }, [scene, finishColor]);
+  }, [finishColor, lighting, scene]);
 
   return (
-    <Float floatIntensity={0.12} rotationIntensity={0.06} speed={1.2}>
-      <group position={[0, -0.92, 0]} scale={normalizedScale * uploadedModelScale[size]}>
-        <Clone object={centeredScene} />
-        {lighting === "night" ? <pointLight color="#f8ca74" intensity={4.6} position={[0.78, 0.52, 0.26]} /> : null}
-      </group>
-    </Float>
+    <group position={[0, -0.92, 0]} scale={normalizedScale * uploadedModelScale[size]}>
+      <primitive object={centeredScene} />
+      {lighting === "night" ? <pointLight color="#f8ca74" intensity={4.6} position={[0.78, 0.52, 0.26]} /> : null}
+    </group>
   );
 }
 
@@ -105,8 +186,7 @@ function PlaceholderPodAsset({ finish, lighting, size, windowStyle }: PodModelPr
   const glassOpacity = lighting === "day" ? 0.34 : 0.48;
 
   return (
-    <Float floatIntensity={0.18} rotationIntensity={0.1} speed={1.2}>
-      <group position={[0, -0.02, 0]} scale={placeholderSizeScale[size]}>
+    <group position={[0, -0.02, 0]} scale={placeholderSizeScale[size]}>
         <mesh castShadow position={[0, -0.93, 0]} receiveShadow>
           <boxGeometry args={[4.12, 0.12, 2.52]} />
           <meshStandardMaterial color="#0b1017" metalness={0.25} roughness={0.82} />
@@ -259,15 +339,11 @@ function PlaceholderPodAsset({ finish, lighting, size, windowStyle }: PodModelPr
           <meshStandardMaterial color={trim} metalness={0.32} roughness={0.58} />
         </mesh>
 
-        {/* Replace this placeholder shell with an imported GLB scene later.
-            Keep the component props so future 3D assets can stay wired to the same configurator state. */}
         {lighting === "night" ? <pointLight color="#f8ca74" intensity={4.6} position={[0.78, 0.52, 0.26]} /> : null}
-      </group>
-    </Float>
+    </group>
   );
 }
 
-// Preload the GLB once at module level — avoids per-instance HEAD requests
 useGLTF.preload(UPLOADED_MODEL_PATH);
 
 class ModelErrorBoundary extends Component<
