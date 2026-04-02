@@ -28,6 +28,7 @@ export interface ChoiceOption<T extends string> {
   accent: string;
   recommended?: boolean;
   image?: string;
+  iconId?: string;
 }
 
 export interface StoryMoment {

@@ -1,6 +1,13 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { SizeIconL, SizeIconM, SizeIconS } from "./size-icons";
+
+const iconMap: Record<string, React.FC> = {
+  "size-s": SizeIconS,
+  "size-m": SizeIconM,
+  "size-l": SizeIconL,
+};
 
 interface OptionCardProps {
   label: string;
@@ -11,6 +18,8 @@ interface OptionCardProps {
   selected?: boolean;
   recommended?: boolean;
   image?: string;
+  icon?: ReactNode;
+  iconId?: string;
   onClick?: () => void;
   footer?: ReactNode;
   className?: string;
@@ -21,6 +30,8 @@ export function OptionCard({
   className,
   description,
   footer,
+  icon,
+  iconId,
   image,
   label,
   meta,
@@ -29,6 +40,7 @@ export function OptionCard({
   selected,
   title,
 }: OptionCardProps) {
+  const IconComponent = iconId ? iconMap[iconId] : null;
   return (
     <button
       className={cn(
@@ -62,6 +74,7 @@ export function OptionCard({
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-white/6" />
         </div>
       ) : null}
+      {IconComponent ? <div className="mb-4"><IconComponent /></div> : icon ? <div className="mb-4">{icon}</div> : null}
       <div className="mb-3 flex items-center justify-between gap-3">
         <span className="text-xs font-medium uppercase tracking-[0.3em] text-white/48">{label}</span>
         {recommended ? (

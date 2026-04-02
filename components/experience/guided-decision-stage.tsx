@@ -67,6 +67,7 @@ export function GuidedDecisionStage({
                 accent={option.accent}
                 className="min-h-[228px]"
                 description={option.description}
+                iconId={option.iconId}
                 image={option.image}
                 key={option.id}
                 label={option.label}
