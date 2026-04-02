@@ -24,7 +24,6 @@ interface GuidedDecisionStageProps {
 
 export function GuidedDecisionStage({
   copy,
-  guidance,
   id,
   nextLabel,
   onNext,
@@ -37,35 +36,55 @@ export function GuidedDecisionStage({
   stepLabel,
   title,
 }: GuidedDecisionStageProps) {
-  return (
-    <section className="relative min-h-screen overflow-hidden px-5 py-10 scroll-mt-24 lg:px-10 lg:py-12" id={id} ref={setRef}>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.06),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent_28%,rgba(0,0,0,0.14)_100%)]" />
+  const selectedOption = options.find((o) => o.id === selectedId);
 
-      <div className="relative z-10 mx-auto grid max-w-[1600px] gap-8 lg:min-h-[calc(100vh-5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(460px,0.9fr)]">
+  return (
+    <section className="relative overflow-hidden" id={id} ref={setRef}>
+      {/* 3D Viewer — full width, Lucid-style */}
+      <div className="relative">
         <motion.div
-          className="flex flex-col justify-center"
-          initial={{ opacity: 0, y: 24 }}
+          className="mx-auto w-full max-w-[1400px] px-6 lg:px-12"
+          initial={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true, amount: 0.25 }}
+          viewport={{ once: true, amount: 0.2 }}
+          whileInView={{ opacity: 1 }}
+        >
+          <PodPreview
+            className="h-[340px] w-full rounded-t-[1.8rem] sm:h-[400px] lg:h-[460px]"
+            interactive
+            state={state}
+          />
+        </motion.div>
+      </div>
+
+      {/* Options panel below viewer */}
+      <div className="relative z-10 mx-auto max-w-[1400px] px-6 pb-12 lg:px-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true, amount: 0.3 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <div className="mb-5 flex flex-wrap items-center gap-3">
-            <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-white/58">
-              {phase}
-            </span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">{stepLabel}</span>
+          {/* Section header — Lucid accordion style */}
+          <div className="flex items-center justify-between border-b border-white/8 py-5">
+            <div className="flex items-center gap-4">
+              <h2 className="text-[clamp(1.6rem,3.5vw,2.8rem)] font-medium tracking-[-0.03em] text-white">
+                {title}
+              </h2>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-white/50">{selectedOption?.label ?? selectedId}</span>
+              <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">{phase} / {stepLabel}</span>
+            </div>
           </div>
-          <h2 className="max-w-3xl text-[clamp(2.6rem,5vw,4.6rem)] font-medium leading-[0.98] tracking-[-0.04em] text-balance text-white">
-            {title}
-          </h2>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-white/68">{copy}</p>
-          <p className="mt-4 max-w-xl text-sm leading-7 text-white/44">{guidance}</p>
 
-          <div className="mt-10 grid gap-4 xl:grid-cols-2">
+          <p className="mt-4 max-w-lg text-sm leading-7 text-white/50">{copy}</p>
+
+          {/* Option cards grid */}
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-{options.length > 3 ? 4 : options.length}">
             {options.map((option) => (
               <OptionCard
                 accent={option.accent}
-                className="min-h-[228px]"
                 description={option.description}
                 iconId={option.iconId}
                 image={option.image}
@@ -80,24 +99,9 @@ export function GuidedDecisionStage({
             ))}
           </div>
 
-          <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <div className="mt-8 flex items-center gap-6">
             <GlowButton onClick={onNext}>{nextLabel}</GlowButton>
-            <p className="text-sm text-white/40">Your pod updates as you go. No separate builder. No reset.</p>
           </div>
-        </motion.div>
-
-        <motion.div
-          className="flex flex-col justify-center"
-          initial={{ opacity: 0, x: 32 }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true, amount: 0.25 }}
-          whileInView={{ opacity: 1, x: 0 }}
-        >
-          <PodPreview
-            className="h-[460px] w-full rounded-[1.8rem] md:h-[560px]"
-            interactive
-            state={state}
-          />
         </motion.div>
       </div>
     </section>

@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { GlowButton } from "@/components/ui/glow-button";
-import { transitionContent } from "@/lib/site-content";
 
 interface ImmersiveTransitionProps {
   onContinue: () => void;
@@ -12,32 +12,44 @@ interface ImmersiveTransitionProps {
 export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionProps) {
   return (
     <section
-      className="relative flex min-h-screen items-center overflow-hidden px-5 py-16 scroll-mt-24 lg:px-10"
+      className="relative flex min-h-[70vh] items-center overflow-hidden"
       id="transition"
       ref={setRef}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,rgba(141,228,212,0.2),transparent_28%),linear-gradient(180deg,rgba(255,255,255,0.04),transparent_22%,rgba(0,0,0,0.18)_100%)]" />
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <Image
+          alt="Pod closeup"
+          className="object-cover"
+          draggable={false}
+          fill
+          sizes="100vw"
+          src="/story-sanctuary-closeup.webp"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/80 via-[#07090d]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-transparent to-[#07090d]/30" />
+      </div>
+
       <motion.div
-        className="surface-panel-strong ambient-outline relative mx-auto flex w-full max-w-[1180px] flex-col overflow-hidden rounded-[2.5rem] px-6 py-16 md:px-10 lg:px-14"
-        initial={{ opacity: 0, scale: 0.96, y: 24 }}
-        transition={{ duration: 0.7 }}
+        className="relative z-10 mx-auto max-w-[1400px] px-6 py-20 lg:px-12"
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.65 }}
         viewport={{ once: true, amount: 0.4 }}
-        whileInView={{ opacity: 1, scale: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
       >
-        <div className="absolute left-8 top-0 h-full w-px bg-gradient-to-b from-transparent via-white/14 to-transparent" />
-        <div className="absolute left-8 top-24 h-24 w-24 rounded-full bg-emerald-200/14 blur-[72px]" />
-        <span className="relative text-[11px] font-medium uppercase tracking-[0.28em] text-white/48">
-          {transitionContent.eyebrow}
-        </span>
-        <h2 className="relative mt-8 max-w-4xl text-[clamp(2.6rem,5vw,4.7rem)] font-medium leading-[0.98] tracking-[-0.04em] text-balance text-white">
-          {transitionContent.title}
+        <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/44">
+          Exterior first, then interior
+        </p>
+        <h2 className="mt-6 max-w-xl text-[clamp(2.4rem,5vw,4.2rem)] font-medium leading-[0.96] tracking-[-0.04em] text-white">
+          You are not building from scratch.
         </h2>
-        <p className="relative mt-6 max-w-2xl text-lg leading-8 text-white/68">{transitionContent.copy}</p>
-        <div className="relative mt-12">
-          <GlowButton onClick={onContinue}>{transitionContent.cta}</GlowButton>
+        <p className="mt-5 max-w-md text-lg leading-8 text-white/58">
+          One calm decision at a time. The pod updates live as you go.
+        </p>
+        <div className="mt-10">
+          <GlowButton onClick={onContinue}>Begin with exterior</GlowButton>
         </div>
       </motion.div>
     </section>
   );
 }
-
