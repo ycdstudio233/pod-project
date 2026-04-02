@@ -12,7 +12,7 @@ interface ImmersiveTransitionProps {
 export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionProps) {
   return (
     <section
-      className="relative flex min-h-[70vh] items-center overflow-hidden pt-16"
+      className="relative flex min-h-screen items-center overflow-hidden pt-16"
       id="transition"
       ref={setRef}
     >
