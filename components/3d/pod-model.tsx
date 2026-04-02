@@ -1,6 +1,6 @@
 import { Clone, Float, RoundedBox, useGLTF } from "@react-three/drei";
-import { Suspense, useMemo } from "react";
-import { Box3, type Object3D, Vector3 } from "three";
+import { Component, Suspense, useMemo, type ReactNode } from "react";
+import { Box3, Color, MeshStandardMaterial, type Object3D, Vector3 } from "three";
 import type { FinishId, LightingMode, PodSize, WindowStyle } from "@/types/configurator";
 
 interface PodModelProps {
@@ -31,8 +31,9 @@ const uploadedModelScale: Record<PodSize, number> = {
 
 const UPLOADED_MODEL_PATH = "/models/pod-model.glb";
 
-function UploadedPodAsset({ lighting, size }: Pick<PodModelProps, "lighting" | "size">) {
+function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finish" | "lighting" | "size">) {
   const { scene } = useGLTF(UPLOADED_MODEL_PATH);
+  const finishColor = useMemo(() => new Color(finishPalette[finish]), [finish]);
 
   const { centeredScene, normalizedScale } = useMemo(() => {
     const clone = scene.clone(true);
@@ -41,6 +42,8 @@ function UploadedPodAsset({ lighting, size }: Pick<PodModelProps, "lighting" | "
       const mesh = node as Object3D & {
         castShadow?: boolean;
         receiveShadow?: boolean;
+        isMesh?: boolean;
+        material?: MeshStandardMaterial;
       };
 
       if ("castShadow" in mesh) {
@@ -49,6 +52,14 @@ function UploadedPodAsset({ lighting, size }: Pick<PodModelProps, "lighting" | "
 
       if ("receiveShadow" in mesh) {
         mesh.receiveShadow = true;
+      }
+
+      // Apply finish color to opaque shell materials (skip glass/transparent)
+      if (mesh.isMesh && mesh.material instanceof MeshStandardMaterial) {
+        if (!mesh.material.transparent && mesh.material.opacity > 0.9) {
+          mesh.material = mesh.material.clone();
+          mesh.material.color.copy(finishColor);
+        }
       }
     });
 
@@ -64,7 +75,7 @@ function UploadedPodAsset({ lighting, size }: Pick<PodModelProps, "lighting" | "
       centeredScene: clone,
       normalizedScale: 3.25 / maxDimension,
     };
-  }, [scene]);
+  }, [scene, finishColor]);
 
   return (
     <Float floatIntensity={0.12} rotationIntensity={0.06} speed={1.2}>
@@ -247,10 +258,29 @@ function PlaceholderPodAsset({ finish, lighting, size, windowStyle }: PodModelPr
 // Preload the GLB once at module level — avoids per-instance HEAD requests
 useGLTF.preload(UPLOADED_MODEL_PATH);
 
+class ModelErrorBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback;
+    }
+    return this.props.children;
+  }
+}
+
 export function PodModel(props: PodModelProps) {
+  const placeholder = <PlaceholderPodAsset {...props} />;
+
   return (
-    <Suspense fallback={<PlaceholderPodAsset {...props} />}>
-      <UploadedPodAsset lighting={props.lighting} size={props.size} />
-    </Suspense>
+    <ModelErrorBoundary fallback={placeholder}>
+      <Suspense fallback={placeholder}>
+        <UploadedPodAsset finish={props.finish} lighting={props.lighting} size={props.size} />
+      </Suspense>
+    </ModelErrorBoundary>
   );
 }

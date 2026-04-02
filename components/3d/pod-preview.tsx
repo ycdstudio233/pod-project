@@ -14,10 +14,12 @@ const DynamicPodCanvas = dynamic(() => import("./pod-canvas").then((module) => m
   ),
 });
 
-function useInView(rootMargin = "200px") {
+function useVisibility(mountMargin = "400px", visibleMargin = "100px") {
   const ref = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [visible, setVisible] = useState(false);
 
+  // Mount once when approaching viewport (never unmount — avoids re-creating WebGL context)
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
@@ -25,18 +27,34 @@ function useInView(rootMargin = "200px") {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setInView(true);
+          setMounted(true);
           observer.disconnect();
         }
       },
-      { rootMargin },
+      { rootMargin: mountMargin },
     );
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [rootMargin]);
+  }, [mountMargin]);
 
-  return { ref, inView };
+  // Continuously track visibility to pause/resume the render loop
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !mounted) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setVisible(entry.isIntersecting);
+      },
+      { rootMargin: visibleMargin },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [mounted, visibleMargin]);
+
+  return { ref, mounted, visible };
 }
 
 interface PodPreviewProps {
@@ -47,7 +65,7 @@ interface PodPreviewProps {
 }
 
 export function PodPreview({ className, interactive = false, label, state }: PodPreviewProps) {
-  const { ref, inView } = useInView("400px");
+  const { ref, mounted, visible } = useVisibility();
 
   return (
     <div ref={ref} className={cn("surface-panel-strong ambient-outline relative overflow-hidden rounded-[2rem]", className)}>
@@ -63,13 +81,9 @@ export function PodPreview({ className, interactive = false, label, state }: Pod
         </div>
       ) : null}
       <div className="h-full min-h-[360px]">
-        {inView ? (
-          <DynamicPodCanvas interactive={interactive} state={state} />
-        ) : (
-          <div className="flex h-full min-h-[360px] items-center justify-center text-sm uppercase tracking-[0.22em] text-white/30">
-            ···
-          </div>
-        )}
+        {mounted ? (
+          <DynamicPodCanvas interactive={interactive} state={state} visible={visible} />
+        ) : null}
       </div>
     </div>
   );

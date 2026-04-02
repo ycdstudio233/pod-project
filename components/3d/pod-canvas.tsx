@@ -10,9 +10,10 @@ import { SceneEnvironment } from "./scene-environment";
 interface PodCanvasProps {
   state: ConfiguratorState;
   interactive?: boolean;
+  visible?: boolean;
 }
 
-export function PodCanvas({ interactive = false, state }: PodCanvasProps) {
+export function PodCanvas({ interactive = false, state, visible = true }: PodCanvasProps) {
   const [dpr, setDpr] = useState(1.5);
   const onIncline = useCallback(() => setDpr(Math.min(1.75, dpr + 0.25)), [dpr]);
   const onDecline = useCallback(() => setDpr(Math.max(0.75, dpr - 0.25)), [dpr]);
@@ -20,6 +21,7 @@ export function PodCanvas({ interactive = false, state }: PodCanvasProps) {
   return (
     <Canvas
       dpr={dpr}
+      frameloop={visible ? "always" : "demand"}
       gl={{ antialias: true, powerPreference: "high-performance" }}
       shadows={interactive ? true : "soft"}
     >
