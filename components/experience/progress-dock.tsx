@@ -43,12 +43,12 @@ export function ProgressDock({ activeIndex, configLabel, onNavigate }: ProgressD
         />
       </div>
 
-      {/* Nav dock */}
-      <nav className="fixed inset-x-0 top-3 z-40 flex justify-center px-4">
-        <div className="flex items-center rounded-full border border-white/8 bg-black/40 px-1.5 py-1.5 backdrop-blur-xl">
+      {/* Nav dock — desktop: full labels, mobile: scrollable strip */}
+      <nav className="fixed inset-x-0 top-3 z-40 flex justify-center px-2 sm:px-4">
+        <div className="flex max-w-full items-center overflow-x-auto rounded-full border border-white/8 bg-black/50 px-1 py-1 backdrop-blur-xl sm:px-1.5 sm:py-1.5 scrollbar-none">
           {STEPS.map((step, index) => (
             <button
-              className={`cursor-pointer rounded-full px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.15em] transition-all duration-200 ${
+              className={`min-h-[36px] shrink-0 cursor-pointer rounded-full px-2 py-1.5 text-[9px] font-medium uppercase tracking-[0.12em] transition-all duration-200 sm:min-h-[auto] sm:px-3 sm:text-[10px] sm:tracking-[0.15em] ${
                 index === activeIndex
                   ? "bg-white/12 text-white"
                   : index < activeIndex
@@ -59,13 +59,15 @@ export function ProgressDock({ activeIndex, configLabel, onNavigate }: ProgressD
               onClick={() => onNavigate?.(index)}
               type="button"
             >
-              {step.label}
+              {/* Mobile: just number, Desktop: full label */}
+              <span className="sm:hidden">{step.label.slice(0, 2)}</span>
+              <span className="hidden sm:inline">{step.label}</span>
             </button>
           ))}
 
-          <div className="ml-2 border-l border-white/10 pl-3 pr-1.5">
-            <p className="text-[9px] font-medium uppercase tracking-[0.15em] text-[#8de4d4]">Current pod</p>
-            <p className="text-[10px] text-white/60">{configLabel}</p>
+          <div className="ml-1.5 shrink-0 border-l border-white/10 pl-2 pr-1 sm:ml-2 sm:pl-3 sm:pr-1.5">
+            <p className="hidden text-[9px] font-medium uppercase tracking-[0.15em] text-[#8de4d4] sm:block">Current pod</p>
+            <p className="text-[9px] text-white/60 sm:text-[10px]">{configLabel}</p>
           </div>
         </div>
       </nav>

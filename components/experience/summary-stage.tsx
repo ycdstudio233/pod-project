@@ -66,7 +66,7 @@ export function SummaryStage({
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(460px,1.05fr)_minmax(0,0.95fr)]">
           {/* Left — 3D Preview */}
           <motion.div
-            className="relative h-[400px] overflow-hidden rounded-[1.8rem] md:h-[520px] lg:sticky lg:top-24"
+            className="relative h-[280px] overflow-hidden rounded-[1.4rem] sm:h-[400px] sm:rounded-[1.8rem] md:h-[520px] lg:sticky lg:top-24"
             initial={{ opacity: 0, x: -30 }}
             style={{
               background: "linear-gradient(135deg, rgba(20,28,36,0.9), rgba(14,20,28,0.95))",
@@ -111,7 +111,7 @@ export function SummaryStage({
               whileInView={{ opacity: 1, y: 0 }}
             >
               <p className="mb-2 text-[11px] uppercase tracking-[0.2em] text-white/40">Estimated from</p>
-              <p className="text-5xl font-medium tracking-[-0.04em] text-white">{formatCurrency(estimatedPrice)}</p>
+              <p className="text-3xl font-medium tracking-[-0.04em] text-white sm:text-5xl">{formatCurrency(estimatedPrice)}</p>
               <p className="mt-1 text-xs text-white/40">or ~{formatCurrency(monthlyEstimate)}/mo with financing</p>
 
               {/* Price breakdown */}

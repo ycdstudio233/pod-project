@@ -30,7 +30,7 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
       </div>
 
       {/* Content pinned to bottom-left */}
-      <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-end px-6 pb-16 lg:px-12 lg:pb-20">
+      <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-end px-5 pb-10 sm:px-6 sm:pb-16 lg:px-12 lg:pb-20">
         <motion.p
           animate={{ opacity: 1, y: 0 }}
           className="mb-4 text-[11px] font-medium uppercase tracking-[0.3em] text-white/50"
@@ -42,7 +42,7 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
 
         <motion.h1
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-2xl text-[clamp(3rem,6.5vw,6.4rem)] font-medium leading-[0.92] tracking-[-0.04em] text-white"
+          className="max-w-2xl text-[clamp(2.2rem,6.5vw,6.4rem)] font-medium leading-[0.92] tracking-[-0.04em] text-white"
           initial={{ opacity: 0, y: 24 }}
           transition={{ delay: 0.08, duration: 0.7 }}
         >
@@ -51,7 +51,7 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
 
         <motion.p
           animate={{ opacity: 1, y: 0 }}
-          className="mt-5 max-w-lg text-lg leading-8 text-white/64"
+          className="mt-4 max-w-lg text-base leading-7 text-white/64 sm:mt-5 sm:text-lg sm:leading-8"
           initial={{ opacity: 0, y: 18 }}
           transition={{ delay: 0.16, duration: 0.7 }}
         >
@@ -60,7 +60,7 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
 
         <motion.div
           animate={{ opacity: 1, y: 0 }}
-          className="mt-8 flex items-center gap-6"
+          className="mt-6 flex flex-wrap items-center gap-4 sm:mt-8 sm:gap-6"
           initial={{ opacity: 0, y: 18 }}
           transition={{ delay: 0.24, duration: 0.7 }}
         >

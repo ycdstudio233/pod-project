@@ -114,15 +114,15 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
             viewport={{ once: true, amount: 0.3 }}
             whileInView={{ opacity: 1, y: 0 }}
           >
-            <div className="flex items-center justify-between border-b border-white/8 py-4">
-              <h2 className="text-[clamp(1.6rem,3.5vw,2.8rem)] font-medium tracking-[-0.03em] text-white">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/8 py-4">
+              <h2 className="text-[clamp(1.4rem,3.5vw,2.8rem)] font-medium tracking-[-0.03em] text-white">
                 Now let&apos;s peek inside.
               </h2>
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-white/50">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <span className="text-xs text-white/50 sm:text-sm">
                   {interiorPackOptions.find((p) => p.id === selectedId)?.label}
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">Interior</span>
+                <span className="hidden text-[10px] uppercase tracking-[0.2em] text-white/30 sm:inline">Interior</span>
               </div>
             </div>
 
@@ -131,7 +131,7 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
             </p>
           </motion.div>
 
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-5">
             {interiorPackOptions.map((pack) => (
               <button
                 className={`group relative overflow-hidden rounded-2xl border p-4 text-left transition-all duration-200 ${
@@ -164,9 +164,9 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
             ))}
           </div>
 
-          <div className="mt-6 flex items-center gap-6 pb-10">
+          <div className="mt-5 flex flex-wrap items-center gap-4 pb-8 sm:mt-6 sm:gap-6 sm:pb-10">
             <GlowButton onClick={onNext}>This feels right</GlowButton>
-            <span className="text-sm text-white/36">Everything is already laid out and ready to go.</span>
+            <span className="hidden text-sm text-white/36 sm:inline">Everything is already laid out and ready to go.</span>
           </div>
         </div>
       </div>

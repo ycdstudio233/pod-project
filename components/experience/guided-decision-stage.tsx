@@ -65,16 +65,14 @@ export function GuidedDecisionStage({
           viewport={{ once: true, amount: 0.3 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          {/* Section header — Lucid accordion style */}
-          <div className="flex items-center justify-between border-b border-white/8 py-5">
-            <div className="flex items-center gap-4">
-              <h2 className="text-[clamp(1.6rem,3.5vw,2.8rem)] font-medium tracking-[-0.03em] text-white">
-                {title}
-              </h2>
-            </div>
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-white/50">{selectedOption?.label ?? selectedId}</span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">{phase} / {stepLabel}</span>
+          {/* Section header */}
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/8 py-4 sm:py-5">
+            <h2 className="text-[clamp(1.4rem,3.5vw,2.8rem)] font-medium tracking-[-0.03em] text-white">
+              {title}
+            </h2>
+            <div className="flex items-center gap-2 sm:gap-3">
+              <span className="text-xs text-white/50 sm:text-sm">{selectedOption?.label ?? selectedId}</span>
+              <span className="hidden text-[10px] uppercase tracking-[0.2em] text-white/30 sm:inline">{phase} / {stepLabel}</span>
             </div>
           </div>
 

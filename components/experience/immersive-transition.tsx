@@ -31,7 +31,7 @@ export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionP
       </div>
 
       <motion.div
-        className="relative z-10 mx-auto max-w-[1400px] px-6 py-20 lg:px-12"
+        className="relative z-10 mx-auto max-w-[1400px] px-5 py-10 sm:px-6 sm:py-20 lg:px-12"
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.65 }}
         viewport={{ once: true, amount: 0.4 }}
