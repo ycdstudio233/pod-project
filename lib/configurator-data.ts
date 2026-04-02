@@ -94,7 +94,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "High contrast light, long shadows, and quiet distance.",
     meta: "Best for solar-forward sites",
     accent: "#f0c58c",
-    image: "/placeholder-desert.svg",
+    image: "/scene-desert.svg",
     recommended: true,
   },
   {
@@ -104,7 +104,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Layered greens, diffuse daylight, and a softer arrival.",
     meta: "Feels private fast",
     accent: "#88c39d",
-    image: "/placeholder-forest.svg",
+    image: "/scene-forest.svg",
   },
   {
     id: "urban",
@@ -113,7 +113,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Precise, calm, and confident inside a sharper city rhythm.",
     meta: "Ideal for backyard placement",
     accent: "#8bb8ff",
-    image: "/placeholder-urban.svg",
+    image: "/scene-urban.svg",
   },
 ];
 
@@ -200,7 +200,7 @@ export const storyMoments: StoryMoment[] = [
     title: "Space that feels resolved before you step inside.",
     copy:
       "The pod is pre-composed to feel calm immediately. No noise, no layout anxiety, no pile of choices asking for permission.",
-    image: "/placeholder-sanctuary.svg",
+    image: "/scene-sanctuary.svg",
     cta: "Shape the footprint",
   },
   {
@@ -209,7 +209,7 @@ export const storyMoments: StoryMoment[] = [
     title: "Designed to arrive cleanly, even in landscapes that usually push back.",
     copy:
       "Every finish is chosen to work with light, weather, and distance. You are not assembling parts. You are choosing the version that belongs on your site.",
-    image: "/placeholder-forest.svg",
+    image: "/scene-forest.svg",
     cta: "Choose the shell",
   },
   {
@@ -218,7 +218,7 @@ export const storyMoments: StoryMoment[] = [
     title: "A quiet object with just enough presence to feel inevitable.",
     copy:
       "Panoramic glass, softened corners, and restrained detailing let the setting stay in charge while the pod does what it needs to do beautifully.",
-    image: "/placeholder-desert.svg",
+    image: "/scene-desert.svg",
     cta: "See your pod together",
   },
 ];

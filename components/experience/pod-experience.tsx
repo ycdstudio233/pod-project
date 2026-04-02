@@ -208,7 +208,7 @@ export function PodExperience() {
         selectedId={state.size}
         setRef={setSectionRef("size")}
         state={state}
-        step="Step 1 · Choose size"
+        step="Step 1 - Choose size"
         title="Pick the pod that already fits your life."
       />
 
@@ -235,7 +235,7 @@ export function PodExperience() {
         selectedId={state.finish}
         setRef={setSectionRef("finish")}
         state={state}
-        step="Step 2 · Choose finish"
+        step="Step 2 - Choose finish"
         title="Choose the shell language, not a color wheel."
       />
 
@@ -271,7 +271,7 @@ export function PodExperience() {
         selectedId={state.environment}
         setRef={setSectionRef("environment")}
         state={state}
-        step="Step 3 · Choose environment"
+        step="Step 3 - Choose environment"
         title="Place it where it feels inevitable."
       />
 

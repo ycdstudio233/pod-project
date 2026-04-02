@@ -258,11 +258,20 @@ function PlaceholderPodAsset({ finish, lighting, size, windowStyle }: PodModelPr
 // Preload the GLB once at module level — avoids per-instance HEAD requests
 useGLTF.preload(UPLOADED_MODEL_PATH);
 
-class ModelErrorBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { hasError: boolean }> {
+class ModelErrorBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode; resetKey: string },
+  { hasError: boolean }
+> {
   state = { hasError: false };
 
   static getDerivedStateFromError() {
     return { hasError: true };
+  }
+
+  componentDidUpdate(prevProps: { resetKey: string }) {
+    if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
+      this.setState({ hasError: false });
+    }
   }
 
   render() {
@@ -275,9 +284,10 @@ class ModelErrorBoundary extends Component<{ children: ReactNode; fallback: Reac
 
 export function PodModel(props: PodModelProps) {
   const placeholder = <PlaceholderPodAsset {...props} />;
+  const resetKey = `${props.size}-${props.finish}-${props.lighting}-${props.windowStyle}`;
 
   return (
-    <ModelErrorBoundary fallback={placeholder}>
+    <ModelErrorBoundary fallback={placeholder} resetKey={resetKey}>
       <Suspense fallback={placeholder}>
         <UploadedPodAsset finish={props.finish} lighting={props.lighting} size={props.size} />
       </Suspense>
