@@ -79,6 +79,17 @@ const sectionProgressIndex: Record<SectionId, number> = {
   contact: 7,
 };
 
+const progressToSection: Record<number, SectionId> = {
+  0: "hero",
+  1: "size",
+  2: "finish",
+  3: "environment",
+  4: "interior-pack",
+  5: "site-fit",
+  6: "summary",
+  7: "contact",
+};
+
 export function PodExperience() {
   const [state, dispatch] = useReducer(configuratorReducer, defaultConfiguratorState);
   const [activeSection, setActiveSection] = useState<SectionId>("hero");
@@ -226,7 +237,14 @@ export function PodExperience() {
         ) : null}
       </AnimatePresence>
 
-      <ProgressDock activeIndex={sectionProgressIndex[activeSection]} state={state} />
+      <ProgressDock
+        activeIndex={sectionProgressIndex[activeSection]}
+        onNavigate={(index) => {
+          const target = progressToSection[index];
+          if (target) navigateToSection(target);
+        }}
+        state={state}
+      />
 
       <HeroSection onExplore={beginExperience} setRef={setSectionRef("hero")} state={state} />
       <ImmersiveTransition onContinue={() => scrollToSection("size")} setRef={setSectionRef("transition")} />

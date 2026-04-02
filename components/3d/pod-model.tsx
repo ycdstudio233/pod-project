@@ -137,7 +137,7 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
     const maxDimension = Math.max(dimensions.x, dimensions.y, dimensions.z) || 1;
     clone.position.set(-center.x, -box.min.y, -center.z);
 
-    return { centeredScene: clone, normalizedScale: 3.0 / maxDimension };
+    return { centeredScene: clone, normalizedScale: 3.2 / maxDimension };
   }, [scene]);
 
   // Mutate materials in-place — no cloning on finish/lighting changes
@@ -147,7 +147,7 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
   }, [centeredScene, finish, lighting]);
 
   return (
-    <group position={[0, -0.92, 0]} scale={normalizedScale * uploadedModelScale[size]}>
+    <group position={[0, -0.2, 0]} scale={normalizedScale * uploadedModelScale[size]}>
       <primitive object={centeredScene} />
       {lighting === "night" ? <pointLight color="#f8ca74" intensity={4.6} position={[0.78, 0.52, 0.26]} /> : null}
     </group>
