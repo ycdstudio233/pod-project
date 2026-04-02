@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useRef, useState } from "react";
 import type { ConfiguratorState } from "@/types/configurator";
 import { cn } from "@/lib/utils";
 
@@ -65,6 +65,7 @@ interface PodPreviewProps {
 }
 
 export function PodPreview({ className, interactive = false, label, state }: PodPreviewProps) {
+  const deferredState = useDeferredValue(state);
   const { ref, mounted, visible } = useVisibility();
 
   return (
@@ -82,7 +83,7 @@ export function PodPreview({ className, interactive = false, label, state }: Pod
       ) : null}
       <div className="h-full min-h-[360px]">
         {mounted ? (
-          <DynamicPodCanvas interactive={interactive} state={state} visible={visible} />
+          <DynamicPodCanvas interactive={interactive} state={deferredState} visible={visible} />
         ) : null}
       </div>
     </div>
