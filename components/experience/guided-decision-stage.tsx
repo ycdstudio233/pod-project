@@ -83,7 +83,7 @@ export function GuidedDecisionStage({
           whileInView={{ opacity: 1, x: 0 }}
         >
           <PodPreview
-            className="h-[420px] w-full max-w-[880px] rounded-[2.2rem] sm:h-[520px] lg:h-[min(78vh,760px)]"
+            className="h-[380px] w-full max-w-[640px] rounded-[2rem] sm:h-[460px] lg:h-[min(68vh,620px)]"
             interactive
             state={state}
           />
