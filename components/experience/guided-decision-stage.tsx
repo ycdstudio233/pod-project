@@ -41,23 +41,23 @@ export function GuidedDecisionStage({
 
   return (
     <section
-      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 pt-[5.5rem] sm:scroll-mt-28 sm:pt-28"
+      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 pt-[5.5rem] md:scroll-mt-28 md:pt-28"
       id={id}
       ref={setRef}
     >
       <div className="relative">
         <motion.div
-          className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-12"
+          className="mx-auto w-full max-w-[1400px] px-4 md:px-6 lg:px-12"
           initial={{ opacity: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true, amount: 0.2 }}
           whileInView={{ opacity: 1 }}
         >
-          <PodPreview className="h-[150px] w-full rounded-2xl sm:h-[340px] sm:rounded-[1.8rem] lg:h-[460px]" interactive state={state} />
+          <PodPreview className="h-[150px] w-full rounded-2xl md:h-[340px] md:rounded-[1.8rem] lg:h-[460px]" interactive state={state} />
         </motion.div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-[1400px] px-4 pb-8 sm:px-6 sm:pb-12 lg:px-12">
+      <div className="relative z-10 mx-auto max-w-[1400px] px-4 pb-8 md:px-6 md:pb-12 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
@@ -65,20 +65,20 @@ export function GuidedDecisionStage({
           whileInView={{ opacity: 1, y: 0 }}
         >
           {/* Header row */}
-          <div className="flex items-center justify-between gap-2 border-b border-white/8 py-3 sm:py-5">
-            <h2 className="text-lg font-medium tracking-[-0.03em] text-white sm:text-[clamp(1.4rem,3.5vw,2.8rem)]">{title}</h2>
-            <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-              <span className="hidden text-xs text-white/50 sm:inline sm:text-sm">{selectedOption?.label ?? selectedId}</span>
-              <span className="text-[9px] uppercase tracking-[0.18em] text-white/30 sm:text-[10px] sm:tracking-[0.2em]">{phase} / {stepLabel}</span>
+          <div className="flex items-center justify-between gap-2 border-b border-white/8 py-3 md:py-5">
+            <h2 className="text-lg font-medium tracking-[-0.03em] text-white md:text-[clamp(1.4rem,3.5vw,2.8rem)]">{title}</h2>
+            <div className="flex shrink-0 items-center gap-2 md:gap-3">
+              <span className="hidden text-sm text-white/50 md:inline">{selectedOption?.label ?? selectedId}</span>
+              <span className="text-[9px] uppercase tracking-[0.18em] text-white/30 md:text-[10px] md:tracking-[0.2em]">{phase} / {stepLabel}</span>
             </div>
           </div>
 
-          {/* Copy text — compact on mobile */}
-          <p className="mt-2 max-w-xl text-xs leading-5 text-white/54 sm:mt-4 sm:text-sm sm:leading-7">{copy}</p>
-          <p className="mt-1 hidden max-w-xl text-sm leading-6 text-white/36 sm:block">{guidance}</p>
+          {/* Copy text — compact on mobile/tablet */}
+          <p className="mt-2 max-w-xl text-xs leading-5 text-white/54 md:mt-4 md:text-sm md:leading-7">{copy}</p>
+          <p className="mt-1 hidden max-w-xl text-sm leading-6 text-white/36 md:block">{guidance}</p>
 
-          {/* Mobile: compact pill-style option selectors */}
-          <div className="mt-3 flex flex-col gap-2 sm:hidden">
+          {/* Compact pill-style option selectors (< md) */}
+          <div className="mt-3 flex flex-col gap-2 md:hidden">
             {options.map((option) => (
               <button
                 className={`relative flex items-center gap-3 overflow-hidden rounded-xl border px-3.5 py-3 text-left transition-all duration-200 ${
@@ -118,9 +118,9 @@ export function GuidedDecisionStage({
             ))}
           </div>
 
-          {/* Desktop: full option cards */}
+          {/* Desktop: full option cards (≥ md) */}
           <div
-            className={`mt-6 hidden grid-cols-1 gap-3 sm:grid sm:grid-cols-2 ${
+            className={`mt-6 hidden grid-cols-1 gap-3 md:grid md:grid-cols-2 ${
               options.length <= 3 ? "lg:grid-cols-3" : "xl:grid-cols-4"
             }`}
           >
@@ -141,9 +141,9 @@ export function GuidedDecisionStage({
             ))}
           </div>
 
-          <div className="mt-4 flex items-center gap-4 sm:mt-6 sm:gap-6">
+          <div className="mt-4 flex items-center gap-4 md:mt-6 md:gap-6">
             <GlowButton onClick={onNext}>{nextLabel}</GlowButton>
-            <span className="hidden text-sm text-white/34 sm:inline">Choose a card to update the view right away.</span>
+            <span className="hidden text-sm text-white/34 md:inline">Choose a card to update the view right away.</span>
           </div>
         </motion.div>
       </div>
