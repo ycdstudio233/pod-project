@@ -1,9 +1,9 @@
 import type { ConfiguratorState, FinishId, InteriorPackId, PodSize, PriceLineItem, WindowStyle } from "@/types/configurator";
 
 const sizeBasePrice: Record<PodSize, number> = {
-  S: 98000,
-  M: 146000,
-  L: 198000,
+  S: 38000,
+  M: 57500,
+  L: 79000,
 };
 
 const sizeSqFt: Record<PodSize, number> = {
@@ -14,15 +14,15 @@ const sizeSqFt: Record<PodSize, number> = {
 
 const finishAdjustment: Record<FinishId, number> = {
   glacier: 0,
-  basalt: 6000,
-  dune: 4000,
-  sage: 4500,
+  basalt: 2500,
+  dune: 1800,
+  sage: 2000,
 };
 
 const windowAdjustment: Record<WindowStyle, number> = {
   panorama: 0,
-  corner: 5500,
-  split: 3500,
+  corner: 2500,
+  split: 1500,
 };
 
 const interiorPackPrice: Record<InteriorPackId, number> = {
@@ -86,21 +86,21 @@ export function calculatePriceBreakdown(state: ConfiguratorState): PriceLineItem
 
   items.push({
     label: "Foundation prep",
-    amount: 8500,
+    amount: 4500,
     included: false,
     confidence: "site-dependent",
   });
 
   items.push({
     label: "Utility hookup",
-    amount: 6000,
+    amount: 3500,
     included: false,
     confidence: "site-dependent",
   });
 
   items.push({
     label: "Permit + survey",
-    amount: 3500,
+    amount: 2000,
     included: false,
     confidence: "estimated",
   });

@@ -37,9 +37,9 @@ export function SummaryStage({
   const siteDependentItems = priceBreakdown.filter((item) => !item.included);
 
   return (
-    <section className="relative min-h-screen overflow-hidden pt-24 scroll-mt-20" id="summary" ref={setRef}>
+    <section className="relative overflow-hidden pt-14 scroll-mt-20" id="summary" ref={setRef}>
       {/* Hero image for the selected environment */}
-      <div className="relative h-[40vh] w-full overflow-hidden lg:h-[50vh]">
+      <div className="relative h-[36vh] w-full overflow-hidden lg:h-[42vh]">
         <Image
           alt="Your pod environment"
           className="object-cover"
@@ -73,7 +73,7 @@ export function SummaryStage({
             </div>
 
             {/* Spec summary row */}
-            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 { label: "Size", value: getTitle(state.size, sizeOptions) },
                 { label: "Finish", value: getTitle(state.finish, finishOptions) },
@@ -88,7 +88,7 @@ export function SummaryStage({
             </div>
 
             {/* Price breakdown */}
-            <div className="mt-8 grid gap-8 lg:grid-cols-2">
+            <div className="mt-6 grid gap-6 lg:grid-cols-2">
               <div>
                 <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.22em] text-white/36">Included</p>
                 <div className="space-y-2.5">
@@ -114,7 +114,7 @@ export function SummaryStage({
             </div>
 
             {/* Process + CTA */}
-            <div className="mt-10 space-y-6 pb-16">
+            <div className="mt-8 space-y-5 pb-12">
               <ProcessRail />
               <div className="flex items-center gap-6">
                 <GlowButton onClick={onStartProject}>This looks right — let&apos;s go</GlowButton>
