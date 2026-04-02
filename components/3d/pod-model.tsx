@@ -31,6 +31,10 @@ const uploadedModelScale: Record<PodSize, number> = {
 
 const UPLOADED_MODEL_PATH = "/models/pod-model.glb";
 
+// Exported so UI components can adapt when the real GLB is loaded
+// (e.g. window style can't be previewed on a baked model)
+export const UPLOADED_MODEL_ACTIVE = true;
+
 function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finish" | "lighting" | "size">) {
   const { scene } = useGLTF(UPLOADED_MODEL_PATH);
   const finishColor = useMemo(() => new Color(finishPalette[finish]), [finish]);

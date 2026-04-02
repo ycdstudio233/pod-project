@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { PodPreview } from "@/components/3d/pod-preview";
 import { GlowButton } from "@/components/ui/glow-button";
 import { OptionCard } from "@/components/ui/option-card";
+import { UPLOADED_MODEL_ACTIVE } from "@/components/3d/pod-model";
 import { finishOptions, lightingModes, sizeOptions, windowOptions } from "@/lib/configurator-data";
 import { formatCurrency } from "@/lib/pricing";
 import type { ConfiguratorState, LightingMode, WindowStyle } from "@/types/configurator";
@@ -109,6 +110,12 @@ export function SummaryStage({
                   />
                 ))}
               </div>
+              {UPLOADED_MODEL_ACTIVE ? (
+                <p className="mt-3 text-xs leading-5 text-white/35">
+                  Window style is saved to your project brief. The 3D preview shows the base model and does not
+                  reflect glazing changes live.
+                </p>
+              ) : null}
             </div>
 
             <div>
