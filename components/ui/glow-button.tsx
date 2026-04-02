@@ -17,7 +17,7 @@ export function GlowButton({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium tracking-[0.16em] uppercase transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 disabled:cursor-not-allowed disabled:opacity-60",
+        "inline-flex items-center justify-center rounded-full px-5 py-2.5 text-xs font-medium tracking-[0.14em] uppercase transition duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 disabled:cursor-not-allowed disabled:opacity-60 sm:px-6 sm:py-3 sm:text-sm sm:tracking-[0.16em]",
         variant === "primary" &&
           "bg-[linear-gradient(135deg,#baf7eb_0%,#82e2d0_35%,#4bbca9_100%)] text-slate-950 shadow-[0_18px_40px_rgba(76,189,169,0.3)] hover:translate-y-[-1px] hover:shadow-[0_24px_56px_rgba(76,189,169,0.38)]",
         variant === "secondary" &&

@@ -44,7 +44,7 @@ export function OptionCard({
   return (
     <button
       className={cn(
-        "group relative overflow-hidden rounded-[1.75rem] border p-5 text-left transition duration-300",
+        "group relative overflow-hidden rounded-2xl border p-4 text-left transition duration-300 sm:rounded-[1.75rem] sm:p-5",
         selected
           ? "border-white/24 bg-white/11 shadow-[0_24px_54px_rgba(0,0,0,0.28)]"
           : "border-white/10 bg-white/[0.045] hover:border-white/20 hover:bg-white/[0.07]",
@@ -61,7 +61,7 @@ export function OptionCard({
         style={{ background: `linear-gradient(90deg, ${accent}, transparent)` }}
       />
       {image ? (
-        <div className="relative mb-5 h-36 overflow-hidden rounded-[1.35rem] border border-white/8 bg-slate-950/60">
+        <div className="relative mb-3 h-28 overflow-hidden rounded-xl border border-white/8 bg-slate-950/60 sm:mb-5 sm:h-36 sm:rounded-[1.35rem]">
           <Image
             alt={title}
             className="object-cover transition duration-500 group-hover:scale-[1.03]"
@@ -83,9 +83,9 @@ export function OptionCard({
           </span>
         ) : null}
       </div>
-      <h3 className="text-xl font-medium text-white">{title}</h3>
-      <p className="mt-3 max-w-md text-sm leading-6 text-white/70">{description}</p>
-      <p className="mt-4 text-sm text-white/48">{meta}</p>
+      <h3 className="text-base font-medium text-white sm:text-xl">{title}</h3>
+      <p className="mt-2 max-w-md text-xs leading-5 text-white/70 sm:mt-3 sm:text-sm sm:leading-6">{description}</p>
+      <p className="mt-2 text-xs text-white/48 sm:mt-4 sm:text-sm">{meta}</p>
       {footer ? <div className="mt-5">{footer}</div> : null}
     </button>
   );

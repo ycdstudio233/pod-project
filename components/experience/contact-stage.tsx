@@ -84,8 +84,8 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
     >
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),transparent_24%,rgba(141,228,212,0.08)_72%,rgba(0,0,0,0.26)_100%)]" />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1480px] px-5 lg:px-10">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(340px,0.82fr)]">
+      <div className="relative z-10 mx-auto w-full max-w-[1480px] px-4 sm:px-5 lg:px-10">
+        <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(340px,0.82fr)]">
           {/* Left — Form */}
           <div className="flex flex-col">
             {!submitted ? (
@@ -115,7 +115,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                       key="step-0"
                       transition={{ duration: 0.4 }}
                     >
-                      <h2 className="mb-2 text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-white">
+                      <h2 className="mb-2 text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-white">
                         Where will your pod go?
                       </h2>
                       <p className="mb-6 text-sm text-white/50">
@@ -157,7 +157,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                       key="step-1"
                       transition={{ duration: 0.4 }}
                     >
-                      <h2 className="mb-2 text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-white">
+                      <h2 className="mb-2 text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-white">
                         When are you thinking?
                       </h2>
                       <p className="mb-6 text-sm text-white/50">
@@ -198,7 +198,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                       key="step-2"
                       transition={{ duration: 0.4 }}
                     >
-                      <h2 className="mb-2 text-[clamp(2rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-white">
+                      <h2 className="mb-2 text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-white">
                         How can we reach you?
                       </h2>
                       <p className="mb-6 text-sm text-white/50">
@@ -260,7 +260,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
           <div className="flex h-fit flex-col gap-4 lg:sticky lg:top-20">
             {/* Price card */}
             <motion.aside
-              className="surface-panel-strong rounded-[2rem] p-6"
+              className="surface-panel-strong rounded-2xl p-5 sm:rounded-[2rem] sm:p-6"
               initial={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.7, delay: 0.1 }}
               viewport={{ once: true }}
@@ -293,7 +293,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
 
             {/* FAQ accordion */}
             <motion.div
-              className="overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]"
+              className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] sm:rounded-[2rem]"
               initial={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               viewport={{ once: true }}

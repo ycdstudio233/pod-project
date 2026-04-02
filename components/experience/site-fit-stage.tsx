@@ -107,11 +107,11 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
             </span>
             <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">takes 20 seconds</span>
           </div>
-          <h2 className="text-[clamp(2.4rem,5vw,4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
+          <h2 className="text-[clamp(1.8rem,5vw,4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
             {step < 3 ? "Let\u2019s make sure your site works." : "Looking good \u2014 this is a real project."}
           </h2>
           {step < 3 ? (
-            <p className="mt-4 max-w-lg text-lg leading-8 text-white/60">
+            <p className="mt-3 max-w-lg text-base leading-7 text-white/60 sm:mt-4 sm:text-lg sm:leading-8">
               Three quick questions. Nothing scary — we just need a rough picture so we can give you a real answer.
             </p>
           ) : null}
@@ -181,7 +181,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
               <motion.div
                 key="verdict"
                 {...fadeVariants}
-                className="surface-panel rounded-[2rem] p-8"
+                className="surface-panel rounded-2xl p-5 sm:rounded-[2rem] sm:p-8"
                 transition={{ duration: 0.45 }}
               >
                 <div className="flex items-center gap-3">
