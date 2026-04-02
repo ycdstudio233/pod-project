@@ -137,7 +137,7 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
     const maxDimension = Math.max(dimensions.x, dimensions.y, dimensions.z) || 1;
     clone.position.set(-center.x, -box.min.y, -center.z);
 
-    return { centeredScene: clone, normalizedScale: 2.6 / maxDimension };
+    return { centeredScene: clone, normalizedScale: 3.0 / maxDimension };
   }, [scene]);
 
   // Mutate materials in-place — no cloning on finish/lighting changes

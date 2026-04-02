@@ -69,7 +69,7 @@ export function HeroSection({ onExplore, setRef, state }: HeroSectionProps) {
           transition={{ delay: 0.16, duration: 0.8 }}
         >
           <PodPreview
-            className="aspect-[4/3] w-full max-w-[560px] rounded-[1.8rem]"
+            className="aspect-[4/3] w-full max-w-[680px] rounded-[1.8rem]"
             state={state}
           />
         </motion.div>
