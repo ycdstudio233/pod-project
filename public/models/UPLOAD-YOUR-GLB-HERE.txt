@@ -1,0 +1,11 @@
+Place your GLB here with this exact filename:
+
+pod-model.glb
+
+Full local path:
+C:\Users\Ege Yener\Projects\pod-project\public\models\pod-model.glb
+
+When the dev server is running, the file will be served at:
+http://localhost:3010/models/pod-model.glb
+
+The 3D viewer is already wired to auto-load that file if it exists.

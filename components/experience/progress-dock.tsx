@@ -1,0 +1,46 @@
+"use client";
+
+import { finishOptions, progressLabels } from "@/lib/configurator-data";
+import type { ConfiguratorState } from "@/types/configurator";
+
+interface ProgressDockProps {
+  activeIndex: number;
+  state: ConfiguratorState;
+}
+
+export function ProgressDock({ activeIndex, state }: ProgressDockProps) {
+  const finishLabel = finishOptions.find((option) => option.id === state.finish)?.label ?? state.finish;
+
+  return (
+    <div className="pointer-events-none fixed inset-x-0 top-4 z-40 px-4">
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4 rounded-full border border-white/12 bg-black/28 px-4 py-3 backdrop-blur-xl">
+        <div className="hidden min-w-0 md:flex md:flex-1 md:items-center md:gap-2">
+          {progressLabels.map((label, index) => (
+            <div
+              className={`flex min-w-0 flex-1 items-center gap-2 rounded-full px-3 py-2 text-[10px] font-medium uppercase tracking-[0.24em] ${
+                index === activeIndex ? "bg-white/12 text-white" : "text-white/34"
+              }`}
+              key={label}
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <span className="truncate">{label}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="md:hidden">
+          <span className="text-[10px] font-medium uppercase tracking-[0.28em] text-white/72">
+            {progressLabels[activeIndex]} · {activeIndex + 1}/{progressLabels.length}
+          </span>
+        </div>
+
+        <div className="hidden text-right md:block">
+          <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/40">Current pod</p>
+          <p className="mt-1 text-sm text-white/66">
+            {state.size} · {finishLabel} · {state.environment}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
