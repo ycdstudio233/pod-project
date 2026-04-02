@@ -297,7 +297,6 @@ export function PodExperience() {
       <GuidedDecisionStage
         copy="Where will your pod actually live? Pick the closest match — we'll fine-tune together later."
         guidance="Don't worry about getting it perfect. This just helps us show you the right picture."
-        hideViewer
         id="environment"
         nextLabel="That's the exterior done"
         onNext={() => navigateToSection("interior-pack")}

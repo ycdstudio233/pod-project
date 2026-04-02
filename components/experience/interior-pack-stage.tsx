@@ -32,12 +32,12 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
 
   return (
     <section
-      className="relative flex min-h-screen flex-col overflow-hidden scroll-mt-20"
+      className="relative min-h-screen overflow-hidden pt-24 scroll-mt-20"
       id="interior-pack"
       ref={setRef}
     >
-      {/* Visual area — expands to fill available space */}
-      <div className="relative flex-1 pt-14 overflow-hidden">
+      {/* Visual area — photo or 3D */}
+      <div className="relative h-[50vh] w-full overflow-hidden lg:h-[56vh]">
         {viewMode === "photo" ? (
           <>
             <Image
@@ -105,31 +105,33 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
         </div>
       </div>
 
-      {/* Content below — fixed area */}
-      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 pb-10 lg:px-12">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true, amount: 0.3 }}
-          whileInView={{ opacity: 1, y: 0 }}
-        >
-          <div className="flex items-center justify-between border-b border-white/8 py-4">
-            <h2 className="text-[clamp(1.6rem,3.5vw,2.8rem)] font-medium tracking-[-0.03em] text-white">
-              Now let&apos;s peek inside.
-            </h2>
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-white/50">
-                {interiorPackOptions.find((p) => p.id === selectedId)?.label}
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">Interior</span>
+      {/* Content below */}
+      <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-12">
+        <div className="-mt-8">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true, amount: 0.3 }}
+            whileInView={{ opacity: 1, y: 0 }}
+          >
+            <div className="flex items-center justify-between border-b border-white/8 py-4">
+              <h2 className="text-[clamp(1.6rem,3.5vw,2.8rem)] font-medium tracking-[-0.03em] text-white">
+                Now let&apos;s peek inside.
+              </h2>
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-white/50">
+                  {interiorPackOptions.find((p) => p.id === selectedId)?.label}
+                </span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">Interior</span>
+              </div>
             </div>
-          </div>
 
-          <p className="mt-3 max-w-md text-sm leading-7 text-white/46">
-            Each layout is already resolved. Pick the one that fits your life — switch to 3D to see how the space changes per size.
-          </p>
+            <p className="mt-3 max-w-md text-sm leading-7 text-white/46">
+              Each layout is already resolved. Pick the one that fits your life — switch to 3D to see how the space changes per size.
+            </p>
+          </motion.div>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {interiorPackOptions.map((pack) => (
               <button
                 className={`group relative overflow-hidden rounded-2xl border p-4 text-left transition-all duration-200 ${
@@ -162,11 +164,11 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
             ))}
           </div>
 
-          <div className="mt-5 flex items-center gap-6">
+          <div className="mt-6 flex items-center gap-6 pb-10">
             <GlowButton onClick={onNext}>This feels right</GlowButton>
             <span className="text-sm text-white/36">Everything is already laid out and ready to go.</span>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -12,7 +12,7 @@ interface ImmersiveTransitionProps {
 export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionProps) {
   return (
     <section
-      className="relative flex min-h-screen items-center overflow-hidden scroll-mt-20"
+      className="relative flex min-h-screen items-center overflow-hidden pt-24 scroll-mt-20"
       id="transition"
       ref={setRef}
     >
@@ -40,11 +40,11 @@ export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionP
         <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/44">
           Here&apos;s how this works
         </p>
-        <h2 className="mt-6 max-w-2xl text-[clamp(2.8rem,6vw,5.2rem)] font-medium leading-[0.92] tracking-[-0.04em] text-white">
-          First the outside, then the inside, then a quick site check.
+        <h2 className="mt-6 max-w-xl text-[clamp(2.4rem,5vw,4.2rem)] font-medium leading-[0.96] tracking-[-0.04em] text-white">
+          We&apos;ll do this together, step by step.
         </h2>
-        <p className="mt-6 max-w-md text-lg leading-8 text-white/50">
-          We&apos;ll do this together, step by step. That&apos;s it. Nothing complicated.
+        <p className="mt-5 max-w-md text-lg leading-8 text-white/58">
+          First the outside, then the inside, then a quick site check. That&apos;s it. Nothing complicated.
         </p>
         <div className="mt-10">
           <GlowButton onClick={onContinue}>Sounds good, let&apos;s go</GlowButton>
