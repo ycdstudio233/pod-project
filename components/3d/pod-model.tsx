@@ -54,11 +54,20 @@ function UploadedPodAsset({ finish, lighting, size }: Pick<PodModelProps, "finis
         mesh.receiveShadow = true;
       }
 
-      // Apply finish color to opaque shell materials (skip glass/transparent)
+      // Apply finish color only to light-colored shell materials.
+      // Skip dark parts (trim, roof, frames, steps) and transparent parts (glass).
+      // A material is considered "shell" if its original color lightness > 0.35
+      // (i.e. it's not a dark accent piece).
       if (mesh.isMesh && mesh.material instanceof MeshStandardMaterial) {
         if (!mesh.material.transparent && mesh.material.opacity > 0.9) {
-          mesh.material = mesh.material.clone();
-          mesh.material.color.copy(finishColor);
+          const hsl = { h: 0, s: 0, l: 0 };
+          mesh.material.color.getHSL(hsl);
+          if (hsl.l > 0.35) {
+            mesh.material = mesh.material.clone();
+            mesh.material.color.copy(finishColor);
+            mesh.material.metalness = 0.18;
+            mesh.material.roughness = 0.62;
+          }
         }
       }
     });
