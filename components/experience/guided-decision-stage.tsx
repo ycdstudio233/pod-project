@@ -8,14 +8,13 @@ import type { ChoiceOption, ConfiguratorState } from "@/types/configurator";
 
 interface GuidedDecisionStageProps {
   id: string;
-  step: string;
+  step?: string;
   title: string;
   copy: string;
-  microcopy: string;
+  microcopy?: string;
   options: Array<ChoiceOption<string>>;
   selectedId: string;
   state: ConfiguratorState;
-  previewLabel: string;
   nextLabel: string;
   onSelect: (id: string) => void;
   onNext: () => void;
@@ -25,12 +24,10 @@ interface GuidedDecisionStageProps {
 export function GuidedDecisionStage({
   copy,
   id,
-  microcopy,
   nextLabel,
   onNext,
   onSelect,
   options,
-  previewLabel,
   selectedId,
   setRef,
   state,
@@ -49,12 +46,11 @@ export function GuidedDecisionStage({
           viewport={{ once: true, amount: 0.25 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <span className="mb-4 text-[11px] font-medium uppercase tracking-[0.28em] text-white/46">{step}</span>
+          {step ? <span className="mb-4 text-[11px] font-medium uppercase tracking-[0.28em] text-white/46">{step}</span> : null}
           <h2 className="max-w-3xl text-[clamp(2.6rem,5vw,4.6rem)] font-medium leading-[0.98] tracking-[-0.04em] text-balance text-white">
             {title}
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-white/68">{copy}</p>
-          <p className="mt-4 max-w-xl text-sm leading-7 text-white/46">{microcopy}</p>
 
           <div className="mt-10 grid gap-4 xl:grid-cols-2">
             {options.map((option) => (
@@ -74,9 +70,8 @@ export function GuidedDecisionStage({
             ))}
           </div>
 
-          <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <div className="mt-8">
             <GlowButton onClick={onNext}>{nextLabel}</GlowButton>
-            <p className="text-sm text-white/45">Every path is pre-tuned. You are choosing direction, not assembling parts.</p>
           </div>
         </motion.div>
 
@@ -90,7 +85,6 @@ export function GuidedDecisionStage({
           <PodPreview
             className="h-[420px] w-full max-w-[880px] rounded-[2.2rem] sm:h-[520px] lg:h-[min(78vh,760px)]"
             interactive
-            label={previewLabel}
             state={state}
           />
         </motion.div>

@@ -52,12 +52,11 @@ export function HeroSection({ onExplore, setRef, state }: HeroSectionProps) {
 
           <motion.div
             animate={{ opacity: 1, y: 0 }}
-            className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center"
+            className="mt-10"
             initial={{ opacity: 0, y: 22 }}
             transition={{ delay: 0.2, duration: 0.7 }}
           >
             <GlowButton onClick={onExplore}>{heroContent.primaryCta}</GlowButton>
-            <p className="text-sm text-white/46">{heroContent.secondaryNote}</p>
           </motion.div>
         </div>
 
@@ -69,15 +68,11 @@ export function HeroSection({ onExplore, setRef, state }: HeroSectionProps) {
         >
           <PodPreview
             className="h-[54vh] w-full max-w-[880px] rounded-[2.4rem] lg:h-[78vh]"
-            label="Preview pod"
             state={state}
           />
         </motion.div>
       </div>
 
-      <div className="pointer-events-none absolute bottom-8 left-1/2 z-10 -translate-x-1/2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-[10px] font-medium uppercase tracking-[0.32em] text-white/42">
-        Scroll to continue
-      </div>
     </section>
   );
 }

@@ -228,19 +228,16 @@ export function PodExperience() {
       <ImmersiveTransition onContinue={() => scrollToSection("size")} setRef={setSectionRef("transition")} />
 
       <GuidedDecisionStage
-        copy="Start with scale. The right footprint changes how the pod feels before any material choice does."
+        copy="The right footprint changes how the pod feels before anything else does."
         id="size"
-        microcopy="Most projects begin with Residence 02 because it balances calm, usability, and speed."
         nextLabel="Next"
         onNext={() => navigateToSection("story-own")}
         onSelect={(value) => updateState("size", value as ConfiguratorState["size"])}
         options={sizeOptions}
-        previewLabel="Choose your size"
         selectedId={state.size}
         setRef={setSectionRef("size")}
         state={state}
-        step="Step 1 - Choose size"
-        title="Pick the pod that already fits your life."
+        title="Pick your size."
       />
 
       <StoryPanel
@@ -255,19 +252,16 @@ export function PodExperience() {
       />
 
       <GuidedDecisionStage
-        copy="Now give the shell its tone. Every finish is engineered to feel calm and resolved in real light."
+        copy="Every finish works with light, weather, and distance. Pick the tone."
         id="finish"
-        microcopy="You cannot make this look overworked. Each finish is intentionally limited so the object stays clean."
         nextLabel="Next"
         onNext={() => navigateToSection("story-anywhere")}
         onSelect={(value) => updateState("finish", value as ConfiguratorState["finish"])}
         options={finishOptions}
-        previewLabel="Choose your finish"
         selectedId={state.finish}
         setRef={setSectionRef("finish")}
         state={state}
-        step="Step 2 - Choose finish"
-        title="Choose the shell language, not a color wheel."
+        title="Choose the shell."
       />
 
       <StoryPanel
@@ -282,9 +276,8 @@ export function PodExperience() {
       />
 
       <GuidedDecisionStage
-        copy="Set the context. The environment reframes the pod instantly and helps you project yourself into the site."
+        copy="Where does your pod live? The setting shapes everything around it."
         id="environment"
-        microcopy="This changes the lighting, landscape, and tone of the preview so it feels closer to the real place."
         nextLabel="Next"
         onNext={() => navigateToSection("story-landscape")}
         onSelect={(value) => {
@@ -298,12 +291,10 @@ export function PodExperience() {
           updateState("siteLocation", nextSite);
         }}
         options={environmentOptions}
-        previewLabel="Choose the setting"
         selectedId={state.environment}
         setRef={setSectionRef("environment")}
         state={state}
-        step="Step 3 - Choose environment"
-        title="Place it where it feels inevitable."
+        title="Place it somewhere real."
       />
 
       <StoryPanel

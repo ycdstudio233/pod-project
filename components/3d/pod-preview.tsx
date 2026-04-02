@@ -76,11 +76,6 @@ export function PodPreview({ className, interactive = false, label, state }: Pod
           {label}
         </div>
       ) : null}
-      {interactive ? (
-        <div className="pointer-events-none absolute bottom-4 left-4 z-10 rounded-full border border-white/12 bg-black/25 px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.24em] text-white/56">
-          Drag to orbit
-        </div>
-      ) : null}
       <div className="h-full min-h-[360px]">
         {mounted ? (
           <DynamicPodCanvas interactive={interactive} state={deferredState} visible={visible} />

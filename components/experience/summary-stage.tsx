@@ -44,7 +44,6 @@ export function SummaryStage({
           <PodPreview
             className="h-[440px] w-full rounded-[2.2rem] sm:h-[560px] lg:h-[min(82vh,820px)]"
             interactive
-            label="Your configured pod"
             state={state}
           />
         </motion.div>
@@ -56,13 +55,9 @@ export function SummaryStage({
           viewport={{ once: true, amount: 0.25 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <span className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/46">Summary + pricing</span>
-          <h2 className="mt-4 text-[clamp(2.6rem,5vw,4.6rem)] font-medium leading-[0.98] tracking-[-0.04em] text-balance text-white">
-            This is the version we would put in front of you first.
+          <h2 className="text-[clamp(2.6rem,5vw,4.6rem)] font-medium leading-[0.98] tracking-[-0.04em] text-balance text-white">
+            Your pod, priced.
           </h2>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-white/66">
-            Clean breakdown up front. The technical layers can wait until you are ready for them.
-          </p>
 
           <div className="surface-panel mt-8 rounded-[1.9rem] p-6">
             <div className="flex flex-col gap-6 border-b border-white/10 pb-6 sm:flex-row sm:items-end sm:justify-between">
@@ -139,9 +134,8 @@ export function SummaryStage({
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+          <div className="mt-8">
             <GlowButton onClick={onStartProject}>Start your project</GlowButton>
-            <p className="text-sm text-white/45">We’ll guide site fit, delivery sequence, and next decisions with you.</p>
           </div>
         </motion.div>
       </div>

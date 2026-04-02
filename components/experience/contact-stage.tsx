@@ -42,12 +42,11 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
           viewport={{ once: true, amount: 0.24 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          <span className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/46">Project handoff</span>
-          <h2 className="mt-4 max-w-3xl text-[clamp(2.6rem,5vw,4.4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-balance text-white">
-            Friendly next steps, without the usual form fatigue.
+          <h2 className="max-w-3xl text-[clamp(2.6rem,5vw,4.4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-balance text-white">
+            Let&apos;s make it real.
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-8 text-white/66">
-            We only need the basics to guide the right conversation. Everything else can happen together, with context.
+            Just the basics — we&apos;ll figure out the rest together.
           </p>
 
           <div className="mt-8 flex flex-wrap gap-2">
@@ -170,7 +169,6 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                   See your pod come to life
                 </GlowButton>
               )}
-              <p className="text-sm text-white/44">We’ll guide you through everything. No hard sell, no dead air.</p>
             </div>
           )}
         </motion.div>
@@ -190,19 +188,11 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
             </p>
           </div>
 
-          <div className="mt-8 space-y-4">
-            <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
-              <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">What happens next</p>
-              <p className="mt-3 text-sm leading-7 text-white/62">
-                We align on site, timing, and fit. The detailed decisions stay hidden until they actually matter.
-              </p>
-            </div>
-            <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
-              <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">Why this feels easier</p>
-              <p className="mt-3 text-sm leading-7 text-white/62">
-                The product is already designed well. You are selecting refinement, not trying to invent taste under pressure.
-              </p>
-            </div>
+          <div className="mt-8 rounded-[1.4rem] border border-white/10 bg-white/[0.03] p-4">
+            <p className="text-[11px] uppercase tracking-[0.22em] text-white/40">What happens next</p>
+            <p className="mt-3 text-sm leading-7 text-white/62">
+              Site check, permit path, fabrication, install. We walk you through each step.
+            </p>
           </div>
         </motion.aside>
       </div>
