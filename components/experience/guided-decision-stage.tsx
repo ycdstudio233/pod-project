@@ -81,7 +81,7 @@ export function GuidedDecisionStage({
           <p className="mt-4 max-w-lg text-sm leading-7 text-white/50">{copy}</p>
 
           {/* Option cards grid */}
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-{options.length > 3 ? 4 : options.length}">
+          <div className={`mt-6 grid gap-3 sm:grid-cols-2 ${options.length <= 3 ? "lg:grid-cols-3" : "xl:grid-cols-4"}`}>
             {options.map((option) => (
               <OptionCard
                 accent={option.accent}
@@ -99,7 +99,7 @@ export function GuidedDecisionStage({
             ))}
           </div>
 
-          <div className="mt-8 flex items-center gap-6">
+          <div className="mt-6 flex items-center gap-6">
             <GlowButton onClick={onNext}>{nextLabel}</GlowButton>
           </div>
         </motion.div>

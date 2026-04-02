@@ -313,8 +313,10 @@ export function PodExperience() {
       <InteriorPackStage
         onNext={() => navigateToSection("site-fit")}
         onSelect={(id) => updateState("interiorPack", id as InteriorPackId)}
+        onSizeChange={(size) => updateState("size", size)}
         selectedId={state.interiorPack}
         setRef={setSectionRef("interior-pack")}
+        state={state}
       />
 
       <SiteFitStage
