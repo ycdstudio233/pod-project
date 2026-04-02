@@ -19,11 +19,11 @@ interface SummaryStageProps {
 const SPECS = [
   "Engineered steel frame with 10-year structural warranty",
   "Triple-pane insulated glazing, argon-filled",
-  "Mini-split HVAC — heating & cooling included",
+  "Mini-split HVAC, heating and cooling included",
   "Engineered hardwood flooring throughout",
   "Pre-wired electrical with LED panel lighting",
   "Plumbing-ready for kitchen and bathroom hookup",
-  "Insulated wall & roof panels — R-21 / R-38",
+  "Insulated wall and roof panels, R-21 / R-38",
   "Smart lock and pre-wired for home automation",
 ];
 
@@ -58,15 +58,14 @@ export function SummaryStage({
 
   return (
     <section
-      className="relative flex min-h-screen items-center overflow-hidden scroll-mt-20 py-10 lg:py-12"
+      className="relative flex min-h-[100svh] min-h-[100dvh] items-start overflow-hidden scroll-mt-28 py-24 lg:items-center lg:py-12"
       id="summary"
       ref={setRef}
     >
-      <div className="mx-auto w-full max-w-[1600px] px-5 lg:px-10">
+      <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-5 lg:px-10">
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(460px,1.05fr)_minmax(0,0.95fr)]">
-          {/* Left — 3D Preview */}
           <motion.div
-            className="relative h-[280px] overflow-hidden rounded-[1.4rem] sm:h-[400px] sm:rounded-[1.8rem] md:h-[520px] lg:sticky lg:top-24"
+            className="relative h-[240px] overflow-hidden rounded-[1.4rem] sm:h-[360px] sm:rounded-[1.8rem] md:h-[460px] lg:sticky lg:top-24"
             initial={{ opacity: 0, x: -30 }}
             style={{
               background: "linear-gradient(135deg, rgba(20,28,36,0.9), rgba(14,20,28,0.95))",
@@ -80,7 +79,6 @@ export function SummaryStage({
             <PodPreview className="h-full w-full" interactive state={state} />
           </motion.div>
 
-          {/* Right — Summary panel */}
           <div className="flex flex-col">
             <motion.p
               className="mb-3 text-[11px] uppercase tracking-[0.3em] text-white/50"
@@ -99,10 +97,9 @@ export function SummaryStage({
               viewport={{ once: true }}
               whileInView={{ opacity: 1, y: 0 }}
             >
-              Pod 7 — {sizeLabel}
+              Pod 7 / {sizeLabel}
             </motion.h2>
 
-            {/* Price panel */}
             <motion.div
               className="surface-panel rounded-[1.9rem] p-6"
               initial={{ opacity: 0, y: 20 }}
@@ -114,19 +111,17 @@ export function SummaryStage({
               <p className="text-3xl font-medium tracking-[-0.04em] text-white sm:text-5xl">{formatCurrency(estimatedPrice)}</p>
               <p className="mt-1 text-xs text-white/40">or ~{formatCurrency(monthlyEstimate)}/mo with financing</p>
 
-              {/* Price breakdown */}
               <div className="mt-5 space-y-2 border-t border-white/8 pt-4">
                 {includedItems.map((item) => (
-                  <div className="flex justify-between text-[13px]" key={item.label}>
+                  <div className="flex justify-between gap-4 text-[13px]" key={item.label}>
                     <span className="text-white/50">{item.label}</span>
-                    <span className={item.amount > 0 ? "text-white/70" : "text-[#8de4d4]/70"}>
+                    <span className={item.amount > 0 ? "text-right text-white/70" : "text-right text-[#8de4d4]/70"}>
                       {item.amount > 0 ? formatCurrency(item.amount) : "Included"}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* Config summary cards */}
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
                 <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.045] p-4">
                   <p className="text-[10px] uppercase tracking-wider text-white/40">Size</p>
@@ -143,7 +138,6 @@ export function SummaryStage({
               </div>
             </motion.div>
 
-            {/* What's Included accordion */}
             <motion.div
               className="mt-4"
               initial={{ opacity: 0, y: 16 }}
@@ -156,7 +150,7 @@ export function SummaryStage({
                 onClick={() => setSpecsOpen(!specsOpen)}
                 type="button"
               >
-                <span className="text-sm text-white/70">What&apos;s included in every pod</span>
+                <span className="text-left text-sm text-white/70">What&apos;s included in every pod</span>
                 <motion.svg
                   animate={{ rotate: specsOpen ? 180 : 0 }}
                   fill="none"
@@ -204,7 +198,6 @@ export function SummaryStage({
               </AnimatePresence>
             </motion.div>
 
-            {/* Action buttons */}
             <motion.div
               className="mt-8 flex flex-wrap items-center gap-3"
               initial={{ opacity: 0, y: 16 }}

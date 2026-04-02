@@ -22,7 +22,7 @@ interface SiteFitStageProps {
 const slopeOptions: { id: SlopeCondition; label: string }[] = [
   { id: "flat", label: "Flat or pretty flat" },
   { id: "slight", label: "A gentle slope" },
-  { id: "steep", label: "Steep — it's hilly" },
+  { id: "steep", label: "Steep, it's hilly" },
 ];
 
 const accessOptions: { id: AccessWidth; label: string }[] = [
@@ -48,7 +48,7 @@ function Pill({
 }) {
   return (
     <button
-      className={`rounded-full border px-5 py-3 text-sm transition-all duration-200 ${
+      className={`w-full rounded-[1.2rem] border px-5 py-3 text-left text-sm transition-all duration-200 sm:w-auto sm:rounded-full ${
         active
           ? "border-white/20 bg-white/10 text-white"
           : "border-white/10 bg-white/[0.03] text-white/60 hover:border-white/16 hover:bg-white/[0.06]"
@@ -84,17 +84,18 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
     setStep(3);
   }, [onUpdate, verdict]);
 
-  const canAdvance = step === 0 ? siteFit.slope !== null : step === 1 ? siteFit.accessWidth !== null : step === 2 ? siteFit.intendedUse !== null : true;
+  const canAdvance =
+    step === 0 ? siteFit.slope !== null : step === 1 ? siteFit.accessWidth !== null : step === 2 ? siteFit.intendedUse !== null : true;
 
   return (
     <section
-      className="relative min-h-screen overflow-hidden px-5 pt-24 pb-10 scroll-mt-20 lg:px-10 lg:pb-12"
+      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-28 px-4 pb-10 pt-24 sm:px-5 sm:pt-28 lg:px-10 lg:pb-12"
       id="site-fit"
       ref={setRef}
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(141,228,212,0.1),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent_28%,rgba(0,0,0,0.14)_100%)]" />
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-5rem)] max-w-[860px] flex-col justify-center">
+      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-7rem)] max-w-[860px] flex-col justify-center sm:min-h-[calc(100svh-6rem)]">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.55 }}
@@ -108,11 +109,11 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
             <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">takes 20 seconds</span>
           </div>
           <h2 className="text-[clamp(1.8rem,5vw,4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
-            {step < 3 ? "Let\u2019s make sure your site works." : "Looking good \u2014 this is a real project."}
+            {step < 3 ? "Let's make sure your site works." : "Looking good, this is a real project."}
           </h2>
           {step < 3 ? (
             <p className="mt-3 max-w-lg text-base leading-7 text-white/60 sm:mt-4 sm:text-lg sm:leading-8">
-              Three quick questions. Nothing scary — we just need a rough picture so we can give you a real answer.
+              Three quick questions. Nothing scary, we just need a rough picture so we can give you a real answer.
             </p>
           ) : null}
         </motion.div>
@@ -130,7 +131,8 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
                 }`}
                 key={label}
               >
-                {index < step ? "\u2713 " : ""}{label}
+                {index < step ? "\u2713 " : ""}
+                {label}
               </span>
             ))}
           </div>
@@ -141,7 +143,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
             {step === 0 ? (
               <motion.div key="slope" {...fadeVariants} transition={{ duration: 0.3 }}>
                 <p className="mb-5 text-sm font-medium text-white/70">What&apos;s the ground like where the pod would go?</p>
-                <div className="flex flex-wrap gap-3">
+                <div className="grid gap-3 sm:flex sm:flex-wrap">
                   {slopeOptions.map((opt) => (
                     <Pill active={siteFit.slope === opt.id} key={opt.id} onClick={() => onUpdate({ slope: opt.id })}>
                       {opt.label}
@@ -154,7 +156,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
             {step === 1 ? (
               <motion.div key="access" {...fadeVariants} transition={{ duration: 0.3 }}>
                 <p className="mb-5 text-sm font-medium text-white/70">Can a truck get to the spot easily?</p>
-                <div className="flex flex-wrap gap-3">
+                <div className="grid gap-3 sm:flex sm:flex-wrap">
                   {accessOptions.map((opt) => (
                     <Pill active={siteFit.accessWidth === opt.id} key={opt.id} onClick={() => onUpdate({ accessWidth: opt.id })}>
                       {opt.label}
@@ -167,7 +169,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
             {step === 2 ? (
               <motion.div key="use" {...fadeVariants} transition={{ duration: 0.3 }}>
                 <p className="mb-5 text-sm font-medium text-white/70">What will you mostly use it for?</p>
-                <div className="flex flex-wrap gap-3">
+                <div className="grid gap-3 sm:flex sm:flex-wrap">
                   {useOptions.map((opt) => (
                     <Pill active={siteFit.intendedUse === opt.id} key={opt.id} onClick={() => onUpdate({ intendedUse: opt.id })}>
                       {opt.label}
@@ -204,7 +206,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
               Check my site
             </GlowButton>
           ) : (
-            <GlowButton onClick={onNext}>Almost done — show me the price</GlowButton>
+            <GlowButton onClick={onNext}>Almost done, show me the price</GlowButton>
           )}
         </div>
       </div>

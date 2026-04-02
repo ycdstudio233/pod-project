@@ -13,8 +13,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
   return (
-    <section className="relative h-screen overflow-hidden" id="hero" ref={setRef}>
-      {/* Full-bleed cinematic image */}
+    <section className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-24" id="hero" ref={setRef}>
       <div className="absolute inset-0">
         <Image
           alt="Pod in landscape"
@@ -29,8 +28,7 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
         <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/60 via-transparent to-transparent" />
       </div>
 
-      {/* Content pinned to bottom-left */}
-      <div className="relative z-10 mx-auto flex h-full max-w-[1400px] flex-col justify-end px-5 pb-10 sm:px-6 sm:pb-16 lg:px-12 lg:pb-20">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] min-h-[100dvh] max-w-[1400px] flex-col justify-end px-4 pb-12 pt-28 sm:px-6 sm:pb-16 sm:pt-32 lg:px-12 lg:pb-20">
         <motion.p
           animate={{ opacity: 1, y: 0 }}
           className="mb-4 text-[11px] font-medium uppercase tracking-[0.3em] text-white/50"
@@ -55,24 +53,24 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
           initial={{ opacity: 0, y: 18 }}
           transition={{ delay: 0.16, duration: 0.7 }}
         >
-          Choose the footprint, shell, and setting. We handle the complexity behind the scenes so the pod already feels like yours.
+          Choose the footprint, shell, and setting. We handle the complexity behind the scenes so the pod already
+          feels like yours.
         </motion.p>
 
         <motion.div
           animate={{ opacity: 1, y: 0 }}
-          className="mt-6 flex flex-wrap items-center gap-4 sm:mt-8 sm:gap-6"
+          className="mt-6 flex flex-col items-start gap-3 sm:mt-8 sm:flex-row sm:items-center sm:gap-6"
           initial={{ opacity: 0, y: 18 }}
           transition={{ delay: 0.24, duration: 0.7 }}
         >
           <GlowButton onClick={onExplore}>Explore your pod</GlowButton>
-          <span className="text-sm text-white/36">Pre-configured paths. No dead ends.</span>
+          <span className="max-w-xs text-sm leading-6 text-white/36">Pre-configured paths. No dead ends.</span>
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         animate={{ opacity: 1 }}
-        className="absolute inset-x-0 bottom-6 z-10 flex justify-center"
+        className="absolute inset-x-0 bottom-6 z-10 hidden justify-center sm:flex"
         initial={{ opacity: 0 }}
         transition={{ delay: 1.2, duration: 0.8 }}
       >

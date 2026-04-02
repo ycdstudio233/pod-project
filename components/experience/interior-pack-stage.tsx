@@ -32,39 +32,25 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
 
   return (
     <section
-      className="relative min-h-screen overflow-hidden pt-24 scroll-mt-20"
+      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-28 pt-24 sm:pt-28"
       id="interior-pack"
       ref={setRef}
     >
-      {/* Visual area — photo or 3D */}
-      <div className="relative h-[50vh] w-full overflow-hidden lg:h-[56vh]">
+      <div className="relative h-[38svh] min-h-[260px] w-full overflow-hidden sm:h-[44vh] lg:h-[56vh]">
         {viewMode === "photo" ? (
           <>
-            <Image
-              alt="Interior view"
-              className="object-cover"
-              draggable={false}
-              fill
-              key={activeImage}
-              sizes="100vw"
-              src={activeImage}
-            />
+            <Image alt="Interior view" className="object-cover" draggable={false} fill key={activeImage} sizes="100vw" src={activeImage} />
             <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-transparent to-[#07090d]/20" />
           </>
         ) : (
           <div className="h-full w-full">
-            <PodPreview
-              className="h-full w-full"
-              interactive
-              state={state}
-            />
+            <PodPreview className="h-full w-full" interactive state={state} />
           </div>
         )}
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#07090d] to-transparent" />
 
-        {/* View toggle + size selector overlay */}
-        <div className="absolute inset-x-0 bottom-6 z-10 flex justify-center">
-          <div className="flex items-center gap-2 rounded-full border border-white/10 bg-black/50 px-2 py-1 backdrop-blur-xl">
+        <div className="absolute inset-x-4 bottom-4 z-10 flex justify-start sm:inset-x-0 sm:bottom-6 sm:justify-center">
+          <div className="flex max-w-full flex-wrap items-center gap-2 rounded-[1.2rem] border border-white/10 bg-black/50 px-2 py-2 backdrop-blur-xl sm:rounded-full sm:py-1">
             <button
               className={`rounded-full px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.12em] transition-all ${
                 viewMode === "photo" ? "bg-white/12 text-white" : "text-white/40 hover:text-white/60"
@@ -81,12 +67,12 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
               onClick={() => setViewMode("3d")}
               type="button"
             >
-              3D Layout
+              3D layout
             </button>
 
             {viewMode === "3d" ? (
               <>
-                <div className="mx-1 h-4 w-px bg-white/10" />
+                <div className="mx-1 hidden h-4 w-px bg-white/10 sm:block" />
                 {(["S", "M", "L"] as PodSize[]).map((size) => (
                   <button
                     className={`rounded-full px-2.5 py-1 text-[10px] font-medium transition-all ${
@@ -105,33 +91,31 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
         </div>
       </div>
 
-      {/* Content below */}
-      <div className="relative z-10 mx-auto max-w-[1400px] px-6 lg:px-12">
-        <div className="-mt-8">
+      <div className="relative z-10 mx-auto max-w-[1400px] px-4 sm:px-6 lg:px-12">
+        <div className="-mt-6 sm:-mt-8">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true, amount: 0.3 }}
             whileInView={{ opacity: 1, y: 0 }}
           >
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-white/8 py-4">
+            <div className="flex flex-col items-start gap-2 border-b border-white/8 py-4 sm:flex-row sm:items-center sm:justify-between">
               <h2 className="text-[clamp(1.4rem,3.5vw,2.8rem)] font-medium tracking-[-0.03em] text-white">
                 Now let&apos;s peek inside.
               </h2>
               <div className="flex items-center gap-2 sm:gap-3">
-                <span className="text-xs text-white/50 sm:text-sm">
-                  {interiorPackOptions.find((p) => p.id === selectedId)?.label}
-                </span>
+                <span className="text-xs text-white/50 sm:text-sm">{interiorPackOptions.find((p) => p.id === selectedId)?.label}</span>
                 <span className="hidden text-[10px] uppercase tracking-[0.2em] text-white/30 sm:inline">Interior</span>
               </div>
             </div>
 
             <p className="mt-3 max-w-md text-sm leading-7 text-white/46">
-              Each layout is already resolved. Pick the one that fits your life — switch to 3D to see how the space changes per size.
+              Each layout is already resolved. Pick the one that fits your life, then switch to 3D to see how the
+              space changes by size.
             </p>
           </motion.div>
 
-          <div className="mt-5 grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-5">
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {interiorPackOptions.map((pack) => (
               <button
                 className={`group relative overflow-hidden rounded-2xl border p-4 text-left transition-all duration-200 ${
@@ -166,7 +150,7 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
 
           <div className="mt-5 flex flex-wrap items-center gap-4 pb-8 sm:mt-6 sm:gap-6 sm:pb-10">
             <GlowButton onClick={onNext}>This feels right</GlowButton>
-            <span className="hidden text-sm text-white/36 sm:inline">Everything is already laid out and ready to go.</span>
+            <span className="text-sm text-white/36">Everything is already laid out and ready to go.</span>
           </div>
         </div>
       </div>

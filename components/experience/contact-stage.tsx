@@ -30,7 +30,7 @@ const TIMELINE_OPTIONS = [
 const FAQ_ITEMS = [
   {
     q: "Do I need a permit?",
-    a: "It depends on your location and pod size. We handle the research and filing for you as part of our site check process — at no extra cost.",
+    a: "It depends on your location and pod size. We handle the research and filing for you as part of our site check process, at no extra cost.",
   },
   {
     q: "What foundation does it need?",
@@ -38,11 +38,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "How is it delivered?",
-    a: "Your pod arrives fully assembled on a flatbed truck. We coordinate crane placement and connect utilities on-site, typically in 1–2 days.",
+    a: "Your pod arrives fully assembled on a flatbed truck. We coordinate crane placement and connect utilities on-site, typically in 1 to 2 days.",
   },
   {
     q: "Is financing available?",
-    a: "Yes. We partner with lenders offering terms from 5–15 years. Monthly payments can be as low as a few hundred dollars depending on configuration.",
+    a: "Yes. We partner with lenders offering terms from 5 to 15 years. Monthly payments can be as low as a few hundred dollars depending on configuration.",
   },
   {
     q: "Can I customize beyond the configurator?",
@@ -78,7 +78,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
 
   return (
     <section
-      className="relative min-h-screen flex items-center overflow-hidden scroll-mt-20 py-10 lg:py-12"
+      className="relative flex min-h-[100svh] min-h-[100dvh] items-start overflow-hidden scroll-mt-28 py-24 lg:items-center lg:py-12"
       id="contact"
       ref={setRef}
     >
@@ -86,11 +86,9 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
 
       <div className="relative z-10 mx-auto w-full max-w-[1480px] px-4 sm:px-5 lg:px-10">
         <div className="grid grid-cols-1 gap-6 sm:gap-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(340px,0.82fr)]">
-          {/* Left — Form */}
           <div className="flex flex-col">
             {!submitted ? (
               <>
-                {/* Step indicators */}
                 <div className="mb-8 flex flex-wrap gap-2">
                   {stepLabels.map((label, i) => (
                     <span
@@ -118,9 +116,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                       <h2 className="mb-2 text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-white">
                         Where will your pod go?
                       </h2>
-                      <p className="mb-6 text-sm text-white/50">
-                        A general area is fine — we&apos;ll figure out the details together.
-                      </p>
+                      <p className="mb-6 text-sm text-white/50">A general area is fine. We&apos;ll figure out the details together.</p>
 
                       <div className="mb-4 flex flex-wrap gap-2">
                         {LOCATION_PRESETS.map((preset) => (
@@ -160,9 +156,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                       <h2 className="mb-2 text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-white">
                         When are you thinking?
                       </h2>
-                      <p className="mb-6 text-sm text-white/50">
-                        No commitment — just helps us plan.
-                      </p>
+                      <p className="mb-6 text-sm text-white/50">No commitment, this just helps us plan.</p>
 
                       <div className="grid gap-3 md:grid-cols-3">
                         {TIMELINE_OPTIONS.map((opt) => (
@@ -201,9 +195,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                       <h2 className="mb-2 text-[clamp(1.6rem,4vw,3rem)] font-medium leading-[1.05] tracking-tight text-white">
                         How can we reach you?
                       </h2>
-                      <p className="mb-6 text-sm text-white/50">
-                        We&apos;ll guide you through everything from here.
-                      </p>
+                      <p className="mb-6 text-sm text-white/50">We&apos;ll guide you through everything from here.</p>
 
                       <div className="grid gap-4 md:grid-cols-2">
                         <input
@@ -225,12 +217,12 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                   )}
                 </AnimatePresence>
 
-                <div className="mt-8 flex items-center gap-3">
-                  {stepIndex > 0 && (
-                    <GlowButton onClick={() => setStepIndex((v) => v - 1)} variant="ghost">
+                <div className="mt-8 flex flex-wrap items-center gap-3">
+                  {stepIndex > 0 ? (
+                    <GlowButton onClick={() => setStepIndex((value) => value - 1)} variant="ghost">
                       Back
                     </GlowButton>
-                  )}
+                  ) : null}
                   <GlowButton disabled={!canContinue} onClick={handleNext}>
                     {stepIndex === 2 ? "Start your project" : "Continue"}
                   </GlowButton>
@@ -250,15 +242,14 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                 </div>
                 <h3 className="mb-3 text-2xl font-medium text-white">You&apos;re in</h3>
                 <p className="text-sm leading-relaxed text-white/60">
-                  We&apos;ll be in touch within 24 hours with a personalized plan. From site check to delivery — we guide everything.
+                  We&apos;ll be in touch within 24 hours with a personalized plan. From site check to delivery, we guide
+                  everything.
                 </p>
               </motion.div>
             )}
           </div>
 
-          {/* Right — Sidebar */}
           <div className="flex h-fit flex-col gap-4 lg:sticky lg:top-20">
-            {/* Price card */}
             <motion.aside
               className="surface-panel-strong rounded-2xl p-5 sm:rounded-[2rem] sm:p-6"
               initial={{ opacity: 0, x: 20 }}
@@ -271,14 +262,14 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
               <p className="mt-1 text-xs text-white/40">~{formatCurrency(monthlyEstimate)}/mo with financing</p>
               <p className="mt-3 text-sm text-white/50">
                 {environmentOptions.find((o) => o.id === state.environment)?.title}
-                {state.siteLocation ? ` · ${state.siteLocation}` : ""}
+                {state.siteLocation ? ` / ${state.siteLocation}` : ""}
               </p>
 
               <div className="mt-6">
                 <div className="rounded-[1.4rem] border border-white/10 bg-white/[0.045] p-4">
                   <p className="mb-2 text-[11px] uppercase tracking-wider text-white/40">What happens next</p>
                   <div className="space-y-2">
-                    {["Free 15-min intro call", "Site feasibility check", "Locked pricing & timeline"].map((step, i) => (
+                    {["Free 15-min intro call", "Site feasibility check", "Locked pricing and timeline"].map((step, i) => (
                       <div className="flex items-center gap-2" key={step}>
                         <span className="flex h-5 w-5 items-center justify-center rounded-full border border-white/8 bg-white/[0.06] text-[9px] text-[#8de4d4]">
                           {i + 1}
@@ -291,7 +282,6 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
               </div>
             </motion.aside>
 
-            {/* FAQ accordion */}
             <motion.div
               className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] sm:rounded-[2rem]"
               initial={{ opacity: 0, x: 20 }}
@@ -299,9 +289,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
               viewport={{ once: true }}
               whileInView={{ opacity: 1, x: 0 }}
             >
-              <p className="px-6 pb-3 pt-5 text-[11px] uppercase tracking-[0.2em] text-white/40">
-                Common questions
-              </p>
+              <p className="px-6 pb-3 pt-5 text-[11px] uppercase tracking-[0.2em] text-white/40">Common questions</p>
               {FAQ_ITEMS.map((faq, i) => (
                 <div className="border-t border-white/[0.06]" key={faq.q}>
                   <button
@@ -326,7 +314,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                     </motion.svg>
                   </button>
                   <AnimatePresence>
-                    {openFaq === i && (
+                    {openFaq === i ? (
                       <motion.div
                         animate={{ height: "auto", opacity: 1 }}
                         className="overflow-hidden"
@@ -336,7 +324,7 @@ export function ContactStage({ estimatedPrice, onFieldChange, setRef, state }: C
                       >
                         <p className="px-6 pb-4 text-[12px] leading-relaxed text-white/45">{faq.a}</p>
                       </motion.div>
-                    )}
+                    ) : null}
                   </AnimatePresence>
                 </div>
               ))}

@@ -12,11 +12,10 @@ interface ImmersiveTransitionProps {
 export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionProps) {
   return (
     <section
-      className="relative flex min-h-screen items-center overflow-hidden pt-24 scroll-mt-20"
+      className="relative flex min-h-[100svh] min-h-[100dvh] items-center overflow-hidden scroll-mt-28 px-4 pb-10 pt-28 sm:px-6 sm:pb-16 sm:pt-32 lg:px-12"
       id="transition"
       ref={setRef}
     >
-      {/* Background image */}
       <div className="absolute inset-0">
         <Image
           alt="Pod closeup"
@@ -31,15 +30,13 @@ export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionP
       </div>
 
       <motion.div
-        className="relative z-10 mx-auto max-w-[1400px] px-5 py-10 sm:px-6 sm:py-20 lg:px-12"
+        className="relative z-10 mx-auto w-full max-w-[1400px] py-8 sm:py-12"
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.65 }}
         viewport={{ once: true, amount: 0.4 }}
         whileInView={{ opacity: 1, y: 0 }}
       >
-        <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/44">
-          Here&apos;s how this works
-        </p>
+        <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-white/44">Here&apos;s how this works</p>
         <h2 className="mt-6 max-w-xl text-[clamp(2.4rem,5vw,4.2rem)] font-medium leading-[0.96] tracking-[-0.04em] text-white">
           We&apos;ll do this together, step by step.
         </h2>

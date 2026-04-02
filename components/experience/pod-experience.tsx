@@ -127,9 +127,23 @@ export function PodExperience() {
   );
 
   const scrollToSection = useCallback((id: SectionId) => {
-    sectionRefs.current[id]?.scrollIntoView({
+    const node = sectionRefs.current[id];
+
+    if (!node) {
+      return;
+    }
+
+    if (id === "hero") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const dockOffset = window.innerWidth < 640 ? 92 : 88;
+    const nextTop = node.getBoundingClientRect().top + window.scrollY - dockOffset;
+
+    window.scrollTo({
+      top: Math.max(nextTop, 0),
       behavior: "smooth",
-      block: "start",
     });
   }, []);
 
@@ -191,7 +205,7 @@ export function PodExperience() {
   const configLabel = useMemo(() => {
     const finishLabel = finishOptions.find((o) => o.id === state.finish)?.title ?? state.finish;
     const envLabel = environmentOptions.find((o) => o.id === state.environment)?.title ?? state.environment;
-    return `${state.size} · ${finishLabel} · ${envLabel}`;
+    return `${state.size} / ${finishLabel} / ${envLabel}`;
   }, [state.size, state.finish, state.environment]);
 
   const beginExperience = useCallback(() => {
@@ -264,7 +278,7 @@ export function PodExperience() {
 
       <GuidedDecisionStage
         copy="We already picked the one most people love. Just confirm or change it."
-        guidance="Residence 02 is the sweet spot — not too small, not too big. Most people keep it."
+        guidance="Residence 02 is the sweet spot, not too small and not too big. Most people keep it."
         id="size"
         nextLabel="Looks good"
         onNext={() => navigateToSection("finish")}
@@ -279,7 +293,7 @@ export function PodExperience() {
       />
 
       <GuidedDecisionStage
-        copy="This is the fun part. Pick a color that feels like you — they all look great."
+        copy="This is the fun part. Pick a color that feels like you. They all look great."
         guidance="Glacier is our most popular because it works with every setting. But trust your gut."
         id="finish"
         nextLabel="Love it"
@@ -295,8 +309,8 @@ export function PodExperience() {
       />
 
       <GuidedDecisionStage
-        copy="Where will your pod actually live? Pick the closest match — we'll fine-tune together later."
-        guidance="Don't worry about getting it perfect. This just helps us show you the right picture."
+        copy="Where will your pod actually live? Pick the closest match and we will fine-tune it together later."
+        guidance="Don't worry about getting it perfect. This just helps us show you the right setting."
         id="environment"
         nextLabel="That's the exterior done"
         onNext={() => navigateToSection("interior-pack")}
@@ -343,12 +357,7 @@ export function PodExperience() {
         state={state}
       />
 
-      <ContactStage
-        estimatedPrice={estimatedPrice}
-        onFieldChange={updateState}
-        setRef={setSectionRef("contact")}
-        state={state}
-      />
+      <ContactStage estimatedPrice={estimatedPrice} onFieldChange={updateState} setRef={setSectionRef("contact")} state={state} />
     </main>
   );
 }
