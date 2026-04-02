@@ -22,12 +22,13 @@ export function PodCanvas({ interactive = false, state, visible = true }: PodCan
     <Canvas
       dpr={dpr}
       frameloop={visible ? "always" : "demand"}
-      gl={{ antialias: true, powerPreference: interactive ? "high-performance" : "default" }}
-      shadows={interactive ? true : "soft"}
+      gl={{ antialias: true, alpha: true, powerPreference: interactive ? "high-performance" : "default" }}
+      shadows="soft"
+      style={{ background: "transparent" }}
     >
       <PerformanceMonitor onDecline={onDecline} onIncline={onIncline} />
       <PerspectiveCamera makeDefault fov={36} position={[5.7, 2.1, 5.7]} />
-      <SceneEnvironment environment={state.environment} interactive={interactive} lighting={state.lighting} />
+      <SceneEnvironment interactive={interactive} lighting={state.lighting} />
       <group position={[0, 0, 0]}>
         <PodModel
           finish={state.finish}
@@ -39,11 +40,14 @@ export function PodCanvas({ interactive = false, state, visible = true }: PodCan
       <OrbitControls
         autoRotate={!interactive && visible}
         autoRotateSpeed={0.38}
+        dampingFactor={0.05}
+        enableDamping
         enablePan={false}
         maxDistance={8.2}
         maxPolarAngle={Math.PI / 1.95}
         minDistance={4.3}
         minPolarAngle={Math.PI / 3.4}
+        rotateSpeed={0.5}
       />
     </Canvas>
   );
