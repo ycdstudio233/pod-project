@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useCallback, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { InteriorPreview } from "@/components/3d/interior-preview";
 import { GlowButton } from "@/components/ui/glow-button";
 import { interiorPackOptions } from "@/lib/configurator-data";
@@ -29,6 +29,21 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
   const [hoveredId, setHoveredId] = useState<InteriorPackId | null>(null);
   const [viewMode, setViewMode] = useState<"photo" | "3d">("photo");
   const activeImage = interiorImages[hoveredId ?? selectedId];
+  // When user selects a pack option, show the photo
+  const handleSelect = useCallback(
+    (id: InteriorPackId) => {
+      onSelect(id);
+      setViewMode("photo");
+    },
+    [onSelect],
+  );
+
+  // When user starts dragging/interacting in the viewer area, switch to 3D
+  const handleViewerInteraction = useCallback(() => {
+    if (viewMode === "photo") {
+      setViewMode("3d");
+    }
+  }, [viewMode]);
 
   return (
     <section
@@ -37,19 +52,60 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
       ref={setRef}
     >
       <div className="relative h-[32svh] min-h-[220px] w-full overflow-hidden md:h-[44vh] lg:h-[56vh]">
-        {viewMode === "photo" ? (
-          <>
-            <Image alt="Interior view" className="object-cover" draggable={false} fill key={activeImage} sizes="100vw" src={activeImage} />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-transparent to-[#07090d]/20" />
-          </>
-        ) : (
-          <div className="h-full w-full">
-            <InteriorPreview className="h-full w-full" state={state} />
-          </div>
-        )}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#07090d] to-transparent" />
+        {/* Photo layer — always present for smooth transitions */}
+        <AnimatePresence mode="wait">
+          {viewMode === "photo" ? (
+            <motion.div
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 z-[1]"
+              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }}
+              key={`photo-${activeImage}`}
+              transition={{ duration: 0.4 }}
+            >
+              <Image
+                alt="Interior view"
+                className="object-cover"
+                draggable={false}
+                fill
+                sizes="100vw"
+                src={activeImage}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-transparent to-[#07090d]/20" />
+              {/* Drag hint overlay */}
+              <div className="pointer-events-none absolute inset-0 z-[2] flex items-center justify-center">
+                <motion.div
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-full border border-white/10 bg-black/40 px-4 py-2 backdrop-blur-md"
+                  initial={{ opacity: 0, y: 8 }}
+                  transition={{ delay: 0.6, duration: 0.5 }}
+                >
+                  <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/50">
+                    Drag to explore in 3D
+                  </span>
+                </motion.div>
+              </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
 
-        <div className="absolute inset-x-4 bottom-4 z-10 flex justify-start sm:inset-x-0 sm:bottom-6 sm:justify-center">
+        {/* 3D layer — always mounted for preloading, just hidden behind photo */}
+        <div className={`absolute inset-0 ${viewMode === "3d" ? "z-[1]" : "z-0"}`}>
+          <InteriorPreview className="h-full w-full" state={state} />
+        </div>
+
+        {/* Invisible interaction layer on top of photo to detect drag */}
+        {viewMode === "photo" ? (
+          <div
+            className="absolute inset-0 z-[3] cursor-grab"
+            onMouseDown={handleViewerInteraction}
+            onTouchStart={handleViewerInteraction}
+          />
+        ) : null}
+
+        <div className="absolute inset-x-0 bottom-0 z-[4] h-24 bg-gradient-to-t from-[#07090d] to-transparent" />
+
+        <div className="absolute inset-x-4 bottom-4 z-[5] flex justify-start sm:inset-x-0 sm:bottom-6 sm:justify-center">
           <div className="flex max-w-full flex-wrap items-center gap-2 rounded-[1.2rem] border border-white/10 bg-black/50 px-2 py-2 backdrop-blur-xl sm:rounded-full sm:py-1">
             <button
               className={`rounded-full px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.12em] transition-all ${
@@ -107,8 +163,7 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
             </div>
 
             <p className="mt-2 hidden max-w-md text-sm leading-7 text-white/46 md:block">
-              Each layout is already resolved. Pick the one that fits your life, then switch to 3D to see how the
-              space changes by size.
+              Each layout is already resolved. Pick the one that fits your life, then drag to explore in 3D.
             </p>
           </motion.div>
 
@@ -124,7 +179,7 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
                       : "border-white/8 bg-white/[0.025] active:bg-white/[0.06]"
                   }`}
                   key={pack.id}
-                  onClick={() => onSelect(pack.id)}
+                  onClick={() => handleSelect(pack.id)}
                   onMouseEnter={() => setHoveredId(pack.id)}
                   onMouseLeave={() => setHoveredId(null)}
                   type="button"
@@ -175,7 +230,7 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
                     : "border-white/8 bg-white/[0.03] hover:border-white/14 hover:bg-white/[0.06]"
                 }`}
                 key={pack.id}
-                onClick={() => onSelect(pack.id)}
+                onClick={() => handleSelect(pack.id)}
                 onMouseEnter={() => setHoveredId(pack.id)}
                 onMouseLeave={() => setHoveredId(null)}
                 type="button"
