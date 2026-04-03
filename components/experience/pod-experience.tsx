@@ -322,6 +322,11 @@ export function PodExperience() {
       <GuidedDecisionStage
         copy="Where will your pod actually live? Pick the closest match and we will fine-tune it together later."
         guidance="Don't worry about getting it perfect. This just helps us show you the right setting."
+        heroImages={{
+          desert: "/setting-opendesert.png",
+          forest: "/setting-forestedge.png",
+          urban: "/setting-backyard.png",
+        }}
         id="environment"
         nextLabel="Exterior done"
         onNext={() => navigateToSection("interior-pack")}

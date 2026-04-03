@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 import { PodPreview } from "@/components/3d/pod-preview";
 import { GlowButton } from "@/components/ui/glow-button";
 import { OptionCard } from "@/components/ui/option-card";
@@ -20,11 +21,14 @@ interface GuidedDecisionStageProps {
   onSelect: (id: string) => void;
   onNext: () => void;
   setRef?: (node: HTMLElement | null) => void;
+  /** When provided, shows a full-bleed hero image instead of the 3D viewer */
+  heroImages?: Record<string, string>;
 }
 
 export function GuidedDecisionStage({
   copy,
   guidance,
+  heroImages,
   id,
   nextLabel,
   onNext,
@@ -37,7 +41,7 @@ export function GuidedDecisionStage({
   stepLabel,
   title,
 }: GuidedDecisionStageProps) {
-  const selectedOption = options.find((o) => o.id === selectedId);
+  const activeImage = heroImages?.[selectedId];
 
   return (
     <section
@@ -45,7 +49,7 @@ export function GuidedDecisionStage({
       id={id}
       ref={setRef}
     >
-      {/* 3D Viewer */}
+      {/* Viewer — either hero image or 3D */}
       <div className="relative">
         <motion.div
           className="mx-auto w-full max-w-[1400px] px-4 md:px-6 lg:px-12"
@@ -54,7 +58,35 @@ export function GuidedDecisionStage({
           viewport={{ once: true, amount: 0.2 }}
           whileInView={{ opacity: 1 }}
         >
-          <PodPreview className="h-[200px] w-full rounded-2xl md:h-[280px] md:rounded-[1.8rem] lg:h-[340px]" interactive state={state} />
+          {heroImages ? (
+            /* Full-bleed setting image */
+            <div className="relative h-[220px] w-full overflow-hidden rounded-2xl md:h-[320px] md:rounded-[1.8rem] lg:h-[400px]">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="absolute inset-0"
+                  exit={{ opacity: 0, scale: 1.02 }}
+                  initial={{ opacity: 0, scale: 1.03 }}
+                  key={selectedId}
+                  transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+                >
+                  <Image
+                    alt={options.find((o) => o.id === selectedId)?.title ?? "Setting"}
+                    className="object-cover"
+                    draggable={false}
+                    fill
+                    quality={90}
+                    sizes="(max-width: 768px) 100vw, 1400px"
+                    src={activeImage ?? options[0]?.image ?? ""}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090d]/60 via-transparent to-transparent" />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          ) : (
+            /* 3D preview */
+            <PodPreview className="h-[200px] w-full rounded-2xl md:h-[280px] md:rounded-[1.8rem] lg:h-[340px]" interactive state={state} />
+          )}
         </motion.div>
       </div>
 
@@ -150,7 +182,7 @@ export function GuidedDecisionStage({
                 accent={option.accent}
                 description={option.description}
                 iconId={option.iconId}
-                image={option.image}
+                image={heroImages ? undefined : option.image}
                 key={option.id}
                 label={option.label}
                 meta={option.meta}

@@ -107,7 +107,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Big sky, warm light, and nothing but space around you.",
     meta: "Great for solar",
     accent: "#f0c58c",
-    image: "/pod-desert-day.jpg",
+    image: "/setting-opendesert.png",
     recommended: true,
   },
   {
@@ -117,7 +117,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Tucked into the trees with soft, filtered light all day.",
     meta: "Feels private right away",
     accent: "#88c39d",
-    image: "/pod-desert-night.png",
+    image: "/setting-forestedge.png",
   },
   {
     id: "urban",
@@ -126,7 +126,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Your own backyard. The pod fits right in and adds a whole new room to your life.",
     meta: "Perfect for ADU",
     accent: "#8bb8ff",
-    image: "/pod-desert-sunset.png",
+    image: "/setting-backyard.png",
   },
 ];
 
