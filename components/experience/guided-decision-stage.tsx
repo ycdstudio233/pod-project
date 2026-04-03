@@ -54,7 +54,7 @@ export function GuidedDecisionStage({
           viewport={{ once: true, amount: 0.2 }}
           whileInView={{ opacity: 1 }}
         >
-          <PodPreview className="h-[240px] w-full rounded-2xl md:h-[340px] md:rounded-[1.8rem] lg:h-[460px]" interactive state={state} />
+          <PodPreview className="h-[200px] w-full rounded-2xl md:h-[340px] md:rounded-[1.8rem] lg:h-[460px]" interactive state={state} />
         </motion.div>
       </div>
 
