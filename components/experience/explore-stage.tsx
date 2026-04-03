@@ -74,7 +74,7 @@ export function ExploreStage({ onContinue, setRef }: ExploreStageProps) {
 
             {exploreFeatures.map((feature, i) => (
               <motion.button
-                className="group relative h-[65svh] min-h-[420px] w-[75vw] shrink-0 overflow-hidden rounded-[1.25rem] text-left sm:w-[48vw] md:h-[72vh] md:min-h-[500px] md:w-[34vw] lg:w-[28vw] lg:max-w-[420px]"
+                className="group relative h-[52svh] min-h-[340px] max-h-[520px] w-[72vw] shrink-0 overflow-hidden rounded-[1.25rem] text-left sm:w-[44vw] md:h-[56vh] md:max-h-[580px] md:w-[30vw] lg:w-[26vw] lg:max-w-[400px]"
                 initial={{ opacity: 0, y: 24 }}
                 key={feature.id}
                 onClick={() => setActiveFeature(feature)}
