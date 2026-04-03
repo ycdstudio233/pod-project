@@ -11,6 +11,7 @@ import {
 import { calculateEstimatedPrice, calculatePriceBreakdown } from "@/lib/pricing";
 import type { ConfiguratorState, InteriorPackId, SiteFitData } from "@/types/configurator";
 import { ContactStage } from "./contact-stage";
+import { ExploreStage } from "./explore-stage";
 import { GuidedDecisionStage } from "./guided-decision-stage";
 import { HeroSection } from "./hero-section";
 import { ImmersiveTransition } from "./immersive-transition";
@@ -21,6 +22,7 @@ import { SummaryStage } from "./summary-stage";
 
 type SectionId =
   | "hero"
+  | "explore"
   | "transition"
   | "size"
   | "finish"
@@ -48,6 +50,7 @@ function configuratorReducer(state: ConfiguratorState, action: Action): Configur
 
 const sectionOrder: SectionId[] = [
   "hero",
+  "explore",
   "transition",
   "size",
   "finish",
@@ -60,6 +63,7 @@ const sectionOrder: SectionId[] = [
 
 const sectionProgressIndex: Record<SectionId, number> = {
   hero: 0,
+  explore: 0,
   transition: 0,
   size: 1,
   finish: 2,
@@ -83,6 +87,7 @@ const progressToSection: Record<number, SectionId> = {
 
 const stepLabels: Record<SectionId, string> = {
   hero: "Recommended pod",
+  explore: "Explore features",
   transition: "Guided path",
   size: "Exterior / size",
   finish: "Exterior / finish",
@@ -100,6 +105,7 @@ export function PodExperience() {
   const [transitioning, setTransitioning] = useState(false);
   const sectionRefs = useRef<Record<SectionId, HTMLElement | null>>({
     hero: null,
+    explore: null,
     transition: null,
     size: null,
     finish: null,
@@ -209,6 +215,10 @@ export function PodExperience() {
   }, [state.size, state.finish, state.environment]);
 
   const beginExperience = useCallback(() => {
+    scrollToSection("explore");
+  }, [scrollToSection]);
+
+  const beginConfiguration = useCallback(() => {
     setImmersiveOpen(true);
 
     timers.current.push(
@@ -274,6 +284,7 @@ export function PodExperience() {
       />
 
       <HeroSection onExplore={beginExperience} setRef={setSectionRef("hero")} state={state} />
+      <ExploreStage onContinue={beginConfiguration} setRef={setSectionRef("explore")} />
       <ImmersiveTransition onContinue={() => scrollToSection("size")} setRef={setSectionRef("transition")} />
 
       <GuidedDecisionStage

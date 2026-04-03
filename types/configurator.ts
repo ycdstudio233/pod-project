@@ -40,6 +40,19 @@ export interface StoryMoment {
   cta: string;
 }
 
+export interface ExploreFeature {
+  id: string;
+  title: string;
+  tagline: string;
+  image: string;
+  detail: {
+    headline: string;
+    description: string;
+    highlights: Array<{ label: string; value: string }>;
+    gallery?: string[];
+  };
+}
+
 export interface PriceLineItem {
   label: string;
   amount: number;

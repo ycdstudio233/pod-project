@@ -2,6 +2,7 @@ import type {
   ChoiceOption,
   ConfiguratorState,
   EnvironmentId,
+  ExploreFeature,
   FinishId,
   InteriorPackId,
   LightingMode,
@@ -310,3 +311,132 @@ export const processPhases = [
   "Install",
   "Move in",
 ] as const;
+
+export const exploreFeatures: ExploreFeature[] = [
+  {
+    id: "build-quality",
+    title: "Built to last",
+    tagline: "Precision-engineered structure",
+    image: "/pod-desert-day.jpg",
+    detail: {
+      headline: "Built to last",
+      description:
+        "Every pod starts as a precision-engineered steel frame, insulated and sealed in a climate-controlled factory. No weather delays, no site surprises. The result is a structure designed to perform for decades, not just survive them.",
+      highlights: [
+        { label: "Frame", value: "Galvanized steel" },
+        { label: "Insulation", value: "R-30 continuous" },
+        { label: "Design life", value: "50+ years" },
+        { label: "QC checks", value: "147 per unit" },
+      ],
+      gallery: ["/pod-desert-day.jpg", "/pod-desert-sunset.png"],
+    },
+  },
+  {
+    id: "climate-control",
+    title: "Climate control",
+    tagline: "Comfortable in every season",
+    image: "/story-anywhere-interior.webp",
+    detail: {
+      headline: "Climate control",
+      description:
+        "A whisper-quiet mini-split system keeps every corner comfortable year-round. Triple-pane glazing and continuous insulation mean the pod stays cool in summer and warm in winter without working hard.",
+      highlights: [
+        { label: "HVAC", value: "Mini-split, whisper-quiet" },
+        { label: "Glazing", value: "Triple-pane, Low-E" },
+        { label: "Insulation", value: "R-30 walls & roof" },
+        { label: "Noise floor", value: "< 28 dB inside" },
+      ],
+      gallery: ["/story-anywhere-interior.webp"],
+    },
+  },
+  {
+    id: "natural-light",
+    title: "Natural light",
+    tagline: "Designed around daylight",
+    image: "/pod-desert-sunset.png",
+    detail: {
+      headline: "Natural light",
+      description:
+        "Generous glazing wraps the pod in daylight without overheating. Solar-tuned orientation, UV filtering, and optional blackout layers give you full control of the atmosphere inside.",
+      highlights: [
+        { label: "Glass area", value: "Up to 40% of facade" },
+        { label: "UV filtering", value: "99% blocked" },
+        { label: "Orientation", value: "Solar-tuned" },
+        { label: "Blackout", value: "Optional integrated" },
+      ],
+      gallery: ["/pod-desert-sunset.png", "/pod-desert-day.jpg"],
+    },
+  },
+  {
+    id: "smart-home",
+    title: "Smart home",
+    tagline: "Connected, not complicated",
+    image: "/story-landscape-interior-1.webp",
+    detail: {
+      headline: "Smart home",
+      description:
+        "Everything connects through a single app. Smart lock, lighting scenes, climate scheduling, and energy monitoring are built in from day one. No hubs, no complexity, just a space that responds to you.",
+      highlights: [
+        { label: "Access", value: "Smart lock + app" },
+        { label: "Lighting", value: "Tunable scenes" },
+        { label: "Climate", value: "Scheduled + remote" },
+        { label: "Energy", value: "Real-time monitoring" },
+      ],
+      gallery: ["/story-landscape-interior-1.webp"],
+    },
+  },
+  {
+    id: "privacy",
+    title: "Privacy",
+    tagline: "Your space, your rules",
+    image: "/pod-desert-night.png",
+    detail: {
+      headline: "Privacy",
+      description:
+        "Strategic window placement, acoustic insulation, and optional electrochromic glass mean you decide exactly how open or private your pod feels. Even in a backyard, it is entirely your own.",
+      highlights: [
+        { label: "Acoustics", value: "STC 45+ rated" },
+        { label: "Smart glass", value: "Electrochromic option" },
+        { label: "Placement", value: "Strategic glazing" },
+        { label: "Screening", value: "Landscape integration" },
+      ],
+      gallery: ["/pod-desert-night.png"],
+    },
+  },
+  {
+    id: "foundation",
+    title: "Foundation included",
+    tagline: "Ready from the ground up",
+    image: "/pod-desert-day.jpg",
+    detail: {
+      headline: "Foundation included",
+      description:
+        "Every pod comes with an engineered foundation system designed for your specific site. Helical piers, concrete pads, or deck-over solutions — we match the method to your terrain and handle the engineering.",
+      highlights: [
+        { label: "Engineering", value: "Site-specific design" },
+        { label: "Options", value: "Piers, pads, or deck" },
+        { label: "Permits", value: "Docs included" },
+        { label: "Timeline", value: "1-2 day install" },
+      ],
+      gallery: ["/pod-desert-day.jpg"],
+    },
+  },
+  {
+    id: "delivery",
+    title: "Turnkey delivery",
+    tagline: "Move in, not build out",
+    image: "/pod-desert-sunset.png",
+    detail: {
+      headline: "Turnkey delivery",
+      description:
+        "Your pod is factory-built, delivered on a single truck, and crane-placed onto its foundation. Utility hookups are coordinated in advance. Most installations are complete in under a week.",
+      highlights: [
+        { label: "Build", value: "Factory-controlled" },
+        { label: "Delivery", value: "Single truck + crane" },
+        { label: "Install", value: "3-5 days typical" },
+        { label: "Utilities", value: "Pre-coordinated" },
+      ],
+      gallery: ["/pod-desert-sunset.png"],
+    },
+  },
+];
