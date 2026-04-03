@@ -27,9 +27,9 @@ export function PodCanvas({ interactive = false, state, visible = true }: PodCan
       style={{ background: "transparent" }}
     >
       <PerformanceMonitor onDecline={onDecline} onIncline={onIncline} />
-      <PerspectiveCamera makeDefault fov={36} position={[5.7, 2.1, 5.7]} />
+      <PerspectiveCamera makeDefault fov={36} position={[4.8, 1.6, 4.8]} />
       <SceneEnvironment interactive={interactive} lighting={state.lighting} />
-      <group position={[0, 0, 0]}>
+      <group position={[0, -0.15, 0]}>
         <PodModel
           finish={state.finish}
           lighting={state.lighting}
@@ -43,9 +43,9 @@ export function PodCanvas({ interactive = false, state, visible = true }: PodCan
         dampingFactor={0.05}
         enableDamping
         enablePan={false}
-        maxDistance={8.2}
+        maxDistance={7.5}
         maxPolarAngle={Math.PI / 1.95}
-        minDistance={4.3}
+        minDistance={3.8}
         minPolarAngle={Math.PI / 3.4}
         rotateSpeed={0.5}
       />
