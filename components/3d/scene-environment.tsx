@@ -1,9 +1,7 @@
 import {
-  AccumulativeShadows,
   ContactShadows,
   Environment,
   Lightformer,
-  RandomizedLight,
 } from "@react-three/drei";
 import type { LightingMode } from "@/types/configurator";
 
@@ -22,7 +20,7 @@ export function SceneEnvironment({ interactive = false, lighting }: SceneEnviron
 
       {/* Hemisphere for sky/ground color bleed */}
       <hemisphereLight
-        color={isDay ? "#e8f0ff" : "#3344667"}
+        color={isDay ? "#e8f0ff" : "#334466"}
         groundColor={isDay ? "#2a2018" : "#0a0810"}
         intensity={isDay ? 0.55 : 0.12}
       />
@@ -66,47 +64,16 @@ export function SceneEnvironment({ interactive = false, lighting }: SceneEnviron
         position={[0, 10, 0]}
       />
 
-      {/* Accumulative soft shadows on ground plane — premium look */}
-      {interactive ? (
-        <AccumulativeShadows
-          alphaTest={0.7}
-          color={isDay ? "#1a1a1a" : "#000000"}
-          colorBlend={2}
-          frames={60}
-          opacity={isDay ? 0.55 : 0.75}
-          position={[0, -0.97, 0]}
-          scale={12}
-          temporal
-        >
-          <RandomizedLight
-            ambient={0.4}
-            amount={8}
-            bias={0.001}
-            intensity={isDay ? 1.2 : 0.6}
-            position={[6, 8, 4]}
-            radius={6}
-            size={8}
-          />
-          <RandomizedLight
-            ambient={0.3}
-            amount={4}
-            bias={0.001}
-            intensity={isDay ? 0.4 : 0.2}
-            position={[-4, 5, -3]}
-            radius={4}
-            size={6}
-          />
-        </AccumulativeShadows>
-      ) : (
-        <ContactShadows
-          blur={2.8}
-          color={isDay ? "#1a1a1a" : "#000000"}
-          far={6}
-          opacity={isDay ? 0.4 : 0.65}
-          position={[0, -0.97, 0]}
-          scale={10}
-        />
-      )}
+      {/* Soft contact shadows on ground */}
+      <ContactShadows
+        blur={interactive ? 3.2 : 2.4}
+        color={isDay ? "#1a1a1a" : "#000000"}
+        far={6}
+        opacity={isDay ? 0.5 : 0.7}
+        position={[0, -0.97, 0]}
+        resolution={interactive ? 512 : 256}
+        scale={12}
+      />
 
       {/* Reflective ground plane — subtle, like a showroom floor */}
       <mesh position={[0, -0.98, 0]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>

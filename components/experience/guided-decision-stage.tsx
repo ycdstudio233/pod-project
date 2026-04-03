@@ -41,7 +41,7 @@ export function GuidedDecisionStage({
 
   return (
     <section
-      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 pt-[4.25rem] md:scroll-mt-28 md:pt-28"
+      className="relative overflow-hidden scroll-mt-20 pt-[4.25rem] md:scroll-mt-28 md:pt-28"
       id={id}
       ref={setRef}
     >
@@ -162,7 +162,7 @@ export function GuidedDecisionStage({
             ))}
           </div>
 
-          <div className="mt-4 hidden items-center gap-6 md:flex">
+          <div className="mt-4 hidden items-center gap-6 pb-8 md:flex lg:pb-10">
             <GlowButton onClick={onNext}>{nextLabel}</GlowButton>
             <span className="text-sm text-white/34">Choose a card to update the view right away.</span>
           </div>
