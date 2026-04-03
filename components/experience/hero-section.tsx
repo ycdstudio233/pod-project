@@ -22,7 +22,7 @@ export function HeroSection({ onExplore, setRef }: HeroSectionProps) {
           fill
           priority
           sizes="100vw"
-          src="/story-landscape.webp"
+          src="/pod-desert-day.jpg"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-[#07090d]/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/60 via-transparent to-transparent" />

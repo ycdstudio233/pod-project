@@ -106,7 +106,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Big sky, warm light, and nothing but space around you.",
     meta: "Great for solar",
     accent: "#f0c58c",
-    image: "/story-landscape.webp",
+    image: "/pod-desert-day.jpg",
     recommended: true,
   },
   {
@@ -116,7 +116,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Tucked into the trees with soft, filtered light all day.",
     meta: "Feels private right away",
     accent: "#88c39d",
-    image: "/story-anywhere.webp",
+    image: "/pod-desert-night.png",
   },
   {
     id: "urban",
@@ -125,7 +125,7 @@ export const environmentOptions: Array<ChoiceOption<EnvironmentId>> = [
     description: "Your own backyard. The pod fits right in and adds a whole new room to your life.",
     meta: "Perfect for ADU",
     accent: "#8bb8ff",
-    image: "/story-backyard.webp",
+    image: "/pod-desert-sunset.png",
   },
 ];
 
@@ -256,7 +256,7 @@ export const storyMoments: StoryMoment[] = [
     title: "It feels right the moment you step inside.",
     copy:
       "Everything is already thought through, the layout, the light, the quiet. You're not figuring anything out. You're just arriving.",
-    image: "/story-sanctuary-closeup.webp",
+    image: "/pod-desert-night.png",
     cta: "Continue",
   },
   {
@@ -265,7 +265,7 @@ export const storyMoments: StoryMoment[] = [
     title: "Looks like it was always meant to be there.",
     copy:
       "Every finish is already tuned for real weather and real light. You're not picking parts, you're picking the version that fits your place.",
-    image: "/story-backyard-2.webp",
+    image: "/pod-desert-sunset.png",
     cta: "Continue",
   },
   {
@@ -274,7 +274,7 @@ export const storyMoments: StoryMoment[] = [
     title: "Quiet enough to let the view do the talking.",
     copy:
       "Wide glass, soft corners, and just enough presence. The pod does its job beautifully, and stays out of the way.",
-    image: "/story-landscape.webp",
+    image: "/pod-desert-day.jpg",
     cta: "Continue",
   },
 ];

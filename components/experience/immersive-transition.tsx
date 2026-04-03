@@ -23,7 +23,7 @@ export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionP
           draggable={false}
           fill
           sizes="100vw"
-          src="/story-sanctuary-closeup.webp"
+          src="/pod-desert-sunset.png"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/80 via-[#07090d]/50 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-transparent to-[#07090d]/30" />
