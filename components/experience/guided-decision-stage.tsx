@@ -41,7 +41,7 @@ export function GuidedDecisionStage({
 
   return (
     <section
-      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 pt-[5.5rem] md:scroll-mt-28 md:pt-28"
+      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 pt-[4.5rem] md:scroll-mt-28 md:pt-28"
       id={id}
       ref={setRef}
     >
