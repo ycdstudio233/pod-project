@@ -46,15 +46,15 @@ export function GuidedDecisionStage({
   if (heroImages) {
     return (
       <section
-        className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 md:scroll-mt-28"
+        className="relative h-[100svh] h-[100dvh] overflow-hidden scroll-mt-20 md:scroll-mt-28"
         id={id}
         ref={setRef}
       >
-        {/* Full-bleed background image */}
+        {/* Full-bleed background image — object-position keeps the landscape/pod in view */}
         <AnimatePresence mode="wait">
           <motion.div
             animate={{ opacity: 1, scale: 1 }}
-            className="absolute inset-0"
+            className="absolute inset-x-0 bottom-0 h-[140%]"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0, scale: 1.04 }}
             key={selectedId}
@@ -62,7 +62,7 @@ export function GuidedDecisionStage({
           >
             <Image
               alt={options.find((o) => o.id === selectedId)?.title ?? "Setting"}
-              className="object-cover"
+              className="object-cover object-bottom"
               draggable={false}
               fill
               priority
@@ -74,11 +74,11 @@ export function GuidedDecisionStage({
         </AnimatePresence>
 
         {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-[#07090d]/30 to-[#07090d]/20" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/70 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-[#07090d]/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/60 via-transparent to-transparent" />
 
         {/* Content overlaid at bottom */}
-        <div className="relative z-10 flex min-h-[100svh] min-h-[100dvh] flex-col justify-end px-4 pb-8 pt-20 sm:px-6 md:pb-12 lg:px-12">
+        <div className="relative z-10 flex h-[calc(100%-7.5rem)] flex-col justify-end px-4 pb-4 sm:px-6 md:pb-6 lg:px-12">
           <div className="mx-auto w-full max-w-[1400px]">
             {/* Eyebrow + title */}
             <motion.div
@@ -87,64 +87,114 @@ export function GuidedDecisionStage({
               viewport={{ once: true, amount: 0.3 }}
               whileInView={{ opacity: 1, y: 0 }}
             >
-              <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/40 md:text-[11px]">
-                {phase} / {stepLabel}
-              </span>
-              <h2 className="mt-3 max-w-lg text-[clamp(2rem,5vw,3.8rem)] font-medium leading-[0.96] tracking-[-0.04em] text-white">
-                {title}
-              </h2>
-              <p className="mt-3 hidden max-w-md text-base leading-7 text-white/50 md:block">
-                {copy}
+              <div className="flex items-center justify-between gap-2 md:block">
+                <h2 className="max-w-lg text-lg font-medium tracking-[-0.03em] text-white md:text-[clamp(1.4rem,3.5vw,2.8rem)] md:leading-[0.96]">
+                  {title}
+                </h2>
+                <span className="text-[9px] uppercase tracking-[0.18em] text-white/30 md:mt-3 md:hidden md:text-[10px]">
+                  {phase} / {stepLabel}
+                </span>
+              </div>
+              <p className="mt-1 hidden max-w-md text-sm leading-6 text-white/44 md:block">
+                {guidance}
               </p>
             </motion.div>
 
-            {/* Option selector pills */}
-            <div className="mt-6 flex flex-wrap gap-2 md:mt-8">
+            {/* Mobile: sleek rows */}
+            <div className="mt-3 flex flex-col gap-1 md:hidden">
               {options.map((option) => {
                 const isSelected = selectedId === option.id;
                 return (
                   <button
-                    className={`relative overflow-hidden rounded-full border px-5 py-2.5 text-left transition-all duration-300 md:px-6 md:py-3 ${
+                    className={`relative flex items-center gap-3 overflow-hidden rounded-xl border px-3 py-2.5 text-left backdrop-blur-md transition-all duration-200 ${
                       isSelected
-                        ? "border-white/30 bg-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-xl"
-                        : "border-white/10 bg-black/20 backdrop-blur-md hover:border-white/20 hover:bg-white/10"
+                        ? "border-white/25 bg-white/[0.14]"
+                        : "border-white/10 bg-black/25 active:bg-white/[0.08]"
                     }`}
                     key={option.id}
                     onClick={() => onSelect(option.id)}
                     type="button"
                   >
-                    <div className="flex items-center gap-3">
-                      {/* Accent dot */}
-                      <div
-                        className={`h-2.5 w-2.5 rounded-full transition-all ${isSelected ? "scale-100" : "scale-75 opacity-40"}`}
-                        style={{ background: option.accent }}
-                      />
-                      <span className={`text-sm font-medium transition-all md:text-[15px] ${
-                        isSelected ? "text-white" : "text-white/60"
-                      }`}>
-                        {option.title}
+                    <div
+                      className="absolute inset-y-1.5 left-0 w-[3px] rounded-full transition-opacity"
+                      style={{ background: option.accent, opacity: isSelected ? 1 : 0.15 }}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline gap-2">
+                        <span className={`text-[14px] font-semibold ${isSelected ? "text-white" : "text-white/60"}`}>
+                          {option.title}
+                        </span>
+                        {option.recommended && (
+                          <span className="rounded-full bg-emerald-300/12 px-1.5 py-px text-[8px] font-bold uppercase tracking-wider text-emerald-200/70">
+                            Rec
+                          </span>
+                        )}
+                      </div>
+                      <span className={`text-[10px] ${isSelected ? "text-white/40" : "text-white/25"}`}>
+                        {option.meta}
                       </span>
-                      {option.recommended && isSelected && (
-                        <span className="rounded-full bg-white/15 px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.1em] text-white/70">
-                          Rec
+                    </div>
+                    <div className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border-2 transition-all ${
+                      isSelected ? "border-[#8de4d4] bg-[#8de4d4]" : "border-white/20"
+                    }`}>
+                      {isSelected && (
+                        <svg fill="none" height="9" stroke="#0a0d14" strokeLinecap="round" strokeWidth="3" viewBox="0 0 24 24" width="9">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+              <button
+                className="mt-1.5 w-full rounded-xl bg-[linear-gradient(135deg,#baf7eb_0%,#82e2d0_35%,#4bbca9_100%)] py-3 text-center text-xs font-semibold uppercase tracking-[0.14em] text-slate-950 shadow-[0_10px_24px_rgba(76,189,169,0.22)] transition hover:translate-y-[-1px]"
+                onClick={onNext}
+                type="button"
+              >
+                {nextLabel} →
+              </button>
+            </div>
+
+            {/* Desktop: option cards (compact, glassmorphic for image overlay) */}
+            <div className="mt-4 hidden grid-cols-3 gap-3 md:grid">
+              {options.map((option) => {
+                const isSelected = selectedId === option.id;
+                return (
+                  <button
+                    className={`group relative overflow-hidden rounded-2xl border p-4 text-left backdrop-blur-md transition duration-300 ${
+                      isSelected
+                        ? "border-white/24 bg-white/[0.12] shadow-[0_24px_54px_rgba(0,0,0,0.28)]"
+                        : "border-white/10 bg-black/25 hover:border-white/20 hover:bg-white/[0.08]"
+                    }`}
+                    key={option.id}
+                    onClick={() => onSelect(option.id)}
+                    type="button"
+                  >
+                    <div
+                      className={`absolute inset-x-0 top-0 h-1 transition-opacity duration-300 ${isSelected ? "opacity-100" : "opacity-55 group-hover:opacity-80"}`}
+                      style={{ background: `linear-gradient(90deg, ${option.accent}, transparent)` }}
+                    />
+                    <div className="mb-2 flex items-center justify-between gap-3">
+                      <span className="text-xs font-medium uppercase tracking-[0.3em] text-white/48">{option.label}</span>
+                      {option.recommended && (
+                        <span className="rounded-full border border-emerald-200/18 bg-emerald-200/10 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.22em] text-emerald-100">
+                          Recommended
                         </span>
                       )}
                     </div>
-                    {isSelected && (
-                      <p className="mt-1 max-w-[240px] text-[11px] leading-4 text-white/40 md:text-xs md:leading-5">
-                        {option.description}
-                      </p>
-                    )}
+                    <h3 className="text-base font-medium text-white">{option.title}</h3>
+                    <p className="mt-1 line-clamp-2 text-xs leading-5 text-white/60">{option.description}</p>
+                    <p className="mt-1 text-xs text-white/40">{option.meta}</p>
                   </button>
                 );
               })}
             </div>
 
             {/* CTA */}
-            <div className="mt-6 flex items-center gap-5 md:mt-8">
+            <div className="mt-4 hidden items-center gap-5 md:flex md:mt-5">
               <GlowButton onClick={onNext}>{nextLabel}</GlowButton>
-              <span className="hidden text-sm text-white/30 sm:block">
-                {options.find((o) => o.id === selectedId)?.meta}
+              <span className="text-sm text-white/30">
+                Choose a card to update the view right away.
               </span>
             </div>
           </div>
