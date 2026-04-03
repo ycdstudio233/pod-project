@@ -64,7 +64,7 @@ export function ExploreStage({ onContinue, setRef }: ExploreStageProps) {
         {/* Carousel — full-bleed, tall cards */}
         <div className="relative z-10 mt-10 md:mt-14">
           <div
-            className="scrollbar-none flex gap-4 overflow-x-auto scroll-smooth px-5 sm:px-8 lg:gap-5"
+            className="scrollbar-none flex gap-3 overflow-x-auto scroll-smooth px-5 sm:px-8 lg:gap-4"
             onScroll={updateScrollState}
             ref={scrollRef}
             style={{ scrollSnapType: "x mandatory", scrollPaddingLeft: "1.25rem" }}
@@ -74,7 +74,7 @@ export function ExploreStage({ onContinue, setRef }: ExploreStageProps) {
 
             {exploreFeatures.map((feature, i) => (
               <motion.button
-                className="group relative h-[52svh] min-h-[340px] max-h-[520px] w-[72vw] shrink-0 overflow-hidden rounded-[1.25rem] text-left sm:w-[44vw] md:h-[56vh] md:max-h-[580px] md:w-[30vw] lg:w-[26vw] lg:max-w-[400px]"
+                className="group relative h-[52svh] min-h-[340px] max-h-[540px] w-[78vw] shrink-0 overflow-hidden rounded-[1.25rem] text-left sm:w-[52vw] md:h-[56vh] md:max-h-[600px] md:w-[38vw] lg:w-[32vw]"
                 initial={{ opacity: 0, y: 24 }}
                 key={feature.id}
                 onClick={() => setActiveFeature(feature)}
@@ -90,7 +90,8 @@ export function ExploreStage({ onContinue, setRef }: ExploreStageProps) {
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
                   draggable={false}
                   fill
-                  sizes="(max-width: 640px) 75vw, (max-width: 1024px) 48vw, 420px"
+                  quality={90}
+                  sizes="(max-width: 640px) 80vw, (max-width: 1024px) 52vw, 40vw"
                   src={feature.image}
                 />
 
