@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { PodPreview } from "@/components/3d/pod-preview";
+import { InteriorPreview } from "@/components/3d/interior-preview";
 import { GlowButton } from "@/components/ui/glow-button";
 import { interiorPackOptions } from "@/lib/configurator-data";
 import type { ConfiguratorState, InteriorPackId, PodSize } from "@/types/configurator";
@@ -44,7 +44,7 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
           </>
         ) : (
           <div className="h-full w-full">
-            <PodPreview className="h-full w-full" interactive state={state} />
+            <InteriorPreview className="h-full w-full" state={state} />
           </div>
         )}
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#07090d] to-transparent" />
