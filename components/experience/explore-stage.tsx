@@ -41,8 +41,8 @@ export function ExploreStage({ onContinue, setRef }: ExploreStageProps) {
         id="explore"
         ref={setRef}
       >
-        {/* Background */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#07090d] via-[#0a0e14] to-[#07090d]" />
+        {/* Background — extends upward to cover any bleed from previous section */}
+        <div className="pointer-events-none absolute -top-20 inset-x-0 bottom-0 bg-[#07090d]" />
 
         {/* Header */}
         <div className="relative z-10 mx-auto max-w-[1400px] px-5 sm:px-8 lg:px-12">
