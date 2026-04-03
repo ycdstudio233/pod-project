@@ -12,7 +12,7 @@ interface ImmersiveTransitionProps {
 export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionProps) {
   return (
     <section
-      className="relative flex min-h-[100svh] min-h-[100dvh] items-center overflow-hidden scroll-mt-28 px-4 pb-10 pt-28 sm:px-6 sm:pb-16 sm:pt-32 lg:px-12"
+      className="relative flex min-h-[100svh] min-h-[100dvh] items-center overflow-hidden scroll-mt-20 px-4 pb-10 pt-20 sm:px-6 sm:pb-16 sm:pt-24 lg:px-12"
       id="transition"
       ref={setRef}
     >
@@ -26,7 +26,7 @@ export function ImmersiveTransition({ onContinue, setRef }: ImmersiveTransitionP
           src="/pod-desert-sunset.png"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/80 via-[#07090d]/50 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-transparent to-[#07090d]/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07090d]/70 via-transparent to-transparent" />
       </div>
 
       <motion.div
