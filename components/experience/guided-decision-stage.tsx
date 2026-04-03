@@ -21,7 +21,6 @@ interface GuidedDecisionStageProps {
   onSelect: (id: string) => void;
   onNext: () => void;
   setRef?: (node: HTMLElement | null) => void;
-  /** When provided, shows a full-bleed hero image instead of the 3D viewer */
   heroImages?: Record<string, string>;
 }
 
@@ -43,13 +42,124 @@ export function GuidedDecisionStage({
 }: GuidedDecisionStageProps) {
   const activeImage = heroImages?.[selectedId];
 
+  /* ─── Immersive hero-image layout (Setting step) ─── */
+  if (heroImages) {
+    return (
+      <section
+        className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 md:scroll-mt-28"
+        id={id}
+        ref={setRef}
+      >
+        {/* Full-bleed background image */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            animate={{ opacity: 1, scale: 1 }}
+            className="absolute inset-0"
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0, scale: 1.04 }}
+            key={selectedId}
+            transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <Image
+              alt={options.find((o) => o.id === selectedId)?.title ?? "Setting"}
+              className="object-cover"
+              draggable={false}
+              fill
+              priority
+              quality={90}
+              sizes="100vw"
+              src={activeImage ?? options[0]?.image ?? ""}
+            />
+          </motion.div>
+        </AnimatePresence>
+
+        {/* Gradient overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07090d] via-[#07090d]/30 to-[#07090d]/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#07090d]/70 via-transparent to-transparent" />
+
+        {/* Content overlaid at bottom */}
+        <div className="relative z-10 flex min-h-[100svh] min-h-[100dvh] flex-col justify-end px-4 pb-8 pt-20 sm:px-6 md:pb-12 lg:px-12">
+          <div className="mx-auto w-full max-w-[1400px]">
+            {/* Eyebrow + title */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true, amount: 0.3 }}
+              whileInView={{ opacity: 1, y: 0 }}
+            >
+              <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/40 md:text-[11px]">
+                {phase} / {stepLabel}
+              </span>
+              <h2 className="mt-3 max-w-lg text-[clamp(2rem,5vw,3.8rem)] font-medium leading-[0.96] tracking-[-0.04em] text-white">
+                {title}
+              </h2>
+              <p className="mt-3 hidden max-w-md text-base leading-7 text-white/50 md:block">
+                {copy}
+              </p>
+            </motion.div>
+
+            {/* Option selector pills */}
+            <div className="mt-6 flex flex-wrap gap-2 md:mt-8">
+              {options.map((option) => {
+                const isSelected = selectedId === option.id;
+                return (
+                  <button
+                    className={`relative overflow-hidden rounded-full border px-5 py-2.5 text-left transition-all duration-300 md:px-6 md:py-3 ${
+                      isSelected
+                        ? "border-white/30 bg-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.2)] backdrop-blur-xl"
+                        : "border-white/10 bg-black/20 backdrop-blur-md hover:border-white/20 hover:bg-white/10"
+                    }`}
+                    key={option.id}
+                    onClick={() => onSelect(option.id)}
+                    type="button"
+                  >
+                    <div className="flex items-center gap-3">
+                      {/* Accent dot */}
+                      <div
+                        className={`h-2.5 w-2.5 rounded-full transition-all ${isSelected ? "scale-100" : "scale-75 opacity-40"}`}
+                        style={{ background: option.accent }}
+                      />
+                      <span className={`text-sm font-medium transition-all md:text-[15px] ${
+                        isSelected ? "text-white" : "text-white/60"
+                      }`}>
+                        {option.title}
+                      </span>
+                      {option.recommended && isSelected && (
+                        <span className="rounded-full bg-white/15 px-2 py-0.5 text-[9px] font-medium uppercase tracking-[0.1em] text-white/70">
+                          Rec
+                        </span>
+                      )}
+                    </div>
+                    {isSelected && (
+                      <p className="mt-1 max-w-[240px] text-[11px] leading-4 text-white/40 md:text-xs md:leading-5">
+                        {option.description}
+                      </p>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* CTA */}
+            <div className="mt-6 flex items-center gap-5 md:mt-8">
+              <GlowButton onClick={onNext}>{nextLabel}</GlowButton>
+              <span className="hidden text-sm text-white/30 sm:block">
+                {options.find((o) => o.id === selectedId)?.meta}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  /* ─── Standard 3D-viewer layout (Size, Finish steps) ─── */
   return (
     <section
       className="relative overflow-hidden scroll-mt-20 pt-[4.25rem] md:scroll-mt-28 md:pt-28"
       id={id}
       ref={setRef}
     >
-      {/* Viewer — either hero image or 3D */}
       <div className="relative">
         <motion.div
           className="mx-auto w-full max-w-[1400px] px-4 md:px-6 lg:px-12"
@@ -58,35 +168,7 @@ export function GuidedDecisionStage({
           viewport={{ once: true, amount: 0.2 }}
           whileInView={{ opacity: 1 }}
         >
-          {heroImages ? (
-            /* Full-bleed setting image */
-            <div className="relative h-[220px] w-full overflow-hidden rounded-2xl md:h-[320px] md:rounded-[1.8rem] lg:h-[400px]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="absolute inset-0"
-                  exit={{ opacity: 0, scale: 1.02 }}
-                  initial={{ opacity: 0, scale: 1.03 }}
-                  key={selectedId}
-                  transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-                >
-                  <Image
-                    alt={options.find((o) => o.id === selectedId)?.title ?? "Setting"}
-                    className="object-cover"
-                    draggable={false}
-                    fill
-                    quality={90}
-                    sizes="(max-width: 768px) 100vw, 1400px"
-                    src={activeImage ?? options[0]?.image ?? ""}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07090d]/60 via-transparent to-transparent" />
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          ) : (
-            /* 3D preview */
-            <PodPreview className="h-[200px] w-full rounded-2xl md:h-[280px] md:rounded-[1.8rem] lg:h-[340px]" interactive state={state} />
-          )}
+          <PodPreview className="h-[200px] w-full rounded-2xl md:h-[280px] md:rounded-[1.8rem] lg:h-[340px]" interactive state={state} />
         </motion.div>
       </div>
 
@@ -97,17 +179,15 @@ export function GuidedDecisionStage({
           viewport={{ once: true, amount: 0.3 }}
           whileInView={{ opacity: 1, y: 0 }}
         >
-          {/* Header row */}
           <div className="flex items-center justify-between gap-2 border-b border-white/8 py-2 md:py-5">
             <h2 className="text-lg font-medium tracking-[-0.03em] text-white md:text-[clamp(1.4rem,3.5vw,2.8rem)]">{title}</h2>
             <span className="text-[9px] uppercase tracking-[0.18em] text-white/30 md:text-[10px] md:tracking-[0.2em]">{phase} / {stepLabel}</span>
           </div>
 
-          {/* Copy — desktop only */}
           <p className="hidden max-w-xl text-sm leading-7 text-white/54 md:mt-4 md:block">{copy}</p>
           <p className="mt-1 hidden max-w-xl text-sm leading-6 text-white/36 md:block">{guidance}</p>
 
-          {/* ── Mobile/tablet: sleek option rows + CTA (< md) ── */}
+          {/* Mobile: sleek rows */}
           <div className="mt-2 flex flex-col gap-1 md:hidden">
             {options.map((option) => {
               const isSelected = selectedId === option.id;
@@ -122,15 +202,10 @@ export function GuidedDecisionStage({
                   onClick={() => onSelect(option.id)}
                   type="button"
                 >
-                  {/* Accent left bar */}
                   <div
                     className="absolute inset-y-1.5 left-0 w-[3px] rounded-full transition-opacity"
-                    style={{
-                      background: option.accent,
-                      opacity: isSelected ? 1 : 0.15,
-                    }}
+                    style={{ background: option.accent, opacity: isSelected ? 1 : 0.15 }}
                   />
-
                   <div className="min-w-0 flex-1">
                     <div className="flex items-baseline gap-2">
                       <span className={`text-[14px] font-semibold ${isSelected ? "text-white" : "text-white/60"}`}>
@@ -146,8 +221,6 @@ export function GuidedDecisionStage({
                       {option.meta}
                     </span>
                   </div>
-
-                  {/* Radio */}
                   <div className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border-2 transition-all ${
                     isSelected ? "border-[#8de4d4] bg-[#8de4d4]" : "border-white/20"
                   }`}>
@@ -160,8 +233,6 @@ export function GuidedDecisionStage({
                 </button>
               );
             })}
-
-            {/* CTA — compact row */}
             <button
               className="mt-1.5 w-full rounded-xl bg-[linear-gradient(135deg,#baf7eb_0%,#82e2d0_35%,#4bbca9_100%)] py-3 text-center text-xs font-semibold uppercase tracking-[0.14em] text-slate-950 shadow-[0_10px_24px_rgba(76,189,169,0.22)] transition hover:translate-y-[-1px]"
               onClick={onNext}
@@ -171,7 +242,7 @@ export function GuidedDecisionStage({
             </button>
           </div>
 
-          {/* ── Desktop: full option cards (≥ md) ── */}
+          {/* Desktop: option cards */}
           <div
             className={`mt-6 hidden grid-cols-1 gap-3 md:grid md:grid-cols-2 ${
               options.length <= 3 ? "lg:grid-cols-3" : "xl:grid-cols-4"
@@ -182,7 +253,7 @@ export function GuidedDecisionStage({
                 accent={option.accent}
                 description={option.description}
                 iconId={option.iconId}
-                image={heroImages ? undefined : option.image}
+                image={option.image}
                 key={option.id}
                 label={option.label}
                 meta={option.meta}
