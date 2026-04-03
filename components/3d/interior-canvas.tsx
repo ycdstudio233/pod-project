@@ -36,16 +36,14 @@ export function InteriorCanvas({ state, visible = true }: InteriorCanvasProps) {
         />
       </group>
       <OrbitControls
-        autoRotate
-        autoRotateSpeed={0.3}
-        dampingFactor={0.05}
+        dampingFactor={0.08}
         enableDamping
         enablePan={false}
-        maxDistance={6}
-        maxPolarAngle={Math.PI / 1.8}
-        minDistance={2.5}
-        minPolarAngle={Math.PI / 4}
-        rotateSpeed={0.5}
+        maxDistance={7}
+        maxPolarAngle={Math.PI / 2.05}
+        minDistance={2}
+        minPolarAngle={0.05}
+        rotateSpeed={0.6}
         target={[0, -0.2, 0]}
       />
     </Canvas>
