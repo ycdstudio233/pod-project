@@ -89,10 +89,12 @@ export function InteriorPackStage({ selectedId, state, onSelect, onSizeChange, o
           ) : null}
         </AnimatePresence>
 
-        {/* 3D layer — always mounted for preloading, just hidden behind photo */}
-        <div className={`absolute inset-0 ${viewMode === "3d" ? "z-[1]" : "z-0"}`}>
-          <InteriorPreview className="h-full w-full" state={state} />
-        </div>
+        {/* 3D layer — only mounted when in 3D mode */}
+        {viewMode === "3d" ? (
+          <div className="absolute inset-0 z-[1]">
+            <InteriorPreview className="h-full w-full" state={state} />
+          </div>
+        ) : null}
 
         {/* Invisible interaction layer on top of photo to detect drag */}
         {viewMode === "photo" ? (
