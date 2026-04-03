@@ -61,7 +61,7 @@ export function OptionCard({
         style={{ background: `linear-gradient(90deg, ${accent}, transparent)` }}
       />
       {image ? (
-        <div className="relative mb-3 h-28 overflow-hidden rounded-xl border border-white/8 bg-slate-950/60 sm:mb-5 sm:h-36 sm:rounded-[1.35rem]">
+        <div className="relative mb-3 h-24 overflow-hidden rounded-xl border border-white/8 bg-slate-950/60 sm:mb-4 sm:h-28 sm:rounded-[1.35rem]">
           <Image
             alt={title}
             className="object-cover transition duration-500 group-hover:scale-[1.03]"
