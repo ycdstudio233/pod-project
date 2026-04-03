@@ -89,13 +89,13 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
 
   return (
     <section
-      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-28 px-4 pb-10 pt-24 sm:px-5 sm:pt-28 lg:px-10 lg:pb-12"
+      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 px-4 pb-10 pt-[4.25rem] md:scroll-mt-28 md:pt-28 lg:px-10 lg:pb-12"
       id="site-fit"
       ref={setRef}
     >
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(141,228,212,0.1),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent_28%,rgba(0,0,0,0.14)_100%)]" />
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-7rem)] max-w-[860px] flex-col justify-center sm:min-h-[calc(100svh-6rem)]">
+      <div className="relative z-10 mx-auto flex max-w-[860px] flex-col justify-center md:min-h-[calc(100svh-6rem)]">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.55 }}
@@ -108,18 +108,18 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
             </span>
             <span className="text-[10px] font-medium uppercase tracking-[0.24em] text-white/34">takes 20 seconds</span>
           </div>
-          <h2 className="text-[clamp(1.8rem,5vw,4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-white">
-            {step < 3 ? "Let's make sure your site works." : "Looking good, this is a real project."}
+          <h2 className="text-[clamp(1.5rem,5vw,4rem)] font-medium leading-[1.02] tracking-[-0.04em] text-white">
+            {step < 3 ? "Let\u2019s make sure your site works." : "Looking good \u2014 this is a real project."}
           </h2>
           {step < 3 ? (
-            <p className="mt-3 max-w-lg text-base leading-7 text-white/60 sm:mt-4 sm:text-lg sm:leading-8">
-              Three quick questions. Nothing scary, we just need a rough picture so we can give you a real answer.
+            <p className="mt-2 max-w-lg text-sm leading-6 text-white/60 md:mt-4 md:text-lg md:leading-8">
+              Three quick questions so we can give you a real answer.
             </p>
           ) : null}
         </motion.div>
 
         {step < 3 ? (
-          <div className="mt-8 flex flex-wrap gap-2">
+          <div className="mt-5 flex flex-wrap gap-2 md:mt-8">
             {["Ground", "Access", "Use"].map((label, index) => (
               <span
                 className={`rounded-full border px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.22em] ${
@@ -138,7 +138,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
           </div>
         ) : null}
 
-        <div className="mt-10">
+        <div className="mt-6 md:mt-10">
           <AnimatePresence mode="wait">
             {step === 0 ? (
               <motion.div key="slope" {...fadeVariants} transition={{ duration: 0.3 }}>
@@ -196,7 +196,7 @@ export function SiteFitStage({ state, onNext, onUpdate, setRef }: SiteFitStagePr
           </AnimatePresence>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-6 md:mt-10">
           {step < 2 ? (
             <GlowButton disabled={!canAdvance} onClick={() => setStep((value) => value + 1)}>
               Next question

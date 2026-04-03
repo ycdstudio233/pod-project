@@ -41,11 +41,11 @@ export function GuidedDecisionStage({
 
   return (
     <section
-      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 pt-[4.5rem] md:scroll-mt-28 md:pt-28"
+      className="relative min-h-[100svh] min-h-[100dvh] overflow-hidden scroll-mt-20 pt-[4.25rem] md:scroll-mt-28 md:pt-28"
       id={id}
       ref={setRef}
     >
-      {/* 3D Viewer — nice and visible */}
+      {/* 3D Viewer */}
       <div className="relative">
         <motion.div
           className="mx-auto w-full max-w-[1400px] px-4 md:px-6 lg:px-12"
@@ -58,7 +58,7 @@ export function GuidedDecisionStage({
         </motion.div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-[1400px] px-4 pb-8 md:px-6 md:pb-12 lg:px-12">
+      <div className="relative z-10 mx-auto max-w-[1400px] px-4 pb-6 md:px-6 md:pb-12 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
@@ -66,25 +66,22 @@ export function GuidedDecisionStage({
           whileInView={{ opacity: 1, y: 0 }}
         >
           {/* Header row */}
-          <div className="flex items-center justify-between gap-2 border-b border-white/8 py-3 md:py-5">
+          <div className="flex items-center justify-between gap-2 border-b border-white/8 py-2 md:py-5">
             <h2 className="text-lg font-medium tracking-[-0.03em] text-white md:text-[clamp(1.4rem,3.5vw,2.8rem)]">{title}</h2>
-            <div className="flex shrink-0 items-center gap-2 md:gap-3">
-              <span className="hidden text-sm text-white/50 md:inline">{selectedOption?.label ?? selectedId}</span>
-              <span className="text-[9px] uppercase tracking-[0.18em] text-white/30 md:text-[10px] md:tracking-[0.2em]">{phase} / {stepLabel}</span>
-            </div>
+            <span className="text-[9px] uppercase tracking-[0.18em] text-white/30 md:text-[10px] md:tracking-[0.2em]">{phase} / {stepLabel}</span>
           </div>
 
-          {/* Copy — hidden on mobile to save space, shown on desktop */}
+          {/* Copy — desktop only */}
           <p className="hidden max-w-xl text-sm leading-7 text-white/54 md:mt-4 md:block">{copy}</p>
           <p className="mt-1 hidden max-w-xl text-sm leading-6 text-white/36 md:block">{guidance}</p>
 
-          {/* ── Mobile/tablet: sleek button rows (< md) ── */}
-          <div className="mt-3 flex flex-col gap-1.5 md:hidden">
+          {/* ── Mobile/tablet: sleek option rows + CTA (< md) ── */}
+          <div className="mt-2 flex flex-col gap-1 md:hidden">
             {options.map((option) => {
               const isSelected = selectedId === option.id;
               return (
                 <button
-                  className={`relative flex items-center gap-3 overflow-hidden rounded-xl border px-4 py-3 text-left transition-all duration-200 ${
+                  className={`relative flex items-center gap-3 overflow-hidden rounded-xl border px-3 py-2.5 text-left transition-all duration-200 ${
                     isSelected
                       ? "border-[#8de4d4]/28 bg-white/[0.09]"
                       : "border-white/8 bg-white/[0.025] active:bg-white/[0.06]"
@@ -95,17 +92,16 @@ export function GuidedDecisionStage({
                 >
                   {/* Accent left bar */}
                   <div
-                    className="absolute inset-y-2 left-0 w-[3px] rounded-full transition-opacity"
+                    className="absolute inset-y-1.5 left-0 w-[3px] rounded-full transition-opacity"
                     style={{
                       background: option.accent,
                       opacity: isSelected ? 1 : 0.15,
                     }}
                   />
 
-                  {/* Content */}
                   <div className="min-w-0 flex-1">
                     <div className="flex items-baseline gap-2">
-                      <span className={`text-[15px] font-semibold ${isSelected ? "text-white" : "text-white/60"}`}>
+                      <span className={`text-[14px] font-semibold ${isSelected ? "text-white" : "text-white/60"}`}>
                         {option.title}
                       </span>
                       {option.recommended && (
@@ -114,12 +110,12 @@ export function GuidedDecisionStage({
                         </span>
                       )}
                     </div>
-                    <span className={`text-[11px] ${isSelected ? "text-white/40" : "text-white/25"}`}>
+                    <span className={`text-[10px] ${isSelected ? "text-white/40" : "text-white/25"}`}>
                       {option.meta}
                     </span>
                   </div>
 
-                  {/* Radio indicator */}
+                  {/* Radio */}
                   <div className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border-2 transition-all ${
                     isSelected ? "border-[#8de4d4] bg-[#8de4d4]" : "border-white/20"
                   }`}>
@@ -133,20 +129,14 @@ export function GuidedDecisionStage({
               );
             })}
 
-            {/* CTA — integrated bar */}
-            <div className="mt-2 flex items-center gap-3 rounded-xl border border-white/8 bg-white/[0.03] px-4 py-2.5">
-              <div className="min-w-0 flex-1">
-                <p className="text-[9px] uppercase tracking-[0.2em] text-[#8de4d4]/60">Selected</p>
-                <p className="truncate text-sm font-medium text-white">{selectedOption?.title}</p>
-              </div>
-              <button
-                className="shrink-0 rounded-full bg-[linear-gradient(135deg,#baf7eb_0%,#82e2d0_35%,#4bbca9_100%)] px-5 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-slate-950 shadow-[0_10px_24px_rgba(76,189,169,0.22)] transition hover:translate-y-[-1px]"
-                onClick={onNext}
-                type="button"
-              >
-                {nextLabel}
-              </button>
-            </div>
+            {/* CTA — compact row */}
+            <button
+              className="mt-1.5 w-full rounded-xl bg-[linear-gradient(135deg,#baf7eb_0%,#82e2d0_35%,#4bbca9_100%)] py-3 text-center text-xs font-semibold uppercase tracking-[0.14em] text-slate-950 shadow-[0_10px_24px_rgba(76,189,169,0.22)] transition hover:translate-y-[-1px]"
+              onClick={onNext}
+              type="button"
+            >
+              {nextLabel} →
+            </button>
           </div>
 
           {/* ── Desktop: full option cards (≥ md) ── */}

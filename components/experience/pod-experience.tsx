@@ -312,7 +312,7 @@ export function PodExperience() {
         copy="Where will your pod actually live? Pick the closest match and we will fine-tune it together later."
         guidance="Don't worry about getting it perfect. This just helps us show you the right setting."
         id="environment"
-        nextLabel="That's the exterior done"
+        nextLabel="Exterior done"
         onNext={() => navigateToSection("interior-pack")}
         onSelect={(value) => {
           updateState("environment", value as ConfiguratorState["environment"]);
